@@ -8,6 +8,41 @@ const AUTH = {
   sessionKey: "weston_session",
   anonKey: "weston-progress-v1",
 
+  /* نطاقات إيميلات مؤقتة/وهمية — ممنوعة */
+  DISPOSABLE: [
+    "10minutemail.com", "10minutemail.net", "guerrillamail.com", "guerrillamail.net",
+    "guerrillamail.org", "tempmail.com", "temp-mail.org", "temp-mail.io", "mailinator.com",
+    "mailinator.net", "mailinator2.com", "yopmail.com", "yopmail.fr", "throwaway.email",
+    "fakeinbox.com", "sharklasers.com", "grr.la", "getnada.com", "nada.email", "dispostable.com",
+    "trashmail.com", "trashmail.net", "trash-mail.com", "mintemail.com", "maildrop.cc",
+    "harakirimail.com", "spam4.me", "mailnesia.com", "tempinbox.com", "emailondeck.com",
+    "burnermail.io", "tempr.email", "discard.email", "mailcatch.com", "mytemp.email",
+    "jetable.org", "trbvm.com", "mail-temporaire.fr", "crazymailing.com", "tempmailo.com",
+    "tempail.com", "tempmailaddress.com", "burner.kiwi", "mailpoof.com", "mohmal.com",
+    "fakemail.net", "generator.email", "inboxes.com", "wegwerfmail.de", "wegwerfmail.net",
+    "sogetthis.com", "mailde.de", "mailde.info", "temp-mail.com", "fake-mail.net",
+    "mail-temporaire.com", "minutemail.com", "instantemailaddress.com", "emltmp.com",
+  ],
+
+  /* تحقق حقيقي: هل النطاق بيستقبل إيميلات؟ (DNS MX عبر Google DNS) */
+  async verifyEmail(email) {
+    const em = String(email || "").trim().toLowerCase();
+    const domain = em.split("@")[1] || "";
+    if (!domain) return { ok: false, msg: "اكتب إيميل صحيح" };
+    if (this.DISPOSABLE.includes(domain)) {
+      return { ok: false, msg: "الإيميلات المؤقتة مش مسموح بيها — استخدم إيميل حقيقي" };
+    }
+    try {
+      const r = await fetch("https://dns.google/resolve?name=" + encodeURIComponent(domain) + "&type=MX");
+      const d = await r.json();
+      if (d && Array.isArray(d.Answer) && d.Answer.length) return { ok: true };
+      return { ok: false, msg: "النطاق ده مش بيستقبل إيميلات — تحقق من الإيميل" };
+    } catch (e) {
+      // لو الشبكة مش متاحة، نسمح بس بعد فحص الصيغة
+      return { ok: true };
+    }
+  },
+
   getUsers() {
     try { return JSON.parse(localStorage.getItem(this.usersKey)) || {}; } catch (e) { return {}; }
   },
@@ -33,15 +68,19 @@ const AUTH = {
     if (!name || !name.trim()) return { ok: false, msg: "اكتب اسمك" };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return { ok: false, msg: "الإيميل مش صحيح" };
     if (!password || password.length < 6) return { ok: false, msg: "الباسورد 6 حروف على الأقل" };
-    if (users[em]) return { ok: false, msg: "الحساب ده موجود — سجّل دخول" };
-    users[em] = {
-      name: name.trim(), email: em,
-      hash: await this.hash(password),
-      createdAt: new Date().toISOString(),
-    };
-    this.saveUsers(users);
-    this.setSession(em);
-    return { ok: true, msg: "تم إنشاء حسابك — أهلاً بيك " + name.trim() };
+    if (!users[em]) {
+      const v = await this.verifyEmail(em);
+      if (!v.ok) return { ok: false, msg: v.msg };
+      users[em] = {
+        name: name.trim(), email: em,
+        hash: await this.hash(password),
+        createdAt: new Date().toISOString(),
+      };
+      this.saveUsers(users);
+      this.setSession(em);
+      return { ok: true, msg: "تم إنشاء حسابك — أهلاً بيك " + name.trim() };
+    }
+    return { ok: false, msg: "الحساب ده موجود — سجّل دخول" };
   },
 
   async login({ email, password }) {

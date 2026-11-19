@@ -82,6 +82,7 @@
   let view = "home";
   function go(v, arg) {
     if (typeof SOUND !== "undefined") SOUND.nav();
+    if (typeof AUTH !== "undefined" && !AUTH.current() && v !== "account") { applyGate(); return; }
     view = v;
     $$(".topnav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
     $$(".view").forEach((x) => x.classList.remove("active"));
@@ -1088,6 +1089,15 @@
     updateFloat(); updateFoot();
   }
 
+  /* ============ بوابة الدخول ============ */
+  function applyGate() {
+    const gate = $("#gate");
+    if (!gate) return;
+    const u = (typeof AUTH !== "undefined") ? AUTH.current() : null;
+    if (u) { gate.classList.remove("show"); document.body.classList.remove("locked"); }
+    else { gate.classList.add("show"); document.body.classList.add("locked"); }
+  }
+
   /* ============ الحساب ============ */
   let authMode = "login";
   function openAuth(mode) {
@@ -1126,6 +1136,7 @@
     updateAccountBtn();
     refresh();
     if (typeof SOUND !== "undefined") SOUND.success();
+    applyGate();
     setTimeout(() => { closeAuth(); go("account"); }, 700);
   }
   function logout() {
@@ -1133,7 +1144,11 @@
     reloadState();
     updateAccountBtn();
     toast("تم تسجيل الخروج");
-    go("home");
+    applyGate();
+    view = "home";
+    $$(".view").forEach((x) => x.classList.remove("active"));
+    const h = $("#view-home"); if (h) { h.classList.add("active"); renderHome(); }
+    window.scrollTo({ top: 0 });
   }
   function updateAccountBtn() {
     const btn = $("#btnAccount");
@@ -1303,6 +1318,7 @@
       if (b && !b.id?.includes("Sound") && typeof SOUND !== "undefined") SOUND.click();
     });
     // الحساب
+    applyGate();
     updateAccountBtn();
     const accBtn = $("#btnAccount");
     if (accBtn) accBtn.addEventListener("click", () => { const u = AUTH.current(); if (u) go("account"); else openAuth("login"); });
@@ -1316,6 +1332,10 @@
     document.addEventListener("click", (e) => {
       const oa = e.target.closest("[data-open-auth]");
       if (oa) openAuth(oa.dataset.openAuth);
+    });
+    document.addEventListener("click", (e) => {
+      const g = e.target.closest("[data-gate]");
+      if (g) openAuth(g.dataset.gate);
     });
 
     renderFooter();

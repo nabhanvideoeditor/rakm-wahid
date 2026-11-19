@@ -41,7 +41,7 @@ const PATHS = [
   {
     id: "nlp-genai", icon: "💬", title: "مهندس NLP وذكاء توليدي",
     tagline: "ابنِ تطبيقات تتكلم وتكتب وتجاوب",
-    goal: "تبني شات بوتات وأنظمة تلخيص وترجمة وبحث دلالي —  Heart كل شركة دلوقتي.",
+    goal: "تبني شات بوتات وأنظمة تلخيص وترجمة وبحث دلالي — كل شركة محتاجة ده دلوقتي.",
     time: "9–12 شهر", salary: "90–180 ألف $", level: "متوسط",
     tracks: ["t-python", "t-ml", "t-genai"],
     steps: [
@@ -65,8 +65,8 @@ const PATHS = [
       { t: "بايثون قوي", c: ["c-kaggle-python", "c-kaggle-pandas"], w: "5 أسابيع" },
       { t: "نماذج اللغة", c: ["c-hf-llm", "c-pe-dev"], w: "6 أسابيع" },
       { t: "بناء الوكلاء", c: ["c-hf-agents", "c-langgraph", "c-langchain"], w: "8 أسابيع" },
-      { t: "أتمتة وسير عمل", c: ["c-n8n", "c-crewai"], w: "4 أسابيع" },
-      { t: "برمجة بالـ AI", c: ["c-claude-code"], w: "أسبوعان" },
+      { t: "أتمتة وسير عمل", c: ["c-n8n", "c-zapier", "c-make", "c-crewai"], w: "4 أسابيع" },
+      { t: "برمجة بالـ AI", c: ["c-claude-code", "c-copilot", "c-codex"], w: "أسبوعان" },
       { t: "مشروع + شغل", c: ["c-freelance"], w: "مستمر" },
     ],
     jobs: ["AI Agent Engineer", "Automation Engineer", "AI Product Engineer"],
@@ -114,7 +114,7 @@ const PATHS = [
       { t: "بايثون قوي", c: ["c-kaggle-python", "c-cs50py"], w: "6 أسابيع" },
       { t: "واجهات وبرمجة", c: ["c-colab", "c-kaggle-git"], w: "3 أسابيع" },
       { t: "نماذج وأوامر", c: ["c-hf-llm", "c-pe-dev", "c-rag"], w: "7 أسابيع" },
-      { t: "برمجة بالـ AI", c: ["c-claude-code", "c-langchain"], w: "5 أسابيع" },
+      { t: "برمجة بالـ AI", c: ["c-claude-code", "c-copilot", "c-cursor", "c-v0", "c-langchain"], w: "5 أسابيع" },
       { t: "نشر المنتج", c: ["c-mlops-ml", "c-fsdl"], w: "5 أسابيع" },
       { t: "شغل حر", c: ["c-freelance"], w: "مستمر" },
     ],
@@ -146,7 +146,7 @@ const PATHS = [
     steps: [
       { t: "فهم المجال", c: ["c-elements", "c-ai4e", "c-mlcc"], w: "5 أسابيع" },
       { t: "أدوات توليدية", c: ["c-ms-genai", "c-google-genai", "c-pe-dev"], w: "5 أسابيع" },
-      { t: "أتمتة أعمال", c: ["c-n8n", "c-hf-agents"], w: "5 أسابيع" },
+      { t: "أتمتة أعمال", c: ["c-n8n", "c-zapier", "c-make", "c-hf-agents"], w: "5 أسابيع" },
       { t: "استشارات وشهادات", c: ["c-freelance"], w: "مستمر" },
     ],
     jobs: ["AI Consultant", "AI Product Manager", "Digital Transformation"],

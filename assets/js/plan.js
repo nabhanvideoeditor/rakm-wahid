@@ -104,7 +104,7 @@ const PLAN = {
       weeks: [
         { w: 29, title: "إيه الوكيل الذكي", goal: "الفرق بين النموذج والوكيل.", courses: ["c-hf-agents"], daily: ["45 دقيقة Agents"], habit: "جرّب الوكيل", task: "أول وحدة", outcome: "بتفهم الوكلاء" },
         { w: 30, title: "وكلاء بالأدوات", goal: "وكيل عنده أدوات.", courses: ["c-langgraph", "c-langchain"], daily: ["45 دقيقة تطبيق", "أضف أداة"], habit: "أضف أداة يومياً", task: "وكيل بـ LangGraph", outcome: "وكيل بيعمل مهام" },
-        { w: 31, title: "كلود كود", goal: "البرمجة بالـ AI جوه مشروعك.", courses: ["c-claude-code"], daily: ["45 دقيقة تطبيق"], habit: "استخدم AI في الكود", task: "ميزة بالـ Claude Code", outcome: "بتبرمج أسرع" },
+        { w: 31, title: "كلود كود", goal: "البرمجة بالـ AI جوه مشروعك.", courses: ["c-claude-code", "c-copilot", "c-cursor"], daily: ["45 دقيقة تطبيق"], habit: "استخدم AI في الكود", task: "ميزة بالـ Claude Code", outcome: "بتبرمج أسرع" },
         { w: 32, title: "مشروع وكيل", goal: "وكيل يخدم مهمة حقيقية.", courses: ["c-hf-agents"], daily: ["50 دقيقة مشروع"], habit: "اختبر على مهام", task: "وكيل: يلخّص/يجمع/يرد", outcome: "وكيل في الشغل" },
       ],
     },
