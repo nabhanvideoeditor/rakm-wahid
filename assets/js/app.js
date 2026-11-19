@@ -206,8 +206,8 @@
           '<div class="hero-stats">' +
             '<div class="hstat"><div class="hstat-val">' + totalCourses() + '<small> كورس</small></div><div class="hstat-label">بمصادر مجانية عالمية</div></div>' +
             '<div class="hstat"><div class="hstat-val">' + totalHours() + '<small>+ ساعة</small></div><div class="hstat-label">محتوى تعليمي مرتّب</div></div>' +
-            '<div class="hstat"><div class="hstat-val">' + ACADEMY.certs.length + '<small> شهادة</small></div><div class="hstat-label">إتمام مجانية معتمدة</div></div>' +
-            '<div class="hstat"><div class="hstat-val">' + ACADEMY.tracks.length + '<small> مسارات</small></div><div class="hstat-label">تخصص وتطبيق</div></div>' +
+            '<div class="hstat"><div class="hstat-val">' + ACADEMY.certs.length + '<small> شهادات</small></div><div class="hstat-label">إتمام مجانية معتمدة</div></div>' +
+            '<div class="hstat"><div class="hstat-val">' + ACADEMY.tracks.length + '<small> مسارًا</small></div><div class="hstat-label">تخصص وتطبيق</div></div>' +
           '</div>' +
         '</section>' +
         renderMotivation() +

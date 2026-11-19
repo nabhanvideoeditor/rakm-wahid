@@ -163,6 +163,7 @@ button { font-family: inherit; }
 #btnSound.off .snd-on { display: none; }
 
 /* ---------- تخطيط ---------- */
+main { padding-bottom: 96px; }
 .wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
 main { min-height: 100vh; }
 .view { display: none; animation: fade .4s ease; }
