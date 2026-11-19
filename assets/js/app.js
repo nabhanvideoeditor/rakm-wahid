@@ -835,6 +835,145 @@
     if (cb) cb.addEventListener("click", (e) => { e.preventDefault(); go("paths"); });
   }
 
+  /* ---------- الشات بوت ---------- */
+  let chatMsgs = [];
+  let quizIdx = 0, quizAns = [];
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function md(s) {
+    return esc(s)
+      .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+      .replace(/\n/g, "<br>");
+  }
+
+  function chatAdd(m) {
+    chatMsgs.push(m);
+    if (chatMsgs.length > 60) chatMsgs = chatMsgs.slice(-60);
+    renderChat();
+    const body = $("#chatBody");
+    if (body) body.scrollTop = body.scrollHeight;
+  }
+
+  function chatQuick(list) {
+    const q = $("#chatQuick");
+    if (!q) return;
+    q.innerHTML = list.map((t) => '<button class="chat-chip" data-chip="' + esc(t) + '">' + esc(t) + "</button>").join("");
+    $$("#chatQuick [data-chip]").forEach((b) => b.addEventListener("click", () => sendChat(b.dataset.chip)));
+  }
+
+  function renderChat() {
+    const body = $("#chatBody");
+    if (!body) return;
+    body.innerHTML = chatMsgs.map((m) =>
+      '<div class="chat-msg ' + m.from + '">' +
+        '<div class="chat-bubble">' + md(m.text) + "</div>" +
+        '<div class="chat-time">' + (m.time || "") + "</div>" +
+      "</div>"
+    ).join("");
+    const body2 = $("#chatBody");
+    body2.scrollTop = body2.scrollHeight;
+  }
+
+  function openChat() {
+    $("#chatPanel").classList.add("open");
+    $("#chatFab").classList.add("hide");
+    if (!chatMsgs.length) {
+      chatAdd(botMessage("أهلاً بيك في **رقم واحد** 👋\n\nأنا مساعدك الشخصي — هساعدك تختار مسارك وتلاقي الكورسات المناسبة.\n\nاختار من الاقتراحات تحت أو اكتب سؤالك."));
+      chatQuick(QUICK);
+    }
+  }
+  function closeChat() {
+    $("#chatPanel").classList.remove("open");
+    $("#chatFab").classList.remove("hide");
+  }
+
+  function botReply(text) {
+    const q = text.trim().toLowerCase();
+    // اختبار التوجيه
+    if (quizIdx > 0 && quizIdx <= QUIZ.length) {
+      const qi = quizIdx - 1;
+      if (qi >= 0 && qi < QUIZ.length) {
+        quizAns.push(text.trim());
+        quizIdx++;
+        if (quizIdx > QUIZ.length) {
+          const rec = botRecommend(quizAns);
+          const p = PATHS.find((x) => x.id === rec.id);
+          quizIdx = 0;
+          chatAdd(botMessage("✅ بناءً على إجاباتك، أقترحلك:\n\n**" + (p ? p.icon + " " + p.title : rec.id) + "**\n" + rec.why + "\n\nالمدة: " + (p ? p.time : "") + " • الراتب: " + (p ? p.salary : "") + "\n\nدوس «افتح المسار» تشوف خطته كاملة."));
+          chatQuick(["افتح المسار", "منين أبدأ؟", "إيه المسار المناسب لي؟"]);
+          window._recPath = rec.id;
+          return;
+        }
+        chatAdd(botMessage(QUIZ[quizIdx - 1].q));
+        chatQuick(QUIZ[quizIdx - 1].opts);
+        return;
+      }
+    }
+    if (/(اختبار|وجّهني|وجهنا|رشح|رشّح|اقترح|اقترحلي|مسار مناسب|اختار تفرع|عايز أختار|عايز اختار|تفرع|اختار مسار|اختيار مسار|رشّحلي|هديني|هديني)/.test(q)) {
+      quizIdx = 1; quizAns = [];
+      chatAdd(botMessage("تمام! هسألك 3 أسئلة وأرشّحلك أنسب مسار 🎯\n\n" + QUIZ[0].q));
+      chatQuick(QUIZ[0].opts);
+      return;
+    }
+    // فتح مسار مرشح
+    if (/(افتح المسار)/.test(q) && window._recPath) {
+      const id = window._recPath;
+      window._recPath = null;
+      chatQuick(QUICK);
+      setTimeout(() => go("path", id), 500);
+      return;
+    }
+    // بحث عن كورس
+    const m = q.match(/(كورس|دور|ابحث|dossier)\s*(.*)/);
+    if (m && m[2] && m[2].length > 2) {
+      const res = botSearch(m[2]);
+      if (res.length) {
+        chatAdd(botMessage("لقيت لك " + res.length + " كورس مناسب 🎓\n" + res.map((c) => "• **" + c.title + "**").join("\n") + "\n\nدوس «الكورسات» تشوف التفاصيل."));
+        chatQuick(["منين أبدأ؟", "قوللي عن الشهادات"]);
+        return;
+      }
+    }
+    // قواعد
+    for (const r of BOT_RULES) {
+      if (r.k.some((k) => q.includes(k.toLowerCase()))) {
+        chatAdd(botMessage(r.r));
+        if (r.action) {
+          chatQuick([r.action === "roadmap" ? "شوف خريطة الطريق" : r.action === "paths" ? "افتح مساراتك" : "منين أبدأ؟"]);
+          window._botAction = r.action;
+        } else chatQuick(QUICK);
+        return;
+      }
+    }
+    // Fallback
+    chatAdd(botMessage(FALLBACK));
+    chatQuick(QUICK);
+  }
+
+  function sendChat(text) {
+    if (!text || !text.trim()) return;
+    chatAdd(userMessage(text.trim()));
+    chatQuick([]);
+    $("#chatText").value = "";
+    setTimeout(() => botReply(text.trim()), 450);
+  }
+
+  function initChat() {
+    const fab = $("#chatFab"), panel = $("#chatPanel");
+    if (!fab) return;
+    fab.addEventListener("click", openChat);
+    $("#chatClose").addEventListener("click", closeChat);
+    $("#chatForm").addEventListener("submit", (e) => { e.preventDefault(); sendChat($("#chatText").value); });
+    // إجراء سريع بعد رد المساعد
+    $("#chatQuick").addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-chip]");
+      if (!chip) return;
+      const t = chip.dataset.chip;
+      if (t === "شوف خريطة الطريق") { go("roadmap"); closeChat(); }
+      else if (t === "افتح مساراتك") { go("paths"); closeChat(); }
+      else if (t === "افتح المسار" && window._recPath) { const id = window._recPath; window._recPath = null; go("path", id); closeChat(); }
+    });
+  }
+
   /* ============ فوتر ============ */
   function renderFooter() {
     $("#footer").innerHTML =
@@ -894,6 +1033,7 @@
   /* ============ تهيئة ============ */
   function init() {
     updateStreak();
+    initChat();
     document.documentElement.setAttribute("data-theme", state.theme);
     $("#brand").addEventListener("click", () => go("home"));
     $$(".topnav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.view)));

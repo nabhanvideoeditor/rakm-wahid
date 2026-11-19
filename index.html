@@ -78,12 +78,29 @@
   <div class="toast" id="toast"></div>
   <div class="cheer" id="cheer"></div>
   <div class="float-progress"><span id="floatBar"></span></div>
+
+  <!-- ======= الشات بوت ======= -->
+  <button class="chat-fab" id="chatFab" aria-label="المساعد الذكي">💬</button>
+  <div class="chat-panel" id="chatPanel" role="dialog" aria-label="مساعد رقم واحد">
+    <div class="chat-head">
+      <div class="chat-avatar">1</div>
+      <div class="chat-head-txt"><b>مساعد رقم واحد</b><small><span class="dot-online"></span> متصل — اسألني أي حاجة</small></div>
+      <button class="chat-close" id="chatClose" aria-label="إغلاق">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-quick" id="chatQuick"></div>
+    <form class="chat-input" id="chatForm">
+      <input id="chatText" type="text" placeholder="اكتب سؤالك..." autocomplete="off" aria-label="اكتب سؤالك">
+      <button type="submit" aria-label="إرسال">➤</button>
+    </form>
+  </div>
   <input type="file" id="importFile" accept="application/json" style="display:none">
 
   <script src="assets/js/plan.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/videos.js"></script>
   <script src="assets/js/paths.js"></script>
+  <script src="assets/js/chat.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

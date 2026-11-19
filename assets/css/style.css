@@ -714,6 +714,103 @@ main { min-height: 100vh; }
 
 @media (max-width: 800px) { .pd-cols { grid-template-columns: 1fr; } .path-grid { grid-template-columns: 1fr; } }
 
+/* ---------- الشات بوت ---------- */
+.chat-fab {
+  position: fixed; bottom: 26px; inset-inline-end: 26px; z-index: 200;
+  width: 60px; height: 60px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--grad); color: #fff; font-size: 24px;
+  box-shadow: 0 10px 30px -8px rgba(109,124,255,.7);
+  display: grid; place-items: center; transition: all .3s;
+}
+.chat-fab:hover { transform: scale(1.08); box-shadow: 0 14px 38px -8px rgba(109,124,255,.9); }
+.chat-fab.hide { opacity: 0; pointer-events: none; transform: scale(.7); }
+
+.chat-panel {
+  position: fixed; bottom: 26px; inset-inline-end: 26px; z-index: 201;
+  width: min(400px, calc(100vw - 32px)); height: min(580px, calc(100dvh - 60px));
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); display: flex; flex-direction: column; overflow: hidden;
+  opacity: 0; pointer-events: none; transform: translateY(24px) scale(.97);
+  transition: all .3s cubic-bezier(.2,.9,.3,1);
+}
+.chat-panel.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+
+.chat-head {
+  display: flex; align-items: center; gap: 11px; padding: 14px 16px;
+  background: linear-gradient(120deg, var(--accent-soft), transparent);
+  border-bottom: 1px solid var(--border);
+}
+.chat-avatar {
+  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--grad); color: #fff; font-weight: 600; font-size: 18px;
+}
+.chat-head-txt { flex: 1; }
+.chat-head-txt b { display: block; font-size: 15px; }
+.chat-head-txt small { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--muted); }
+.dot-online { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); animation: pulse 1.6s infinite; }
+.chat-close {
+  background: none; border: 0; color: var(--muted); font-size: 16px; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 8px; transition: all .2s;
+}
+.chat-close:hover { background: var(--surface-2); color: var(--text); }
+
+.chat-body {
+  flex: 1; overflow-y: auto; padding: 16px 14px; display: flex; flex-direction: column; gap: 10px;
+  background:
+    radial-gradient(600px 300px at 90% 0%, rgba(109,124,255,.06), transparent 60%),
+    var(--surface);
+}
+.chat-msg { display: flex; flex-direction: column; max-width: 88%; }
+.chat-msg.bot { align-self: flex-start; }
+.chat-msg.user { align-self: flex-end; align-items: flex-end; }
+.chat-bubble {
+  padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.85;
+  white-space: pre-wrap; word-break: break-word;
+}
+.chat-msg.bot .chat-bubble {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-start-start-radius: 4px; color: var(--text);
+}
+.chat-msg.user .chat-bubble {
+  background: var(--grad); color: #fff;
+  border-start-end-radius: 4px;
+}
+.chat-time { font-size: 10.5px; color: var(--muted); margin-top: 3px; padding: 0 4px; }
+
+.chat-quick {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px;
+  border-top: 1px solid var(--border); max-height: 96px; overflow-y: auto;
+}
+.chat-chip {
+  font-family: inherit; font-size: 12px; cursor: pointer;
+  background: var(--accent-soft); color: var(--accent-2);
+  border: 1px solid rgba(109,124,255,.25); border-radius: 999px; padding: 5px 11px;
+  transition: all .2s;
+}
+.chat-chip:hover { background: rgba(109,124,255,.28); }
+
+.chat-input {
+  display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.chat-input input {
+  flex: 1; background: var(--surface); border: 1px solid var(--border-2); color: var(--text);
+  border-radius: 999px; padding: 10px 16px; font-size: 13.5px; font-family: inherit; outline: none;
+  transition: border-color .2s;
+}
+.chat-input input:focus { border-color: var(--accent); }
+.chat-input button {
+  width: 42px; height: 42px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--grad); color: #fff; font-size: 16px; display: grid; place-items: center;
+  transition: all .2s;
+}
+.chat-input button:hover { transform: scale(1.06); }
+
+@media (max-width: 700px) {
+  .chat-fab { bottom: 18px; inset-inline-end: 18px; }
+  .chat-panel { inset-inline-end: 12px; width: calc(100vw - 24px); bottom: 18px; }
+}
+
 /* ---------- زاد اليوم (آيات وأدعية) ---------- */
 .zad {
   position: relative; padding: 22px 24px; border-radius: var(--radius);
