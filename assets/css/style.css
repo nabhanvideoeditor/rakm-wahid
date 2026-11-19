@@ -508,15 +508,15 @@ main { min-height: 100vh; }
 /* ---------- هوية AI ---------- */
 .neural { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .neural .node {
-  position: absolute; width: 4px; height: 4px; border-radius: 50%;
-  background: var(--steel); opacity: .28;
-  animation: float 14s ease-in-out infinite;
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--steel); opacity: .14;
+  animation: float 18s ease-in-out infinite;
 }
-.neural .node:nth-child(2n) { background: var(--accent); opacity: .3; }
-.neural .node:nth-child(3n) { animation-duration: 18s; animation-delay: -4s; }
+.neural .node:nth-child(2n) { background: var(--accent); opacity: .15; }
+.neural .node:nth-child(3n) { animation-duration: 22s; animation-delay: -4s; }
 @keyframes float {
-  0%, 100% { transform: translate(0, 0); opacity: .12; }
-  50% { transform: translate(10px, -14px); opacity: .3; }
+  0%, 100% { transform: translate(0, 0); opacity: .06; }
+  50% { transform: translate(8px, -10px); opacity: .16; }
 }
 .ai-pill {
   display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; border-radius: 999px;
