@@ -1241,6 +1241,33 @@
     $("#authMsg").className = "auth-msg";
     $("#authPass").autocomplete = m === "register" ? "new-password" : "current-password";
   }
+  async function socialAuth(provider) {
+    const msg = $("#authMsg"), btn = $("#authSubmit");
+    btn.disabled = true;
+    msg.className = "auth-msg";
+    msg.textContent = provider === "google" ? "بتفتح جوجل…" : "بتفتح جيت هاب…";
+    const res = await AUTH.socialLogin(provider);
+    btn.disabled = false;
+    if (!res.ok) {
+      msg.className = "auth-msg err";
+      msg.textContent = res.msg;
+      if (typeof SOUND !== "undefined") SOUND.error();
+      return;
+    }
+    msg.className = "auth-msg ok";
+    msg.textContent = res.msg;
+    reloadState();
+    if (typeof AUTH !== "undefined" && AUTH.cloud) {
+      try { const remote = await AUTH.pullProgress(); if (remote) { state.done = remote.done || {}; state.plan = remote.plan || {}; } } catch (e) {}
+    }
+    save();
+    updateAccountBtn();
+    refresh();
+    if (typeof SOUND !== "undefined") SOUND.success();
+    applyGate();
+    setTimeout(() => { closeAuth(); go("account"); }, 700);
+  }
+
   async function submitAuth(e) {
     e.preventDefault();
     const btn = $("#authSubmit"), msg = $("#authMsg");
@@ -1564,6 +1591,9 @@
     $$("#authModal .auth-tab").forEach((t) => t.addEventListener("click", () => setAuthMode(t.dataset.authtab)));
     const authForm = $("#authForm");
     if (authForm) authForm.addEventListener("submit", submitAuth);
+    const btnG = $("#btnGoogle"), btnH = $("#btnGithub");
+    if (btnG) btnG.addEventListener("click", () => socialAuth("google"));
+    if (btnH) btnH.addEventListener("click", () => socialAuth("github"));
     document.addEventListener("click", (e) => {
       const oa = e.target.closest("[data-open-auth]");
       if (oa) openAuth(oa.dataset.openAuth);

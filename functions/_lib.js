@@ -151,3 +151,73 @@ export async function me(token, env) {
   try { u = JSON.parse(raw); } catch (e) { return json({ ok: false }); }
   return json({ ok: true, name: u.name, email: u.email });
 }
+
+/* ---------- دخول اجتماعي (Google / GitHub) ---------- */
+export async function oauthLogin({ email, name, provider }, env) {
+  const em = String(email || "").trim().toLowerCase();
+  if (!EMAIL_RE.test(em)) return json({ ok: false, msg: "الإيميل من المزوّد مش صحيح" });
+  const key = "u:" + em;
+  let u = null;
+  try { u = JSON.parse(await env.weston.get(key) || "null"); } catch (e) { u = null; }
+  if (!u) {
+    u = { name: String(name || em.split("@")[0]).trim(), email: em, provider: String(provider || "oauth"), hash: null, createdAt: Date.now() };
+    await env.weston.put(key, JSON.stringify(u));
+    await env.weston.put("p:" + em, JSON.stringify({ done: {}, plan: {} }));
+  }
+  const token = rand();
+  u.token = token;
+  await env.weston.put(key, JSON.stringify(u));
+  await env.weston.put("t:" + token, em, { expirationTtl: TTL });
+  return json({ ok: true, msg: "أهلاً بيك " + u.name, token, name: u.name, email: em, fresh: !u.hash });
+}
+
+/* جوجل: نتأكد من ID token عن طريق tokeninfo */
+export async function googleAuth(credential, env) {
+  const clientId = (env && env.GOOGLE_CLIENT_ID) || "";
+  try {
+    const r = await fetch("https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(credential));
+    if (!r.ok) return json({ ok: false, msg: "تعذر التأكد من حساب جوجل" });
+    const d = await r.json();
+    if (!d || !d.email) return json({ ok: false, msg: "حساب جوجل غير صالح" });
+    if (clientId && d.aud && d.aud !== clientId) return json({ ok: false, msg: "حساب جوجل من تطبيق تاني" });
+    return oauthLogin({ email: d.email, name: d.name || d.email.split("@")[0], provider: "google" }, env);
+  } catch (e) {
+    return json({ ok: false, msg: "مشكلة في التأكد من جوجل" });
+  }
+}
+
+/* جيت هاب: استبدال الكود ب access_token ثم الإيميل */
+export async function githubAuth(code, env) {
+  const cid = (env && env.GITHUB_CLIENT_ID) || "";
+  const sec = (env && env.GITHUB_CLIENT_SECRET) || "";
+  if (!cid || !sec) return json({ ok: false, msg: "تسجيل جيت هاب غير مُعدّ على الخادم" });
+  try {
+    const tr = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ client_id: cid, client_secret: sec, code }),
+    });
+    const td = await tr.json();
+    if (!td || !td.access_token) return json({ ok: false, msg: "كود جيت هاب غير صالح" });
+    const ur = await fetch("https://api.github.com/user", {
+      headers: { Authorization: "Bearer " + td.access_token, "User-Agent": "weston", "Accept": "application/vnd.github+json" },
+    });
+    const u = await ur.json();
+    if (!u || !u.id) return json({ ok: false, msg: "حساب جيت هاب غير صالح" });
+    let email = u.email;
+    if (!email) {
+      const er = await fetch("https://api.github.com/user/emails", {
+        headers: { Authorization: "Bearer " + td.access_token, "User-Agent": "weston", "Accept": "application/vnd.github+json" },
+      });
+      const emails = await er.json();
+      if (Array.isArray(emails)) {
+        const primary = emails.find((e) => e.primary && e.verified) || emails.find((e) => e.verified) || emails[0];
+        email = primary && primary.email;
+      }
+    }
+    if (!email) return json({ ok: false, msg: "جيت هاب مفيهوش إيميل عام — أضف إيميل في إعدادات حسابك" });
+    return oauthLogin({ email, name: u.name || u.login, provider: "github" }, env);
+  } catch (e) {
+    return json({ ok: false, msg: "مشكلة في تسجيل جيت هاب" });
+  }
+}
