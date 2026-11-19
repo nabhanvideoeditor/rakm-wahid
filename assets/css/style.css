@@ -553,6 +553,91 @@ main { min-height: 100vh; }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .video-title { padding: 12px 14px; font-size: 13.5px; color: var(--text-2); line-height: 1.7; }
 
+/* ---------- خريطة الطريق ---------- */
+.rm-summary {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 30px;
+}
+.rm-summary > div {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; text-align: center;
+}
+.rm-summary b { display: block; font-size: 24px; color: var(--accent-2); font-weight: 600; }
+.rm-summary span { font-size: 12.5px; color: var(--muted); }
+
+.rm-line { position: relative; }
+.rm-step {
+  display: grid; grid-template-columns: 46px 1fr; gap: 16px; position: relative;
+}
+.rm-rail { position: relative; display: flex; justify-content: center; }
+.rm-rail::before {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--accent), rgba(109,124,255,.15));
+  opacity: .5;
+}
+.rm-step:first-child .rm-rail::before { top: 24px; }
+.rm-step:last-child .rm-rail::before { bottom: auto; height: 24px; }
+.rm-num {
+  position: relative; z-index: 2; width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 600; font-size: 15px;
+  background: var(--surface-2); color: var(--text); border: 2px solid var(--border-2);
+}
+.rm-step.start .rm-num { background: var(--grad); color: #fff; border-color: transparent; box-shadow: var(--glow); }
+
+.rm-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 20px; margin-bottom: 14px; transition: all .25s; position: relative;
+}
+.rm-card:hover { border-color: rgba(109,124,255,.4); box-shadow: var(--shadow); transform: translateX(-3px); }
+.rm-step.start .rm-card { border-color: rgba(109,124,255,.5); box-shadow: var(--glow); }
+.rm-badge-start {
+  position: absolute; top: -11px; inset-inline-start: 18px; background: var(--grad);
+  color: #fff; font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 999px;
+}
+.rm-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.rm-icon { font-size: 26px; }
+.rm-titles { flex: 1; min-width: 140px; }
+.rm-title { font-size: 17px; font-weight: 600; }
+.rm-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.rm-time {
+  font-size: 12px; color: var(--accent-2); background: var(--accent-soft);
+  padding: 4px 11px; border-radius: 999px; border: 1px solid rgba(109,124,255,.25); white-space: nowrap;
+}
+.rm-row {
+  display: flex; gap: 10px; align-items: flex-start; margin-top: 12px;
+  font-size: 13.5px; color: var(--text-2); line-height: 1.85;
+}
+.rm-tag {
+  flex-shrink: 0; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 6px;
+  margin-top: 4px;
+}
+.rm-tag.learn { background: var(--steel-soft); color: var(--steel-2); }
+.rm-tag.out { background: var(--mint-soft); color: var(--mint); }
+.rm-row.out span:last-child { color: var(--text); }
+.rm-actions { margin-top: 14px; }
+.rm-arrow { text-align: center; color: var(--accent); opacity: .7; margin: -6px 0 8px; padding-inline-start: 0; }
+.rm-arrow svg { width: 18px; height: 18px; transform: rotate(90deg); }
+
+.rm-apply-head { margin: 34px 0 16px; }
+.rm-apply-head h3 { font-size: 19px; font-weight: 600; }
+.rm-apply-head p { color: var(--muted); font-size: 13.5px; margin-top: 5px; }
+.rm-apply-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.rm-apply {
+  display: flex; align-items: center; gap: 12px; text-align: start; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 15px 16px; color: var(--text); font-family: inherit; transition: all .25s;
+}
+.rm-apply:hover { border-color: rgba(109,124,255,.45); box-shadow: var(--shadow); transform: translateY(-2px); }
+.rm-apply-icon { font-size: 22px; }
+.rm-apply-body { flex: 1; }
+.rm-apply-body b { display: block; font-size: 14.5px; font-weight: 600; }
+.rm-apply-body small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 3px; line-height: 1.6; }
+.rm-apply-go { color: var(--muted); }
+
+@media (max-width: 700px) {
+  .rm-summary { grid-template-columns: repeat(2, 1fr); }
+  .rm-step { grid-template-columns: 38px 1fr; gap: 12px; }
+}
+
 /* ---------- زاد اليوم (آيات وأدعية) ---------- */
 .zad {
   position: relative; padding: 22px 24px; border-radius: var(--radius);

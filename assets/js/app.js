@@ -73,6 +73,7 @@
     const el = $("#view-" + v);
     if (el) el.classList.add("active");
     if (v === "home") renderHome();
+    else if (v === "roadmap") renderRoadmap();
     else if (v === "myplan") renderMyPlan();
     else if (v === "tracks") renderTracks();
     else if (v === "courses") { renderCourses(arg); renderCourseGrid(); }
@@ -179,8 +180,8 @@
           '<h1>تعلّم كل مجالات الـ <span class="hl">AI</span> في مكان واحد</h1>' +
           '<p>' + ACADEMY.meta.desc + ' — مسارات تخصص تدخل بيها جوه الذكاء الاصطناعي، ومسارات تطبيق تحطّه في شغلك.</p>' +
           '<div class="hero-cta">' +
-            '<button class="btn btn-primary" data-go="myplan">ابدأ خطتك ' + I.arrow + '</button>' +
-            '<button class="btn btn-ghost" data-go="tracks">استعرض المسارات</button>' +
+            '<button class="btn btn-primary" data-go="roadmap">شوف خريطة الطريق ' + I.arrow + '</button>' +
+            '<button class="btn btn-ghost" data-go="myplan">خطتي الأسبوعية</button>' +
             '<button class="btn btn-ghost" data-go="courses">كل الكورسات</button>' +
           '</div>' +
           '<div class="hero-stats">' +
@@ -654,6 +655,95 @@
     $$("#view-myplan [data-course-link]").forEach((a) => a.addEventListener("click", (e) => {
       e.preventDefault(); go("detail", a.dataset.courseLink);
     }));
+  }
+
+  /* ---------- خريطة الطريق ---------- */
+  const ROADMAP = [
+    { n: 1, icon: "🌱", title: "البداية", sub: "الرياضيات + وعي بالـ AI", time: "4 أسابيع", track: "t-math",
+      learn: "جبر خطي، تفاضل، احتمالات، NumPy، ومقدمة عن المجال",
+      out: "بتفهم إزاي النماذج بتتعلم، وعندك أساس رياضي قوي" },
+    { n: 2, icon: "🐍", title: "بايثون والبيانات", sub: "من أول سطر لحد تحليل بيانات", time: "7 أسابيع", track: "t-python",
+      learn: "بايثون، Pandas، SQL، رسوم بيانية، Git",
+      out: "بتحلل بيانات حقيقية وتطلّع تقرير كامل" },
+    { n: 3, icon: "🤖", title: "التعلم الآلي", sub: "تبني أول موديل", time: "9 أسابيع", track: "t-ml",
+      learn: "انحدار، تصنيف، غابات عشوائية، هندسة خصائص",
+      out: "أول موديل تنبؤ + أول مشاركة في Kaggle" },
+    { n: 4, icon: "🧠", title: "التعلم العميق", sub: "الشبكات العصبية", time: "9 أسابيع", track: "t-dl",
+      learn: "شبكة عصبية من الصفر، CNN، تدريب وتحسين",
+      out: "شبكات عصبية بتتدرب وتحقق دقة عالية" },
+    { n: 5, icon: "👁️", title: "رؤية الحاسوب", sub: "الشبكة بتشوف", time: "4 أسابيع", track: "t-advanced",
+      learn: "الشبكات الالتفافية، كشف الأشياء، نقل التعلم",
+      out: "تطبيق بيصنف صور ويكشف أشياء" },
+    { n: 6, icon: "💬", title: "NLP والذكاء التوليدي", sub: "نماذج اللغة الكبيرة", time: "6 أسابيع", track: "t-genai",
+      learn: "LLM، تضمينات، RAG، هندسة الأوامر، الضبط الدقيق",
+      out: "تطبيق بيجاوب من ملفاتك (RAG)" },
+    { n: 7, icon: "🤖", title: "الوكلاء الأذكياء", sub: "الـ AI بينفّذ مهام", time: "4 أسابيع", track: "t-genai",
+      learn: "بناء وكلاء، أدوات، LangGraph، Claude Code",
+      out: "وكيل بيخدم مهمة حقيقية في شغلك" },
+    { n: 8, icon: "🎯", title: "تخصص متقدم", sub: "مستوى بحثي", time: "8 أسابيع", track: "t-advanced",
+      learn: "رؤية متقدمة أو تعلّم معزز + أوراق بحثية",
+      out: "مشروع تخصص قوي يقنع أي صاحب شغل" },
+    { n: 9, icon: "🚀", title: "MLOps والنشر", sub: "من النوتبوك للعالم", time: "4 أسابيع", track: "t-mlops",
+      learn: "نشر نماذج، تتبع تجارب، مراقبة، API",
+      out: "نموذج منشور في الإنتاج ومتراقب" },
+    { n: 10, icon: "💼", title: "الشغل والاحتراف", sub: "دخول سوق العمل", time: "6 أسابيع", track: "a-biz",
+      learn: "شهادات، سيرة، LinkedIn، عمل حر، مقابلات، تفاوض",
+      out: "وظيفة أو دخل من الـ AI" },
+  ];
+
+  const APPLY_TRACKS = [
+    { icon: "✍️", title: "هندسة الأوامر", desc: "أوامر احترافية تطلعلك اللي عايزه", track: "a-prompt" },
+    { icon: "💻", title: "البرمجة بالـ AI", desc: "Claude Code وأدوات البرمجة الذكية", track: "a-claude" },
+    { icon: "⚙️", title: "الأوتوميشن", desc: "سير عمل بتشتغل لوحدها", track: "a-auto" },
+    { icon: "📊", title: "AI للأعمال", desc: "تسويق وقرارات أسرع", track: "a-biz" },
+    { icon: "🎨", title: "AI للتصميم", desc: "صور وصوت ومحتوى", track: "a-design" },
+  ];
+
+  function renderRoadmap() {
+    const steps = ROADMAP.map((s, i) => {
+      const last = i === ROADMAP.length - 1;
+      return '<div class="rm-step">' +
+        '<div class="rm-rail"><div class="rm-num">' + s.n + "</div></div>" +
+        '<div class="rm-card' + (i === 0 ? " start" : "") + '">' +
+          (i === 0 ? '<div class="rm-badge-start">🚀 ابدأ هنا</div>' : "") +
+          '<div class="rm-head">' +
+            '<div class="rm-icon">' + s.icon + "</div>" +
+            '<div class="rm-titles"><div class="rm-title">' + s.title + '</div><div class="rm-sub">' + s.sub + "</div></div>" +
+            '<div class="rm-time">' + s.time + "</div>" +
+          "</div>" +
+          '<div class="rm-row"><span class="rm-tag learn">بتتعلم</span><span>' + s.learn + "</span></div>" +
+          '<div class="rm-row out"><span class="rm-tag out">بعد ما تخلص</span><span>' + s.out + "</span></div>" +
+          '<div class="rm-actions"><button class="btn btn-ghost btn-sm" data-roadmap-track="' + s.track + '">افتح المسارات دي ' + I.arrow + "</button></div>" +
+        "</div>" +
+      "</div>" +
+      (last ? "" : '<div class="rm-arrow">' + I.arrow + "</div>");
+    }).join("");
+
+    const apply = APPLY_TRACKS.map((a) =>
+      '<button class="rm-apply" data-roadmap-track="' + a.track + '">' +
+        '<span class="rm-apply-icon">' + a.icon + "</span>" +
+        '<span class="rm-apply-body"><b>' + a.title + "</b><small>" + a.desc + "</small></span>" +
+        '<span class="rm-apply-go">' + I.chev + "</span>" +
+      "</button>"
+    ).join("");
+
+    $("#view-roadmap").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">خريطة الطريق</div>' +
+        '<div class="section-title">من الصفر للاحتراف — خطوة بخطوة</div>' +
+        '<div class="section-sub">كل مرحلة بتبني على اللي قبلها. لوّح على أي مرحلة تشوف مساراتها، و«خطتي» عندك التفاصيل الأسبوعية.</div></div>' +
+        '<div class="rm-summary">' +
+          '<div><b>10</b><span>مراحل</span></div>' +
+          '<div><b>~14</b><span>شهر</span></div>' +
+          '<div><b>62</b><span>كورس</span></div>' +
+          '<div><b>10-15</b><span>ساعة أسبوعياً</span></div>' +
+        "</div>" +
+        '<div class="rm-line">' + steps + "</div>" +
+        '<div class="rm-apply-head"><h3>🛠️ مسارات تطبيقية — متوازية</h3><p>مش شرط بالترتيب؛ تدخلها وقت ما تحتاجها في أي مرحلة.</p></div>' +
+        '<div class="rm-apply-grid">' + apply + "</div>" +
+      "</section></div>";
+
+    $$("#view-roadmap [data-roadmap-track]").forEach((b) => b.addEventListener("click", () => go("courses", b.dataset.roadmapTrack)));
   }
 
   /* ============ فوتر ============ */
