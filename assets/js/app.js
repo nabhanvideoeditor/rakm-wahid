@@ -85,6 +85,7 @@
   let view = "home";
   function go(v, arg) {
     if (typeof SOUND !== "undefined") SOUND.nav();
+    if (v === "admin") { applyGate(true); }
     if (typeof AUTH !== "undefined" && !AUTH.current() && v !== "account" && v !== "admin") { applyGate(); return; }
     view = v;
     $$(".topnav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
@@ -1096,11 +1097,11 @@
   }
 
   /* ============ بوابة الدخول ============ */
-  function applyGate() {
+  function applyGate(forceHide) {
     const gate = $("#gate");
     if (!gate) return;
     const u = (typeof AUTH !== "undefined") ? AUTH.current() : null;
-    if (u) { gate.classList.remove("show"); document.body.classList.remove("locked"); }
+    if (forceHide || u) { gate.classList.remove("show"); document.body.classList.remove("locked"); }
     else { gate.classList.add("show"); document.body.classList.add("locked"); }
   }
 
@@ -1452,6 +1453,14 @@
       const g = e.target.closest("[data-gate]");
       if (g) openAuth(g.dataset.gate);
     });
+    document.addEventListener("click", (e) => {
+      const ga = e.target.closest("[data-gate-admin]");
+      if (ga) go("admin");
+    });
+    // رابط مباشر: ?admin=1
+    try {
+      if (new URLSearchParams(location.search).get("admin") === "1") go("admin");
+    } catch (e) {}
 
     renderFooter();
     refresh();
