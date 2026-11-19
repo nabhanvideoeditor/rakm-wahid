@@ -41,6 +41,23 @@ export const DISPOSABLE = [
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TTL = 60 * 60 * 24 * 365;
 
+/* نطاقات مشبوهة (مش إيميل حقيقي) */
+const SUSPECT_TLD = ["local", "test", "invalid", "example", "localhost", "lan", "internal", "home", "corp", "test", "domain"];
+
+/* تحقق حقيقي: هل النطاق بيستقبل إيميلات؟ (DNS MX) */
+export async function domainHasMx(domain) {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3500);
+    const r = await fetch("https://dns.google/resolve?name=" + encodeURIComponent(domain) + "&type=MX", { signal: ctrl.signal });
+    clearTimeout(timer);
+    const d = await r.json();
+    return !!(d && Array.isArray(d.Answer) && d.Answer.length);
+  } catch (e) {
+    return null; // مش متأكد — الشبكة فشلت
+  }
+}
+
 export async function readBody(request) {
   try {
     const t = await request.text();
@@ -59,6 +76,14 @@ export async function register(d, env) {
   if (password.length < 6) return json({ ok: false, msg: "الباسورد 6 حروف على الأقل" });
   if (DISPOSABLE.includes(email.split("@")[1] || "")) {
     return json({ ok: false, msg: "الإيميلات المؤقتة مش مسموح بيها — استخدم إيميل حقيقي" });
+  }
+  const domain = email.split("@")[1] || "";
+  if (SUSPECT_TLD.some((t) => domain.endsWith("." + t))) {
+    return json({ ok: false, msg: "النطاق ده مش إيميل حقيقي — استخدم إيميل بيستقبل رسايل" });
+  }
+  const mx = await domainHasMx(domain);
+  if (mx === false) {
+    return json({ ok: false, msg: "النطاق ده مش بيستقبل إيميلات — تحقق من الإيميل" });
   }
   const key = "u:" + email;
   if (await env.weston.get(key)) {

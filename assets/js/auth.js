@@ -145,7 +145,12 @@ const AUTH = {
     this._pending = true;
     try {
       if (this.cloud) {
-        const r = await this.call("/login", { method: "POST", body: { email: em, password } });
+        let r = await this.call("/login", { method: "POST", body: { email: em, password } });
+        // لو الحساب مش موجود، جرّب تاني (KV بيتأخر أحيانًا ثواني)
+        if (r && !r.ok && r.msg && r.msg.indexOf("مفيش حساب") !== -1) {
+          await new Promise((res) => setTimeout(res, 900));
+          r = await this.call("/login", { method: "POST", body: { email: em, password } });
+        }
         if (r && r.ok) {
           this.token = r.token;
           this.user = { email: r.email, name: r.name };
