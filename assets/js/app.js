@@ -22,7 +22,10 @@
     return { done: {}, plan: {}, theme: "dark" };
   }
   let state = load();
-  function save() { try { localStorage.setItem(progressKey(), JSON.stringify(state)); } catch (e) {} }
+  function save() {
+    try { localStorage.setItem(progressKey(), JSON.stringify(state)); } catch (e) {}
+    if (typeof AUTH !== "undefined" && AUTH.pushProgress) { try { AUTH.pushProgress(state); } catch (e) {} }
+  }
   function reloadState() { state = load(); }
 
   /* ---------- مراجع ---------- */
@@ -1133,6 +1136,14 @@
     msg.className = "auth-msg ok";
     msg.textContent = res.msg;
     reloadState();
+    // اسحب التقدم من السحابة بعد الدخول/التسجيل
+    if (typeof AUTH !== "undefined" && AUTH.cloud) {
+      try {
+        const remote = await AUTH.pullProgress();
+        if (remote) { state.done = remote.done || {}; state.plan = remote.plan || {}; }
+      } catch (e) {}
+    }
+    save();
     updateAccountBtn();
     refresh();
     if (typeof SOUND !== "undefined") SOUND.success();
@@ -1190,8 +1201,8 @@
       '<div class="wrap"><section class="section">' +
         '<div class="section-head"><div class="eyebrow">حسابي</div><div class="section-title">ملفي الشخصي</div>' +
         '<div class="section-sub">تقدّمك مربوط بحسابك — بيتحفظ تلقائياً.</div>' +
-        '<span class="acc-mode ' + ((typeof AUTH !== "undefined" && AUTH.fbReady) ? "cloud" : "local") + '">' +
-          ((typeof AUTH !== "undefined" && AUTH.fbReady) ? "☁️ حساب سحابي — بيشتغل على كل الأجهزة" : "📱 حساب محلي على هذا الجهاز") +
+        '<span class="acc-mode ' + ((typeof AUTH !== "undefined" && AUTH.cloud) ? "cloud" : "local") + '">' +
+          ((typeof AUTH !== "undefined" && AUTH.cloud) ? "☁️ حساب سحابي — بيشتغل على كل الأجهزة" : "📱 حساب محلي على هذا الجهاز") +
         "</span></div>" +
         '<div class="acc-grid">' +
           '<div class="acc-card acc-profile">' +
@@ -1293,6 +1304,13 @@
     // تجهيز الحسابات أولاً (سحابي أو محلي) قبل أي رسم
     if (typeof AUTH !== "undefined" && AUTH.init) { try { await AUTH.init(); } catch (e) {} }
     reloadState();
+    // اسحب التقدم من السحابة لو فيه حساب محفوظ
+    if (typeof AUTH !== "undefined" && AUTH.cloud && AUTH.current()) {
+      try {
+        const remote = await AUTH.pullProgress();
+        if (remote) { state.done = remote.done || state.done || {}; state.plan = remote.plan || state.plan || {}; save(); }
+      } catch (e) {}
+    }
     updateStreak();
     initChat();
     document.documentElement.setAttribute("data-theme", state.theme);

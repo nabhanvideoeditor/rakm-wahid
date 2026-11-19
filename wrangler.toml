@@ -1,0 +1,8 @@
+name = "weston-auth"
+main = "server/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "weston"
+id = "d4fd4a3eb7c24000ab5ee8b4b6e8023a"
