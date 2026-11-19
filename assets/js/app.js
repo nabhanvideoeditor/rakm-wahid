@@ -44,6 +44,14 @@
     return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
   }
 
+  /* ---------- لوجو WESTON ---------- */
+  function logoSVG(id) {
+    return '<svg viewBox="0 0 96 56" class="weston-logo" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="96" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2563eb"/><stop offset=".55" stop-color="#3b9cf5"/><stop offset="1" stop-color="#45e0c8"/></linearGradient></defs>' +
+      '<g stroke="url(#' + id + ')" stroke-width="1.1" opacity=".5"><path d="M8 8 L48 20 L88 8"/><path d="M30 48 L48 20 L66 48"/><path d="M8 8 L66 48"/><path d="M88 8 L30 48"/></g>' +
+      '<path d="M8 8 L30 48 L48 20 L66 48 L88 8" stroke="url(#' + id + ')" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" class="wl-main"/>' +
+      '<circle cx="8" cy="8" r="4" fill="#2f6ff0" class="wl-n"/><circle cx="30" cy="48" r="4.6" fill="#2f8df0" class="wl-n"/><circle cx="48" cy="20" r="4.2" fill="#3aa8e0" class="wl-n"/><circle cx="66" cy="48" r="4.6" fill="#3cc8d8" class="wl-n"/><circle cx="88" cy="8" r="4" fill="#45e0c8" class="wl-n"/></svg>';
+  }
+
   /* ---------- أيقونات ---------- */
   const I = {
     check: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
@@ -177,6 +185,9 @@
       '<div class="wrap">' +
         '<section class="hero">' +
           '<div class="neural">' + nodes + "</div>" +
+          '<div class="brand-hero">' + logoSVG("wl-grad-hero") +
+            '<div class="brand-hero-txt"><div class="brand-hero-name">WESTON</div><div class="brand-hero-sub">ARTIFICIAL&nbsp;INTELLIGENCE</div></div>' +
+          "</div>" +
           '<div class="hero-badge"><span class="dot"></span> مسارات مجانية مرتّبة • من الصفر إلى الاحتراف</div>' +
           '<div class="ai-pill"><span class="dot"></span> AI Learning OS</div>' +
           '<h1>تعلّم كل مجالات الـ <span class="hl">AI</span> في مكان واحد</h1>' +
@@ -1050,7 +1061,7 @@
     $("#footer").innerHTML =
       '<div class="wrap">' +
         '<div class="footer-grid">' +
-          '<div><div class="footer-brand"><div class="brand-mark">W</div><div><div class="brand-name">weston</div><div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div></div></div>' +
+          '<div><div class="footer-brand"><div class="brand-mark">' + logoSVG("wl-grad-f") + '</div><div><div class="brand-name">weston</div><div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div></div></div>' +
           '<div style="color:var(--muted);font-size:13.5px;max-width:300px">مسارات مرتّبة من الصفر إلى الاحتراف، بمصادر مجانية عالمية، وشهادات إتمام معتمدة.</div></div>' +
           "<div><h4>المنصة</h4>" +
             '<a href="#" data-go="tracks">المسارات</a><a href="#" data-go="courses">الكورسات</a><a href="#" data-go="dashboard">تقدّمي</a><a href="#" data-go="certs">الشهادات</a></div>' +
