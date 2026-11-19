@@ -48,7 +48,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "الاحتمالات والإحصاء",
+            "title": "الاحتمالات والإحصاء — تطبيقي 1",
             "goal": "تبني فهم عملي في الأساس الرياضي — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-math-prob"
@@ -63,7 +63,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "الاحتمالات والإحصاء",
+            "title": "الاحتمالات والإحصاء — تطبيقي 2",
             "goal": "تبني فهم عملي في الأساس الرياضي — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-math-prob"
@@ -131,7 +131,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون والبيانات — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-kaggle-sql"
@@ -146,7 +146,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون والبيانات — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-kaggle-sql"
@@ -214,7 +214,7 @@ const PATH_PLANS = {
           },
           {
             "w": 13,
-            "title": "Intermediate Machine Learning",
+            "title": "Intermediate Machine Learning — تطبيقي 1",
             "goal": "تبني فهم عملي في التعلم الآلي — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-kaggle-iml"
@@ -229,7 +229,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "Intermediate Machine Learning",
+            "title": "Intermediate Machine Learning — تطبيقي 2",
             "goal": "تبني فهم عملي في التعلم الآلي — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-kaggle-iml"
@@ -297,7 +297,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "Deep Learning Specialization",
+            "title": "Deep Learning Specialization — تطبيقي 1",
             "goal": "تبني فهم عملي في التعلم العميق — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-dl-spec"
@@ -312,7 +312,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "Deep Learning Specialization",
+            "title": "Deep Learning Specialization — تطبيقي 2",
             "goal": "تبني فهم عملي في التعلم العميق — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-dl-spec"
@@ -365,7 +365,7 @@ const PATH_PLANS = {
           },
           {
             "w": 22,
-            "title": "MLOps Zoomcamp",
+            "title": "MLOps Zoomcamp — تطبيقي 1",
             "goal": "تبني فهم عملي في النشر والإنتاج — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-mlops-zoom"
@@ -380,7 +380,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "MLOps Zoomcamp",
+            "title": "MLOps Zoomcamp — تطبيقي 2",
             "goal": "تبني فهم عملي في النشر والإنتاج — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-mlops-zoom"
@@ -418,7 +418,7 @@ const PATH_PLANS = {
           },
           {
             "w": 25,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-freelance"
@@ -433,7 +433,7 @@ const PATH_PLANS = {
           },
           {
             "w": 26,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-freelance"
@@ -448,7 +448,7 @@ const PATH_PLANS = {
           },
           {
             "w": 27,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس تعلّم آلي.",
             "courses": [
               "c-freelance"
@@ -510,7 +510,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "التفاضل والتكامل",
+            "title": "التفاضل والتكامل — تطبيقي 1",
             "goal": "تبني فهم عملي في الأساس الرياضي — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-math-calc"
@@ -525,7 +525,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "التفاضل والتكامل",
+            "title": "التفاضل والتكامل — تطبيقي 2",
             "goal": "تبني فهم عملي في الأساس الرياضي — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-math-calc"
@@ -578,7 +578,7 @@ const PATH_PLANS = {
           },
           {
             "w": 7,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون وبيانات — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-pandas"
@@ -593,7 +593,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون وبيانات — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-pandas"
@@ -608,7 +608,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 3",
             "goal": "تبني فهم عملي في بايثون وبيانات — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-pandas"
@@ -661,7 +661,7 @@ const PATH_PLANS = {
           },
           {
             "w": 12,
-            "title": "CS50 للذكاء الاصطناعي ببايثون",
+            "title": "CS50 للذكاء الاصطناعي ببايثون — تطبيقي 1",
             "goal": "تبني فهم عملي في التعلم العميق — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs50ai"
@@ -676,7 +676,7 @@ const PATH_PLANS = {
           },
           {
             "w": 13,
-            "title": "CS50 للذكاء الاصطناعي ببايثون",
+            "title": "CS50 للذكاء الاصطناعي ببايثون — تطبيقي 2",
             "goal": "تبني فهم عملي في التعلم العميق — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs50ai"
@@ -691,7 +691,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "CS50 للذكاء الاصطناعي ببايثون",
+            "title": "CS50 للذكاء الاصطناعي ببايثون — تطبيقي 3",
             "goal": "تبني فهم عملي في التعلم العميق — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs50ai"
@@ -744,7 +744,7 @@ const PATH_PLANS = {
           },
           {
             "w": 17,
-            "title": "Computer Vision",
+            "title": "Computer Vision — تطبيقي 1",
             "goal": "تبني فهم عملي في الشبكات الالتفافية — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-cv"
@@ -759,7 +759,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "Computer Vision",
+            "title": "Computer Vision — تطبيقي 2",
             "goal": "تبني فهم عملي في الشبكات الالتفافية — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-cv"
@@ -774,7 +774,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "Computer Vision",
+            "title": "Computer Vision — تطبيقي 3",
             "goal": "تبني فهم عملي في الشبكات الالتفافية — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-kaggle-cv"
@@ -827,7 +827,7 @@ const PATH_PLANS = {
           },
           {
             "w": 22,
-            "title": "UC Berkeley CS188 — AI",
+            "title": "UC Berkeley CS188 — AI — تطبيقي 1",
             "goal": "تبني فهم عملي في رؤية متقدمة — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs188"
@@ -842,7 +842,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "UC Berkeley CS188 — AI",
+            "title": "UC Berkeley CS188 — AI — تطبيقي 2",
             "goal": "تبني فهم عملي في رؤية متقدمة — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs188"
@@ -857,7 +857,7 @@ const PATH_PLANS = {
           },
           {
             "w": 24,
-            "title": "UC Berkeley CS188 — AI",
+            "title": "UC Berkeley CS188 — AI — تطبيقي 3",
             "goal": "تبني فهم عملي في رؤية متقدمة — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-cs188"
@@ -895,7 +895,7 @@ const PATH_PLANS = {
           },
           {
             "w": 26,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-freelance"
@@ -910,7 +910,7 @@ const PATH_PLANS = {
           },
           {
             "w": 27,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-freelance"
@@ -925,7 +925,7 @@ const PATH_PLANS = {
           },
           {
             "w": 28,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس رؤية حاسوب.",
             "courses": [
               "c-freelance"
@@ -1002,7 +1002,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون وبيانات — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-kaggle-sql"
@@ -1017,7 +1017,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون وبيانات — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-kaggle-sql"
@@ -1070,7 +1070,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "CS224N: معالجة اللغة العميقة",
+            "title": "CS224N: معالجة اللغة العميقة — تطبيقي 1",
             "goal": "تبني فهم عملي في أساس AI و NLP — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-cs224n"
@@ -1085,7 +1085,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "CS224N: معالجة اللغة العميقة",
+            "title": "CS224N: معالجة اللغة العميقة — تطبيقي 2",
             "goal": "تبني فهم عملي في أساس AI و NLP — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-cs224n"
@@ -1100,7 +1100,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "CS224N: معالجة اللغة العميقة",
+            "title": "CS224N: معالجة اللغة العميقة — تطبيقي 3",
             "goal": "تبني فهم عملي في أساس AI و NLP — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-cs224n"
@@ -1168,7 +1168,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "NLP Specialization",
+            "title": "NLP Specialization — تطبيقي 1",
             "goal": "تبني فهم عملي في نماذج اللغة — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-nlp-spec"
@@ -1183,7 +1183,7 @@ const PATH_PLANS = {
           },
           {
             "w": 15,
-            "title": "NLP Specialization",
+            "title": "NLP Specialization — تطبيقي 2",
             "goal": "تبني فهم عملي في نماذج اللغة — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-nlp-spec"
@@ -1251,7 +1251,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 1",
             "goal": "تبني فهم عملي في تطبيقات عملية — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-fsdl"
@@ -1266,7 +1266,7 @@ const PATH_PLANS = {
           },
           {
             "w": 20,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 2",
             "goal": "تبني فهم عملي في تطبيقات عملية — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-fsdl"
@@ -1319,7 +1319,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "ChatGPT Prompt Engineering",
+            "title": "ChatGPT Prompt Engineering — تطبيقي 1",
             "goal": "تبني فهم عملي في هندسة الأوامر — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-pe-chatgpt"
@@ -1334,7 +1334,7 @@ const PATH_PLANS = {
           },
           {
             "w": 24,
-            "title": "ChatGPT Prompt Engineering",
+            "title": "ChatGPT Prompt Engineering — تطبيقي 2",
             "goal": "تبني فهم عملي في هندسة الأوامر — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-pe-chatgpt"
@@ -1372,7 +1372,7 @@ const PATH_PLANS = {
           },
           {
             "w": 26,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-freelance"
@@ -1387,7 +1387,7 @@ const PATH_PLANS = {
           },
           {
             "w": 27,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-freelance"
@@ -1402,7 +1402,7 @@ const PATH_PLANS = {
           },
           {
             "w": 28,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في الشغل — خطوة في مسار مهندس NLP وذكاء توليدي.",
             "courses": [
               "c-freelance"
@@ -1464,7 +1464,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-kaggle-pandas"
@@ -1479,7 +1479,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-kaggle-pandas"
@@ -1494,7 +1494,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "Pandas",
+            "title": "Pandas — تطبيقي 3",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-kaggle-pandas"
@@ -1547,7 +1547,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "Prompt Engineering for Developers",
+            "title": "Prompt Engineering for Developers — تطبيقي 1",
             "goal": "تبني فهم عملي في نماذج اللغة — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-pe-dev"
@@ -1562,7 +1562,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Prompt Engineering for Developers",
+            "title": "Prompt Engineering for Developers — تطبيقي 2",
             "goal": "تبني فهم عملي في نماذج اللغة — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-pe-dev"
@@ -1577,7 +1577,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "Prompt Engineering for Developers",
+            "title": "Prompt Engineering for Developers — تطبيقي 3",
             "goal": "تبني فهم عملي في نماذج اللغة — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-pe-dev"
@@ -1645,7 +1645,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "Functions, Tools and Agents",
+            "title": "Functions, Tools and Agents — تطبيقي 1",
             "goal": "تبني فهم عملي في بناء الوكلاء — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-langchain"
@@ -1660,7 +1660,7 @@ const PATH_PLANS = {
           },
           {
             "w": 15,
-            "title": "Functions, Tools and Agents",
+            "title": "Functions, Tools and Agents — تطبيقي 2",
             "goal": "تبني فهم عملي في بناء الوكلاء — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-langchain"
@@ -1796,7 +1796,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "OpenAI Codex — وكيل برمجة",
+            "title": "OpenAI Codex — وكيل برمجة — تطبيقي 1",
             "goal": "تبني فهم عملي في برمجة بالـ AI — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-codex"
@@ -1834,7 +1834,7 @@ const PATH_PLANS = {
           },
           {
             "w": 25,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-freelance"
@@ -1849,7 +1849,7 @@ const PATH_PLANS = {
           },
           {
             "w": 26,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-freelance"
@@ -1864,7 +1864,7 @@ const PATH_PLANS = {
           },
           {
             "w": 27,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في مشروع + شغل — خطوة في مسار مهندس وكلاء AI.",
             "courses": [
               "c-freelance"
@@ -1926,7 +1926,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "Python",
+            "title": "Python — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون من الصفر — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-python"
@@ -1941,7 +1941,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "Python",
+            "title": "Python — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون من الصفر — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-python"
@@ -1956,7 +1956,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "Python",
+            "title": "Python — تطبيقي 3",
             "goal": "تبني فهم عملي في بايثون من الصفر — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-python"
@@ -2024,7 +2024,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 1",
             "goal": "تبني فهم عملي في بيانات وتصور — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-sql"
@@ -2039,7 +2039,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "Intro to SQL",
+            "title": "Intro to SQL — تطبيقي 2",
             "goal": "تبني فهم عملي في بيانات وتصور — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-sql"
@@ -2092,7 +2092,7 @@ const PATH_PLANS = {
           },
           {
             "w": 13,
-            "title": "StatQuest — شرح الخوارزميات",
+            "title": "StatQuest — شرح الخوارزميات — تطبيقي 1",
             "goal": "تبني فهم عملي في إحصاء واحتمال — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-statquest"
@@ -2107,7 +2107,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "StatQuest — شرح الخوارزميات",
+            "title": "StatQuest — شرح الخوارزميات — تطبيقي 2",
             "goal": "تبني فهم عملي في إحصاء واحتمال — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-statquest"
@@ -2175,7 +2175,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "Feature Engineering",
+            "title": "Feature Engineering — تطبيقي 1",
             "goal": "تبني فهم عملي في تعلم آلي تطبيقي — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-fe"
@@ -2190,7 +2190,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "Feature Engineering",
+            "title": "Feature Engineering — تطبيقي 2",
             "goal": "تبني فهم عملي في تعلم آلي تطبيقي — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-kaggle-fe"
@@ -2243,7 +2243,7 @@ const PATH_PLANS = {
           },
           {
             "w": 22,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في مشاريع + شغل — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-freelance"
@@ -2258,7 +2258,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في مشاريع + شغل — خطوة في مسار عالم بيانات.",
             "courses": [
               "c-freelance"
@@ -2335,7 +2335,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "Google Colab",
+            "title": "Google Colab — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون وأدوات — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-colab"
@@ -2350,7 +2350,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "Google Colab",
+            "title": "Google Colab — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون وأدوات — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-colab"
@@ -2403,7 +2403,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "Intermediate Machine Learning",
+            "title": "Intermediate Machine Learning — تطبيقي 1",
             "goal": "تبني فهم عملي في تعلم آلي — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-kaggle-iml"
@@ -2418,7 +2418,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Intermediate Machine Learning",
+            "title": "Intermediate Machine Learning — تطبيقي 2",
             "goal": "تبني فهم عملي في تعلم آلي — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-kaggle-iml"
@@ -2433,7 +2433,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "Intermediate Machine Learning",
+            "title": "Intermediate Machine Learning — تطبيقي 3",
             "goal": "تبني فهم عملي في تعلم آلي — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-kaggle-iml"
@@ -2486,7 +2486,7 @@ const PATH_PLANS = {
           },
           {
             "w": 13,
-            "title": "MLOps Zoomcamp",
+            "title": "MLOps Zoomcamp — تطبيقي 1",
             "goal": "تبني فهم عملي في أساسيات إنتاج — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-mlops-zoom"
@@ -2501,7 +2501,7 @@ const PATH_PLANS = {
           },
           {
             "w": 14,
-            "title": "MLOps Zoomcamp",
+            "title": "MLOps Zoomcamp — تطبيقي 2",
             "goal": "تبني فهم عملي في أساسيات إنتاج — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-mlops-zoom"
@@ -2516,7 +2516,7 @@ const PATH_PLANS = {
           },
           {
             "w": 15,
-            "title": "MLOps Zoomcamp",
+            "title": "MLOps Zoomcamp — تطبيقي 3",
             "goal": "تبني فهم عملي في أساسيات إنتاج — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-mlops-zoom"
@@ -2569,7 +2569,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 1",
             "goal": "تبني فهم عملي في متقدم + مراقبة — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-fsdl"
@@ -2584,7 +2584,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 2",
             "goal": "تبني فهم عملي في متقدم + مراقبة — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-fsdl"
@@ -2599,7 +2599,7 @@ const PATH_PLANS = {
           },
           {
             "w": 20,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 3",
             "goal": "تبني فهم عملي في متقدم + مراقبة — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-fsdl"
@@ -2637,7 +2637,7 @@ const PATH_PLANS = {
           },
           {
             "w": 22,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في شهادات وشغل — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-freelance"
@@ -2652,7 +2652,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في شهادات وشغل — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-freelance"
@@ -2667,7 +2667,7 @@ const PATH_PLANS = {
           },
           {
             "w": 24,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في شهادات وشغل — خطوة في مسار مهندس MLOps.",
             "courses": [
               "c-freelance"
@@ -2729,7 +2729,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "CS50 لبرمجة بايثون",
+            "title": "CS50 لبرمجة بايثون — تطبيقي 1",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-cs50py"
@@ -2744,7 +2744,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "CS50 لبرمجة بايثون",
+            "title": "CS50 لبرمجة بايثون — تطبيقي 2",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-cs50py"
@@ -2759,7 +2759,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "CS50 لبرمجة بايثون",
+            "title": "CS50 لبرمجة بايثون — تطبيقي 3",
             "goal": "تبني فهم عملي في بايثون قوي — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-cs50py"
@@ -2812,7 +2812,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "Git و GitHub",
+            "title": "Git و GitHub — تطبيقي 1",
             "goal": "تبني فهم عملي في واجهات وبرمجة — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-kaggle-git"
@@ -2880,7 +2880,7 @@ const PATH_PLANS = {
           },
           {
             "w": 12,
-            "title": "Building Agentic RAG with LlamaIndex",
+            "title": "Building Agentic RAG with LlamaIndex — تطبيقي 1",
             "goal": "تبني فهم عملي في نماذج وأوامر — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-rag"
@@ -2895,7 +2895,7 @@ const PATH_PLANS = {
           },
           {
             "w": 13,
-            "title": "Building Agentic RAG with LlamaIndex",
+            "title": "Building Agentic RAG with LlamaIndex — تطبيقي 2",
             "goal": "تبني فهم عملي في نماذج وأوامر — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-rag"
@@ -3031,7 +3031,7 @@ const PATH_PLANS = {
           },
           {
             "w": 21,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 1",
             "goal": "تبني فهم عملي في نشر المنتج — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-fsdl"
@@ -3046,7 +3046,7 @@ const PATH_PLANS = {
           },
           {
             "w": 22,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 2",
             "goal": "تبني فهم عملي في نشر المنتج — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-fsdl"
@@ -3061,7 +3061,7 @@ const PATH_PLANS = {
           },
           {
             "w": 23,
-            "title": "LLM Bootcamp",
+            "title": "LLM Bootcamp — تطبيقي 3",
             "goal": "تبني فهم عملي في نشر المنتج — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-fsdl"
@@ -3099,7 +3099,7 @@ const PATH_PLANS = {
           },
           {
             "w": 25,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في شغل حر — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-freelance"
@@ -3114,7 +3114,7 @@ const PATH_PLANS = {
           },
           {
             "w": 26,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في شغل حر — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-freelance"
@@ -3129,7 +3129,7 @@ const PATH_PLANS = {
           },
           {
             "w": 27,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في شغل حر — خطوة في مسار مطوّر تطبيقات AI.",
             "courses": [
               "c-freelance"
@@ -3191,7 +3191,7 @@ const PATH_PLANS = {
           },
           {
             "w": 3,
-            "title": "ChatGPT Prompt Engineering",
+            "title": "ChatGPT Prompt Engineering — تطبيقي 1",
             "goal": "تبني فهم عملي في أساس التصوير بالأوامر — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-pe-chatgpt"
@@ -3206,7 +3206,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "ChatGPT Prompt Engineering",
+            "title": "ChatGPT Prompt Engineering — تطبيقي 2",
             "goal": "تبني فهم عملي في أساس التصوير بالأوامر — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-pe-chatgpt"
@@ -3259,7 +3259,7 @@ const PATH_PLANS = {
           },
           {
             "w": 7,
-            "title": "ComfyUI — توليد صور احترافي",
+            "title": "ComfyUI — توليد صور احترافي — تطبيقي 1",
             "goal": "تبني فهم عملي في صور وفيديو — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-comfy"
@@ -3274,7 +3274,7 @@ const PATH_PLANS = {
           },
           {
             "w": 8,
-            "title": "ComfyUI — توليد صور احترافي",
+            "title": "ComfyUI — توليد صور احترافي — تطبيقي 2",
             "goal": "تبني فهم عملي في صور وفيديو — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-comfy"
@@ -3312,7 +3312,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "ElevenLabs — توليد صوت",
+            "title": "ElevenLabs — توليد صوت — تطبيقي 1",
             "goal": "تبني فهم عملي في صوت وتعليق — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-elevenlabs"
@@ -3327,7 +3327,7 @@ const PATH_PLANS = {
           },
           {
             "w": 11,
-            "title": "ElevenLabs — توليد صوت",
+            "title": "ElevenLabs — توليد صوت — تطبيقي 2",
             "goal": "تبني فهم عملي في صوت وتعليق — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-elevenlabs"
@@ -3342,7 +3342,7 @@ const PATH_PLANS = {
           },
           {
             "w": 12,
-            "title": "ElevenLabs — توليد صوت",
+            "title": "ElevenLabs — توليد صوت — تطبيقي 3",
             "goal": "تبني فهم عملي في صوت وتعليق — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-elevenlabs"
@@ -3395,7 +3395,7 @@ const PATH_PLANS = {
           },
           {
             "w": 15,
-            "title": "Learn Prompting",
+            "title": "Learn Prompting — تطبيقي 1",
             "goal": "تبني فهم عملي في استخدام عملي — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-learn-prompt"
@@ -3433,7 +3433,7 @@ const PATH_PLANS = {
           },
           {
             "w": 17,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في دخل حر — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-freelance"
@@ -3448,7 +3448,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في دخل حر — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-freelance"
@@ -3463,7 +3463,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في دخل حر — خطوة في مسار صانع محتوى وتصميم AI.",
             "courses": [
               "c-freelance"
@@ -3540,7 +3540,7 @@ const PATH_PLANS = {
           },
           {
             "w": 4,
-            "title": "Machine Learning Crash Course",
+            "title": "Machine Learning Crash Course — تطبيقي 1",
             "goal": "تبني فهم عملي في فهم المجال — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-mlcc"
@@ -3555,7 +3555,7 @@ const PATH_PLANS = {
           },
           {
             "w": 5,
-            "title": "Machine Learning Crash Course",
+            "title": "Machine Learning Crash Course — تطبيقي 2",
             "goal": "تبني فهم عملي في فهم المجال — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-mlcc"
@@ -3623,7 +3623,7 @@ const PATH_PLANS = {
           },
           {
             "w": 9,
-            "title": "Prompt Engineering for Developers",
+            "title": "Prompt Engineering for Developers — تطبيقي 1",
             "goal": "تبني فهم عملي في أدوات توليدية — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-pe-dev"
@@ -3638,7 +3638,7 @@ const PATH_PLANS = {
           },
           {
             "w": 10,
-            "title": "Prompt Engineering for Developers",
+            "title": "Prompt Engineering for Developers — تطبيقي 2",
             "goal": "تبني فهم عملي في أدوات توليدية — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-pe-dev"
@@ -3721,7 +3721,7 @@ const PATH_PLANS = {
           },
           {
             "w": 15,
-            "title": "Agents Course — 4 وحدات + شهادة",
+            "title": "Agents Course — 4 وحدات + شهادة — تطبيقي 1",
             "goal": "تبني فهم عملي في أتمتة أعمال — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-hf-agents"
@@ -3759,7 +3759,7 @@ const PATH_PLANS = {
           },
           {
             "w": 17,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 1",
             "goal": "تبني فهم عملي في استشارات وشهادات — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-freelance"
@@ -3774,7 +3774,7 @@ const PATH_PLANS = {
           },
           {
             "w": 18,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 2",
             "goal": "تبني فهم عملي في استشارات وشهادات — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-freelance"
@@ -3789,7 +3789,7 @@ const PATH_PLANS = {
           },
           {
             "w": 19,
-            "title": "العمل الحر وصناعة الدخل بالـ AI",
+            "title": "العمل الحر وصناعة الدخل بالـ AI — تطبيقي 3",
             "goal": "تبني فهم عملي في استشارات وشهادات — خطوة في مسار مستشار AI للأعمال.",
             "courses": [
               "c-freelance"
