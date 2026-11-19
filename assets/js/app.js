@@ -766,8 +766,12 @@
     $$("#view-myplan .plan-month-head").forEach((h) => {
       const toggle = () => {
         const m = h.closest(".plan-month");
-        const open = m.classList.toggle("open");
-        h.setAttribute("aria-expanded", open);
+        const willOpen = !m.classList.contains("open");
+        $$("#view-myplan .plan-month").forEach((x) => {
+          x.classList.toggle("open", x === m && willOpen);
+          const hh = x.querySelector(".plan-month-head");
+          if (hh) hh.setAttribute("aria-expanded", x === m && willOpen);
+        });
       };
       h.addEventListener("click", toggle);
       h.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
