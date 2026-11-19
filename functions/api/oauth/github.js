@@ -1,4 +1,4 @@
-import { githubAuth, json, readBody } from "../_lib.js";
+import { githubAuth, json, readBody } from "../../_lib.js";
 
 export async function onRequestOptions() {
   return new Response(null, { status: 204 });
