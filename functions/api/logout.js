@@ -1,13 +1,9 @@
-import { logout, json } from "../_lib.js";
+import { logout, json, readBody } from "../_lib.js";
 
 export async function onRequestOptions() {
-  return json({ ok: true }, 204);
+  return new Response(null, { status: 204 });
 }
 
 export async function onRequestPost({ request, env }) {
-  try {
-    return logout(await request.json(), env);
-  } catch (e) {
-    return json({ ok: false, msg: "طلب غير صالح" }, 400);
-  }
+  return logout(await readBody(request), env);
 }

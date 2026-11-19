@@ -30,7 +30,7 @@ const AUTH = {
     try {
       const r = await fetch(this.API + path, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
         body: body ? JSON.stringify(body) : undefined,
       });
       const d = await r.json();

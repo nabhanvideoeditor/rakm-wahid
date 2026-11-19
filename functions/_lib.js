@@ -41,6 +41,15 @@ export const DISPOSABLE = [
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TTL = 60 * 60 * 24 * 365;
 
+export async function readBody(request) {
+  try {
+    const t = await request.text();
+    return t ? JSON.parse(t) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
 export async function register(d, env) {
   const name = String(d.name || "").trim();
   const email = String(d.email || "").trim().toLowerCase();
