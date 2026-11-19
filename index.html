@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>رقم واحد — منصة الذكاء الاصطناعي بالعربي | تعلّم كل مجالات الـ AI</title>
+  <meta name="description" content="منصة رقم واحد — مسارات مرتّبة لتعلم الذكاء الاصطناعي من الصفر إلى الاحتراف، مجاناً. مسارات تخصص ومسارات تطبيق، كورسات بشهادات، ومتابعة لتقدّمك.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23c9a24b'/><stop offset='1' stop-color='%234a7fb5'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>1</text></svg>">
+</head>
+<body>
+
+  <!-- ======= الشريط العلوي ======= -->
+  <header class="topbar">
+    <div class="brand" id="brand">
+      <div class="brand-mark">1</div>
+      <div>
+        <div class="brand-name">رقم واحد</div>
+        <div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div>
+      </div>
+    </div>
+
+    <nav class="topnav" id="topnav">
+      <button data-view="home" class="active">الرئيسية</button>
+      <button data-view="myplan">خطتي</button>
+      <button data-view="tracks">المسارات</button>
+      <button data-view="courses">الكورسات</button>
+      <button data-view="dashboard">تقدّمي</button>
+      <button data-view="certs">الشهادات</button>
+      <button data-view="tools">الأدوات</button>
+      <button data-view="faqs">الأسئلة الشائعة</button>
+    </nav>
+
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input class="search" id="search" type="search" placeholder="ابحث عن كورس…" autocomplete="off">
+    </div>
+
+    <div class="top-actions">
+      <button class="icon-btn" id="btnExport" title="تصدير تقدّمك" aria-label="تصدير">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      </button>
+      <button class="icon-btn" id="btnImport" title="استيراد تقدّمك" aria-label="استيراد">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="btnMenu" title="القائمة" aria-label="القائمة">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= المحتوى ======= -->
+  <main>
+    <section class="view active" id="view-home"></section>
+    <section class="view" id="view-myplan"></section>
+    <section class="view" id="view-tracks"></section>
+    <section class="view" id="view-courses"></section>
+    <section class="view" id="view-detail"></section>
+    <section class="view" id="view-certs"></section>
+    <section class="view" id="view-tools"></section>
+    <section class="view" id="view-faqs"></section>
+    <section class="view" id="view-dashboard"></section>
+    <section class="view" id="view-resources"></section>
+  </main>
+
+  <!-- ======= الفوتر ======= -->
+  <footer class="footer" id="footer"></footer>
+
+  <div class="toast" id="toast"></div>
+  <div class="cheer" id="cheer"></div>
+  <div class="float-progress"><span id="floatBar"></span></div>
+  <input type="file" id="importFile" accept="application/json" style="display:none">
+
+  <script src="assets/js/plan.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/videos.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

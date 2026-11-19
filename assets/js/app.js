@@ -1,0 +1,732 @@
+/* =========================================================
+   رقم واحد — منطق المنصة
+   ========================================================= */
+
+(function () {
+  "use strict";
+
+  const KEY = "rakm-wahid-progress-v1";
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  /* ---------- الحالة ---------- */
+  function load() {
+    try {
+      const d = JSON.parse(localStorage.getItem(KEY));
+      if (d && typeof d === "object") return { done: d.done || {}, plan: d.plan || {}, theme: d.theme || "dark" };
+    } catch (e) {}
+    return { done: {}, plan: {}, theme: "dark" };
+  }
+  let state = load();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* ---------- مراجع ---------- */
+  const courseById = {};
+  ACADEMY.courses.forEach((c) => (courseById[c.id] = c));
+  const ALL = ACADEMY.courses;
+  const ALL_LESSONS = [];
+  ALL.forEach((c) => (c.lessons || []).forEach((t, i) => ALL_LESSONS.push({ id: c.id + "-" + i, course: c, title: t })));
+
+  const totalCourses = () => ALL.length;
+  const totalLessons = () => ALL_LESSONS.length;
+  const totalHours = () => ALL.reduce((a, c) => a + (c.hours || 0), 0);
+  const doneLessons = () => ALL_LESSONS.filter((l) => state.done[l.id]).length;
+  const doneCourses = () => ALL.filter((c) => (c.lessons || []).length > 0 && c.lessons.every((t, i) => state.done[c.id + "-" + i])).length;
+  const doneHours = () => ALL.filter((c) => (c.lessons || []).length > 0 && c.lessons.every((t, i) => state.done[c.id + "-" + i])).reduce((a, c) => a + (c.hours || 0), 0);
+  const percent = () => { const t = totalLessons(); return t ? Math.round((doneLessons() / t) * 100) : 0; };
+
+  function trackProgress(t) {
+    let total = 0, done = 0;
+    t.courseIds.forEach((id) => {
+      const c = courseById[id]; if (!c) return;
+      (c.lessons || []).forEach((_, i) => { total++; if (state.done[id + "-" + i]) done++; });
+    });
+    return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
+  }
+
+  /* ---------- أيقونات ---------- */
+  const I = {
+    check: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    ext: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>',
+    arrow: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>',
+    award: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>',
+    chev: '<svg class="fi" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+    clock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  };
+
+  /* ---------- توست ---------- */
+  let toastT;
+  function toast(msg) {
+    const el = $("#toast");
+    el.innerHTML = I.check + "<span>" + msg + "</span>";
+    el.classList.add("show");
+    clearTimeout(toastT);
+    toastT = setTimeout(() => el.classList.remove("show"), 2200);
+  }
+
+  /* ---------- تنقل ---------- */
+  let view = "home";
+  function go(v, arg) {
+    view = v;
+    $$(".topnav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
+    $$(".view").forEach((x) => x.classList.remove("active"));
+    const el = $("#view-" + v);
+    if (el) el.classList.add("active");
+    if (v === "home") renderHome();
+    else if (v === "myplan") renderMyPlan();
+    else if (v === "tracks") renderTracks();
+    else if (v === "courses") { renderCourses(arg); renderCourseGrid(); }
+    else if (v === "detail") { if (arg) renderDetail(arg); }
+    else if (v === "certs") renderCerts();
+    else if (v === "tools") renderTools();
+    else if (v === "faqs") renderFaqs();
+    else if (v === "dashboard") renderDashboard();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("#topnav").classList.remove("open");
+  }
+
+  /* ---------- روابط مساعدة ---------- */
+  function trackName(id) { const t = ACADEMY.tracks.find((x) => x.id === id); return t ? t.title : ""; }
+  function trackPill(c) {
+    const t = c.tracks && c.tracks[0] ? trackName(c.tracks[0]) : "";
+    return t ? '<span class="course-track">' + t + "</span>" : "";
+  }
+  function courseComplete(id) {
+    const c = courseById[id]; if (!c || !c.lessons) return false;
+    return c.lessons.every((_, i) => state.done[id + "-" + i]);
+  }
+  function courseProgress(id) {
+    const c = courseById[id]; if (!c || !c.lessons) return 0;
+    const done = c.lessons.filter((_, i) => state.done[id + "-" + i]).length;
+    return Math.round((done / c.lessons.length) * 100);
+  }
+
+  /* ---------- اقتباسات تحفيزية وسلسلة أيام ---------- */
+  const QUOTES = [
+    { t: "الذكاء الاصطناعي مش هيستبدل اللي بيتعلمه — اللي بيتعلمه هو اللي هيسبق.", a: "قاعدة السوق" },
+    { t: "ساعة ونص يومياً = 547 ساعة في السنة. ده فرق ضخم.", a: "رياضيات بسيطة" },
+    { t: "كل محترف كبير بدأ من الصفر زيّك بالظبط.", a: "حقيقة متكررة" },
+    { t: "مش لازم تبقى عبقري — لازم تبقى مستمر.", a: "مبدأ التعلم" },
+    { t: "الكود اللي بتكتبه النهاردة هو اللي هيبني مستقبلك.", a: "عملي" },
+    { t: "الفشل في تمرين مفيش يساوي الفشل في الرحلة.", a: "توكيد لنفسك" },
+    { t: "أحسن وقت تبدأ فيه كان من سنة، وثاني أحسن وقت هو دلوقتي.", a: "حكمة شائعة" },
+    { t: "اتعلم حاجة صغيرة كل يوم — التراكم هو السر.", a: "قاعدة التعلم" },
+    { t: "الذكاء الاصطناعي صندوق أدوات — وإبداعك هو اللي بيفرق.", a: "رؤية" },
+    { t: "لما تتعلم AI، إنت بتستثمر في مهارة الزمن الجاي.", a: "استثمار" },
+    { t: "مقارنتك بغيرك مضيعة وقت — قارن نفسك بإمبارح.", a: "تركيز" },
+    { t: "خطوة صغيرة كل يوم بتوصل لمسافة كبيرة.", a: "قاعدة" },
+  ];
+
+  function updateStreak() {
+    const today = new Date().toDateString();
+    if (state.lastVisit === today) return;
+    const yesterday = new Date(Date.now() - 864e5).toDateString();
+    state.streak = (state.lastVisit === yesterday) ? (state.streak || 0) + 1 : 1;
+    state.lastVisit = today;
+    save();
+  }
+
+  function renderMotivation() {
+    const q = QUOTES[new Date().getDate() % QUOTES.length];
+    const streak = state.streak || 0;
+    let dots = "";
+    for (let i = 0; i < 7; i++) {
+      const on = streak > 0 && i >= 7 - Math.min(streak, 7);
+      dots += '<div class="streak-day' + (on ? " on" : "") + '" title="اليوم ' + (7 - i) + ' من آخر 7 أيام">' + (7 - i) + "</div>";
+    }
+    return '<div class="motivation">' +
+      '<div class="mot-card glow">' +
+        '<div class="mot-label">🔥 سلسلة المذاكرة — آخر 7 أيام</div>' +
+        '<div class="mot-big">' + (streak > 0 ? streak + " يوم متتالي" : "ابدأ سلسلتك النهاردة") + '</div>' +
+        '<div class="streak-row">' + dots + "</div>" +
+        '<div class="tip">🟢 فاتح = يوم ذاكرت فيه &nbsp;•&nbsp; ⚫ داكن = لسه. استمر — حتى 20 دقيقة بتفرق.</div>' +
+      "</div>" +
+      '<div class="mot-card">' +
+        '<div class="mot-label">💬 اقتباس النهاردة</div>' +
+        '<div class="mot-quote">' + q.t + "</div>" +
+        '<div class="mot-author">— ' + q.a + "</div>" +
+        '<div class="tip">⚡ <b>نصيحة:</b> ' + PLAN.note + "</div>" +
+      "</div>" +
+      '<div class="mot-card zad-mini">' + renderZad() + "</div>" +
+    "</div>";
+  }
+
+  let cheerT;
+  function cheer(msg) {
+    const el = $("#cheer");
+    if (!el) return;
+    el.innerHTML = '<span class="flame">🔥</span><span>' + msg + "</span>";
+    el.classList.add("show");
+    clearTimeout(cheerT);
+    cheerT = setTimeout(() => el.classList.remove("show"), 2600);
+  }
+
+  /* ============ الرئيسية ============ */
+  function renderHome() {
+    const t = ACADEMY.trackKinds;
+    const featured = ALL.slice(0, 6);
+    const tracks = ACADEMY.tracks.slice(0, 4);
+    const nodes = Array.from({ length: 18 }, () =>
+      '<span class="node" style="top:' + (4 + Math.random() * 88) + "%;inset-inline-start:" + (Math.random() * 96) + "%;animation-delay:" + (Math.random() * 6).toFixed(1) + 's"></span>'
+    ).join("");
+
+    $("#view-home").innerHTML =
+      '<div class="wrap">' +
+        '<section class="hero">' +
+          '<div class="neural">' + nodes + "</div>" +
+          '<div class="hero-badge"><span class="dot"></span> مسارات مجانية مرتّبة • من الصفر إلى الاحتراف</div>' +
+          '<div class="ai-pill"><span class="dot"></span> AI Learning OS</div>' +
+          '<h1>تعلّم كل مجالات الـ <span class="hl">AI</span> في مكان واحد</h1>' +
+          '<p>' + ACADEMY.meta.desc + ' — مسارات تخصص تدخل بيها جوه الذكاء الاصطناعي، ومسارات تطبيق تحطّه في شغلك.</p>' +
+          '<div class="hero-cta">' +
+            '<button class="btn btn-primary" data-go="myplan">ابدأ خطتك ' + I.arrow + '</button>' +
+            '<button class="btn btn-ghost" data-go="tracks">استعرض المسارات</button>' +
+            '<button class="btn btn-ghost" data-go="courses">كل الكورسات</button>' +
+          '</div>' +
+          '<div class="hero-stats">' +
+            '<div class="hstat"><div class="hstat-val">' + totalCourses() + '<small> كورس</small></div><div class="hstat-label">بمصادر مجانية عالمية</div></div>' +
+            '<div class="hstat"><div class="hstat-val">' + totalHours() + '<small>+ ساعة</small></div><div class="hstat-label">محتوى تعليمي مرتّب</div></div>' +
+            '<div class="hstat"><div class="hstat-val">' + ACADEMY.certs.length + '<small> شهادة</small></div><div class="hstat-label">إتمام مجانية معتمدة</div></div>' +
+            '<div class="hstat"><div class="hstat-val">' + ACADEMY.tracks.length + '<small> مسارات</small></div><div class="hstat-label">تخصص وتطبيق</div></div>' +
+          '</div>' +
+        '</section>' +
+        renderMotivation() +
+
+        '<section class="section">' +
+          '<div class="section-head"><div class="eyebrow">ليه رقم واحد؟</div><div class="section-title">كل اللي محتاجه في مكان واحد</div></div>' +
+          '<div class="feat-grid">' + ACADEMY.features.map((f) =>
+            '<div class="feat"><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + "</div></div>").join("") +
+          "</div>" +
+        "</section>" +
+
+        '<section class="section">' +
+          '<div class="section-head"><div class="eyebrow">المسارات</div><div class="section-title">الكورسات مترتّبة في مسارات</div>' +
+          '<div class="section-sub">مسارين: تخصص تدخل بيها جوه الـ AI نفسه، وتطبيق تحطّ الـ AI في شغلك الحالي.</div></div>' +
+          '<div class="track-grid">' + tracks.map((tr) => trackCard(tr)).join("") + "</div>" +
+          '<button class="btn btn-ghost" data-go="tracks">شوف كل المسارات ' + I.arrow + "</button>" +
+        "</section>" +
+
+        '<section class="section">' +
+          '<div class="section-head"><div class="eyebrow">نبدأ منين؟</div><div class="section-title">كورسات مقترحة تبدأ بيها</div></div>' +
+          '<div class="course-grid">' + featured.map((c) => courseCard(c)).join("") + "</div>" +
+          '<div style="margin-top:22px"><button class="btn btn-ghost" data-go="courses">كل الكورسات ' + I.arrow + "</button></div>" +
+        "</section>" +
+
+        '<section class="section">' +
+          '<div class="cta"><h2>جاهز تبدأ؟</h2>' +
+          '<p>ابدأ بمسار الأساسيات — خطوة واحدة بتفتحلك كل اللي بعدها. وتقدّمك بيتتحفظ تلقائياً.</p>' +
+          '<button class="btn btn-primary" data-go="tracks">ابدأ أول مسار ' + I.arrow + "</button></div>" +
+        "</section>" +
+      "</div>";
+
+    bindHome();
+  }
+
+  function trackCard(tr, full) {
+    const p = trackProgress(tr);
+    return '<div class="track">' +
+      '<div class="track-head"><div class="track-icon">' + tr.icon + "</div>" +
+      '<div style="flex:1"><div class="track-title">' + tr.title + '</div><div class="track-tagline">' + tr.tagline + "</div></div></div>" +
+      (full ? '<div class="track-desc">' + tr.desc + "</div>" : "") +
+      '<div class="track-foot">' +
+        '<span class="track-meta">' + tr.courseIds.length + " كورس</span>" +
+        '<span class="track-meta">' + tr.level + "</span>" +
+        '<span class="track-meta">' + tr.weeks + "</span>" +
+        '<span class="track-meta" data-open-track="' + tr.id + '" style="color:var(--accent-2);cursor:pointer">افتح المسار ' + I.arrow + "</span>" +
+      "</div>" +
+      '<div class="track-bar"><span style="width:' + p.pct + '%"></span></div>' +
+      '<div class="track-prog">أكملت ' + p.done + " من " + p.total + " درس (" + p.pct + "%)</div>" +
+    "</div>";
+  }
+
+  function hasVideo(cid) { return typeof COURSE_VIDEOS !== "undefined" && !!COURSE_VIDEOS[cid]; }
+
+  function courseCard(c) {
+    const done = courseComplete(c.id);
+    const p = courseProgress(c.id);
+    return '<div class="course-card" data-open-course="' + c.id + '">' +
+      '<div class="course-top"><div class="course-title">' + c.title + (hasVideo(c.id) ? ' <span class="vid-badge" title="محتوى مدمج جوه المنصة">🎬</span>' : "") + '</div><span class="course-type">' + (c.type || "كورس") + "</span></div>" +
+      '<div class="course-note">' + (c.note || c.provider) + "</div>" +
+      '<div class="course-meta"><span>' + c.provider + "</span><span>•</span><span>" + c.hours + ' س</span><span>•</span>' + trackPill(c) + "</div>" +
+      '<div class="course-foot"><span class="course-progress' + (done ? " done" : "") + '">' + (done ? "✓ مكتمل" : p + "%") + "</span>" +
+      '<span style="color:var(--muted);font-size:12.5px">التفاصيل ' + I.arrow + "</span></div>" +
+    "</div>";
+  }
+
+  function bindHome() {
+    $$("#view-home [data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
+    $$("#view-home [data-open-course]").forEach((b) => b.addEventListener("click", () => go("detail", b.dataset.openCourse)));
+    $$("#view-home [data-open-track]").forEach((b) => b.addEventListener("click", () => go("tracks", b.dataset.openTrack)));
+  }
+
+  /* ============ المسارات ============ */
+  function renderTracks() {
+    const t = ACADEMY.trackKinds;
+    const spec = ACADEMY.tracks.filter((x) => x.kind === "specialize");
+    const app = ACADEMY.tracks.filter((x) => x.kind === "apply");
+
+    const compare = [
+      ["الهدف منه إيه؟", t.specialize.example, t.apply.example],
+      ["مناسب لمين؟", "أي حد عايز الـ AI يبقى شغله الأساسي — حتى لو مالوش خلفية تقنية.", "حد شغال في مجال محدد وعايز يخدم شغله بالـ AI."],
+      ["هتتعلم فيه إيه؟", "الـ AI بيفكر إزاي، إزاي تبني أنظمة كاملة وتسلّمها.", "الأدوات والخطوات اللي تخص مجالك بالظبط، بشغل عملي."],
+      ["تبدأ منين؟", "من الصفر — مسار الأساسيات هو أول خطوة.", "محتاج تكون فاهم مجالك بس — مش لازم خلفية تقنية."],
+    ];
+
+    $("#view-tracks").innerHTML =
+      '<div class="wrap">' +
+        '<section class="section">' +
+          '<div class="section-head"><div class="eyebrow">المسارات</div><div class="section-title">اختار مسارك</div>' +
+          '<div class="section-sub">الكورسات مترتّبة في مسارات، وكل مسار بياخدك من نقطة لهدف واضح.</div></div>' +
+
+          '<div class="kind-head"><div class="kind-title"><span class="kind-tag">تخصص</span>' + t.specialize.title + "</div>" +
+          '<div class="kind-desc">' + t.specialize.desc + '</div><div class="kind-example">' + t.specialize.example + "</div></div>" +
+          '<div class="track-grid">' + spec.map((tr) => trackCard(tr, true)).join("") + "</div>" +
+
+          '<div class="kind-head" style="margin-top:30px"><div class="kind-title"><span class="kind-tag" style="background:var(--mint-soft);color:var(--mint)">تطبيق</span>' + t.apply.title + "</div>" +
+          '<div class="kind-desc">' + t.apply.desc + '</div><div class="kind-example">' + t.apply.example + "</div></div>" +
+          '<div class="track-grid">' + app.map((tr) => trackCard(tr, true)).join("") + "</div>" +
+        "</section>" +
+
+        '<section class="section">' +
+          '<div class="section-head"><div class="eyebrow">مش عارف تبدأ منين؟</div><div class="section-title">أنا أدخل فين؟</div></div>' +
+          '<div class="compare">' +
+            '<div class="compare-card spec"><div class="compare-title">مسارات التخصص</div>' +
+              compare.map((r) => '<div class="compare-row"><div class="compare-q">' + r[0] + '</div><div class="compare-a">' + r[1] + "</div></div>").join("") + "</div>" +
+            '<div class="compare-card app"><div class="compare-title">مسارات التطبيق</div>' +
+              compare.map((r) => '<div class="compare-row"><div class="compare-q">' + r[0] + '</div><div class="compare-a">' + r[2] + "</div></div>").join("") + "</div>" +
+          "</div>" +
+          '<div class="cta"><h2>الخطوة الأسهل: ابدأ بالأساسيات</h2>' +
+          '<p>مسار الأساسيات هو أول خطوة لكل المسارات — مش مهم رايح تخصص ولا تطبيق.</p>' +
+          '<button class="btn btn-primary" data-open-course="c-elements">ابدأ أول كورس ' + I.arrow + "</button></div>" +
+        "</section>" +
+      "</div>";
+
+    $$("#view-tracks [data-open-course]").forEach((b) => b.addEventListener("click", () => go("detail", b.dataset.openCourse)));
+    $$("#view-tracks [data-open-track]").forEach((b) => b.addEventListener("click", () => go("courses", b.dataset.openTrack)));
+  }
+
+  /* ============ الكورسات ============ */
+  let filterTrack = "all";
+  let query = "";
+
+  function renderCourses(arg) {
+    if (arg) filterTrack = arg;
+    const chips = ['<button class="chip active" data-chip="all">كل المسارات</button>'] +
+      ACADEMY.tracks.map((t) => '<button class="chip" data-chip="' + t.id + '">' + t.title + "</button>").join("");
+
+    $("#view-courses").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">الكورسات</div><div class="section-title">كل كورسات المنصة</div>' +
+        '<div class="section-sub">' + totalCourses() + " كورس • " + totalHours() + "+ ساعة • كلها مجانية بمصادر عالمية.</div></div>" +
+        '<div class="filter-bar">' + chips + "</div>" +
+        '<div class="course-grid" id="courseGrid"></div>' +
+        '<div id="noRes" style="display:none;text-align:center;padding:50px;color:var(--muted)">لا توجد نتائج مطابقة</div>' +
+      "</section></div>";
+
+    $$("#view-courses [data-chip]").forEach((c) => c.classList.toggle("active", c.dataset.chip === filterTrack));
+    $$("#view-courses [data-chip]").forEach((b) => b.addEventListener("click", () => {
+      filterTrack = b.dataset.chip;
+      $$("#view-courses [data-chip]").forEach((x) => x.classList.toggle("active", x === b));
+      applyCourseFilter();
+    }));
+    applyCourseFilter();
+  }
+
+  function applyCourseFilter() {
+    const q = query.trim().toLowerCase();
+    let shown = 0;
+    const grid = $("#courseGrid");
+    $$(".course-card", grid).forEach((el) => {
+      const c = courseById[el.dataset.openCourse];
+      const tMatch = filterTrack === "all" || (c.tracks || []).includes(filterTrack);
+      const qMatch = !q || (c.title + " " + c.provider + " " + (c.note || "") + " " + (c.type || "")).toLowerCase().includes(q);
+      const show = tMatch && qMatch;
+      el.style.display = show ? "" : "none";
+      if (show) shown++;
+    });
+    const empty = $("#noRes"); if (empty) empty.style.display = shown ? "none" : "block";
+  }
+
+  function renderCourseGrid() {
+    const grid = $("#courseGrid"); if (!grid) return;
+    grid.innerHTML = ALL.map((c) => courseCard(c)).join("");
+    $$("[data-open-course]", grid).forEach((b) => b.addEventListener("click", () => go("detail", b.dataset.openCourse)));
+    applyCourseFilter();
+  }
+
+  /* ============ صفحة كورس ============ */
+  function renderDetail(id) {
+    const c = courseById[id]; if (!c) { go("courses"); return; }
+    const lessons = c.lessons || [];
+    const doneCount = lessons.filter((_, i) => state.done[c.id + "-" + i]).length;
+    const pct = lessons.length ? Math.round((doneCount / lessons.length) * 100) : 0;
+
+    const lessonRows = lessons.map((t, i) => {
+      const lid = c.id + "-" + i;
+      const done = !!state.done[lid];
+      return '<div class="lesson' + (done ? " done" : "") + '" data-lesson="' + lid + '">' +
+        '<div class="lesson-num">' + (i + 1) + "</div>" +
+        '<div class="lesson-title">' + t + "</div>" +
+        (done ? '<span class="lesson-check">' + I.check + "</span>" : "") +
+        '<span class="lesson-dur">' + I.clock + " درس " + (i + 1) + "</span>" +
+      "</div>";
+    }).join("");
+
+    const vids = (typeof COURSE_VIDEOS !== "undefined" ? COURSE_VIDEOS[c.id] : null) || [];
+    const fileWarn = location.protocol === "file:"
+      ? '<div class="file-warn">⚠️ انت فاتح المنصة كملف — الفيديوهات المدمجة محتاجة سيرفر. شغّل ملف <b>«ابدأ-المنصة.bat»</b> أو افتحها بالطريقة الموجودة في README.</div>'
+      : "";
+    const videosHtml = vids.length
+      ? '<div class="videos">' +
+          '<div class="lessons-head"><div class="lessons-title">🎬 شغّل المحتوى هنا</div><div class="lessons-count">اضغط على أي فيديو للتشغيل — أو افتحه على يوتيوب</div></div>' +
+          '<div class="video-grid">' +
+            vids.map((v) => {
+              const yt = v.type === "playlist"
+                ? "https://www.youtube.com/playlist?list=" + v.id
+                : "https://www.youtube.com/watch?v=" + v.id;
+              const thumb = v.thumb || "";
+              return '<div class="video-card" data-vtype="' + v.type + '" data-vid="' + v.id + '">' +
+                '<div class="video-frame" data-frame>' +
+                  (thumb
+                    ? '<img class="video-thumb" src="' + thumb + '" alt="" loading="lazy">'
+                    : '<div class="video-fallback"><span>▶</span></div>') +
+                  '<button class="video-play" type="button" aria-label="شغّل"><span>▶</span></button>' +
+                "</div>" +
+                '<div class="video-title">' + v.t + "</div>" +
+                '<a class="video-ext" href="' + yt + '" target="_blank" rel="noopener">▶ شغّل على يوتيوب ' + I.ext + "</a>" +
+              "</div>";
+            }).join("") +
+          "</div>" +
+          '<p class="video-hint">💡 لو الفيديو مفتحش جوه المشغّل، اضغط «شغّل على يوتيوب» — هيفتح مباشرة.</p>' +
+        "</div>"
+      : "";
+
+    $("#view-detail").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="crumb"><a href="#" data-go="courses">الكورسات</a><span>/</span><span>' + c.title + "</span></div>" +
+        '<div class="detail-head">' +
+          '<div class="detail-main">' +
+            '<div class="detail-title">' + c.title + "</div>" +
+            '<div class="detail-provider">' + c.provider + "</div>" +
+            (c.note ? '<div class="detail-note">' + c.note + "</div>" : "") +
+            '<div class="detail-tags">' +
+              (c.level ? '<span class="tag lvl">' + c.level + "</span>" : "") +
+              (c.type ? '<span class="tag">' + c.type + "</span>" : "") +
+              (c.cert ? '<span class="tag cert">' + c.cert + "</span>" : "") +
+              (c.tracks || []).map((t) => '<span class="tag">' + trackName(t) + "</span>").join("") +
+            "</div>" +
+            '<div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">' +
+              '<a class="btn btn-primary btn-sm" href="' + c.link + '" target="_blank" rel="noopener">ابدأ الكورس ' + I.ext + "</a>" +
+            "</div>" +
+          "</div>" +
+          '<aside class="detail-side">' +
+            '<div class="side-stat"><span>المدة</span><b>' + c.hours + " ساعة</b></div>" +
+            '<div class="side-stat"><span>المستوى</span><b>' + (c.level || "—") + "</b></div>" +
+            '<div class="side-stat"><span>الشهادة</span><b>' + (c.cert || "—") + "</b></div>" +
+            '<div class="side-stat"><span>الدروس</span><b>' + lessons.length + "</b></div>" +
+            '<div class="side-stat"><span>تقدمك</span><b>' + pct + "%</b></div>" +
+          "</aside>" +
+        "</div>" +
+
+        videosHtml +
+
+        fileWarn +
+
+        '<div class="lessons">' +
+          '<div class="lessons-head"><div class="lessons-title">محتوى الكورس</div><div class="lessons-count">' + doneCount + " / " + lessons.length + " درس مكتمل</div></div>" +
+          lessonRows +
+          '<p style="color:var(--muted);font-size:13.5px;margin-top:10px">علّم على كل درس تكمّله — وتقدّمك بيتتحفظ تلقائياً.</p>' +
+        "</div>" +
+
+        '<div class="instructor">' +
+          '<div class="instructor-avatar">' + (c.provider.trim()[0] || "غ") + "</div>" +
+          '<div><div class="instructor-name">' + c.provider + "</div>" +
+          '<div class="instructor-role">مدرّب الكورس • مصدر عالمي مجاني</div></div>' +
+        "</div>" +
+      "</section></div>";
+
+    $$("#view-detail [data-lesson]").forEach((el) => el.addEventListener("click", () => toggleLesson(el.dataset.lesson)));
+    $$("#view-detail .video-card").forEach((card) => {
+      const frame = card.querySelector("[data-frame]");
+      if (!frame) return;
+      const btn = card.querySelector(".video-play");
+      if (btn) btn.addEventListener("click", () => {
+        const type = card.dataset.vtype, id = card.dataset.vid;
+        const src = type === "playlist"
+          ? "https://www.youtube.com/embed/videoseries?list=" + id + "&rel=0"
+          : "https://www.youtube.com/embed/" + id + "?rel=0";
+        frame.innerHTML = '<iframe src="' + src + '" title="" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+        frame.classList.add("playing");
+      });
+      frame.addEventListener("click", (e) => {
+        if (e.target.closest("a") || e.target.closest("iframe")) return;
+        if (btn) btn.click();
+      });
+    });
+    const cb = $('#view-detail [data-go="courses"]');
+    if (cb) cb.addEventListener("click", (e) => { e.preventDefault(); go("courses"); });
+  }
+
+  function toggleLesson(lid) {
+    if (state.done[lid]) delete state.done[lid]; else state.done[lid] = true;
+    save();
+    const cid = lid.split("-")[0];
+    // إعادة رسم خفيفة
+    const c = courseById[cid];
+    const idx = parseInt(lid.split("-")[1], 10);
+    const done = !!state.done[lid];
+    const row = $('[data-lesson="' + lid + '"]');
+    if (row) {
+      row.classList.toggle("done", done);
+      const chk = $(".lesson-check", row);
+      if (done && !chk) row.insertAdjacentHTML("beforeend", "");
+      if (!done && chk) chk.remove();
+    }
+    renderDetail(cid);
+    updateFloat();
+    if (done) cheer("أحسنت! درس مكتمل 🔥");
+  }
+
+  /* ============ شهادات ============ */
+  function renderCerts() {
+    $("#view-certs").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">الشهادات</div><div class="section-title">شهادات إتمام مجانية</div>' +
+        '<div class="section-sub">كل شهادة مجانية بالكامل — خدها بالترتيب وحطها في LinkedIn.</div></div>' +
+        '<div class="cert-grid">' + ACADEMY.certs.map((c) =>
+          '<div class="cert"><div class="cert-head"><div class="cert-icon">' + I.award + "</div>" +
+          '<div><div class="cert-title">' + c.title + '</div><div class="cert-issuer">' + c.issuer + " • " + c.stage + "</div></div></div>" +
+          '<div class="cert-foot"><span class="tag cert">' + c.cost + '</span>' +
+          '<a class="course-track" href="' + c.link + '" target="_blank" rel="noopener">احصل عليها ' + I.ext + "</a></div></div>").join("") +
+        "</div></section></div>";
+  }
+
+  /* ============ أدوات ============ */
+  function renderTools() {
+    $("#view-tools").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">الأدوات</div><div class="section-title">أدوات مجانية هتستخدمها</div>' +
+        '<div class="section-sub">كل أداة مجانية وتستخدمها في مسار التعلم والشغل.</div></div>' +
+        '<div class="tools-grid">' + ACADEMY.tools.map((t) =>
+          '<div class="tool"><div class="tool-top"><div class="tool-name">' + t.name + '</div><span class="tool-tag">' + t.tag + "</span></div>" +
+          '<div class="tool-use">' + t.use + '</div>' +
+          '<a class="tool-link" href="' + t.link + '" target="_blank" rel="noopener">افتح الأداة ' + I.ext + "</a></div>").join("") +
+        "</div></section></div>";
+  }
+
+  /* ============ أسئلة شائعة ============ */
+  function renderFaqs() {
+    $("#view-faqs").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">الأسئلة الشائعة</div><div class="section-title">كل اللي عايز تعرفه</div></div>' +
+        ACADEMY.faqs.map((f) =>
+          '<details class="faq"><summary>' + f.q + I.chev + "</summary><div class=\"faq-a\">" + f.a + "</div></details>").join("") +
+        '<div class="section-head" style="margin-top:40px"><div class="eyebrow">مصادر</div><div class="section-title">مصادر إضافية</div></div>' +
+        '<div class="res-grid">' + ACADEMY.resources.map((r) =>
+          '<a class="res" href="' + r.link + '" target="_blank" rel="noopener"><div><div class="res-name">' + r.name + '</div><div class="res-tag">' + r.tag + "</div></div>" + I.arrow + "</a>").join("") +
+        "</div>" +
+        '<div class="section-head" style="margin-top:40px"><div class="eyebrow">قواعد</div><div class="section-title">قواعد الرحلة</div></div>' +
+        '<div class="rules">' + ACADEMY.rules.map((r) => '<div class="rule">' + I.check + "<span>" + r + "</span></div>").join("") + "</div>" +
+      "</section></div>";
+  }
+
+  /* ============ تقدّمي ============ */
+  function renderDashboard() {
+    const p = percent();
+    const R = 52, C = 2 * Math.PI * R;
+    const off = C - (p / 100) * C;
+
+    $("#view-dashboard").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">تقدّمي</div><div class="section-title">لوحة التقدم</div>' +
+        '<div class="section-sub">تقدّمك بيتتحفظ على جهازك تلقائياً.</div></div>' +
+        '<div class="dash-grid">' +
+          '<div class="dash-card">' +
+            '<div class="ring-wrap">' +
+              '<div class="ring"><svg width="112" height="112"><circle cx="56" cy="56" r="' + R + '" fill="none" stroke="var(--surface-3)" stroke-width="9"/>' +
+              '<circle cx="56" cy="56" r="' + R + '" fill="none" stroke="url(#g1)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + off + '"/>' +
+              '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c6cf6"/><stop offset="1" stop-color="#4f8cff"/></linearGradient></defs></svg>' +
+              '<div class="ring-val">' + p + "%</div></div>" +
+              '<div class="ring-meta"><b>' + doneLessons() + "</b> درس مكتمل<br>من <b>" + totalLessons() + "</b> درس<br>في <b>" + totalCourses() + "</b> كورس</div>" +
+            "</div>" +
+            '<div class="dash-stats">' +
+              '<div class="dstat"><div class="dstat-val">' + doneCourses() + "</div><div class=\"dstat-label\">كورس مكتمل</div></div>" +
+              '<div class="dstat"><div class="dstat-val">' + doneHours() + "</div><div class=\"dstat-label\">ساعة تعلم</div></div>" +
+              '<div class="dstat"><div class="dstat-val">' + totalHours() + "</div><div class=\"dstat-label\">إجمالي الساعات</div></div>" +
+              '<div class="dstat"><div class="dstat-val">' + ACADEMY.certs.length + "</div><div class=\"dstat-label\">شهادة متاحة</div></div>" +
+            "</div>" +
+          "</div>" +
+          '<div class="dash-card"><div class="dash-title">تقدم المسارات</div>' +
+            ACADEMY.tracks.map((t) => {
+              const pr = trackProgress(t);
+              return '<div class="track-row"><div class="track-row-top"><div class="track-row-title">' + t.icon + " " + t.title + '</div>' +
+                '<div class="track-row-pct">' + pr.pct + "%</div></div>" +
+                '<div class="track-bar" style="margin-top:10px"><span style="width:' + pr.pct + '%"></span></div>' +
+                '<div class="track-prog" style="margin-top:5px">' + pr.done + " / " + pr.total + " درس</div></div>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">' +
+          '<button class="btn btn-ghost" id="dashExport">تصدير تقدّمي</button>' +
+          '<button class="btn btn-ghost" id="dashReset">مسح التقدم</button>' +
+        "</div>" +
+      "</section></div>";
+
+    $("#dashExport").addEventListener("click", exportProgress);
+    $("#dashReset").addEventListener("click", () => {
+      if (confirm("متأكد إنك عايز تمسح كل تقدمك؟")) { state.done = {}; save(); refresh(); toast("تم مسح التقدم"); }
+    });
+  }
+
+  /* ============ خطتي ============ */
+  function planProgress() {
+    let done = 0;
+    PLAN.months.forEach((m) => m.weeks.forEach((w) => { if (state.plan["p-" + w.w]) done++; }));
+    const total = PLAN.months.reduce((a, m) => a + m.weeks.length, 0);
+    return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
+  }
+
+  function renderZad() {
+    const list = PLAN.azkar || [];
+    if (!list.length) return "";
+    const a = list[new Date().getDate() % list.length];
+    return '<div class="zad">' +
+      '<div class="zad-label">📖 زاد النهاردة</div>' +
+      '<div class="zad-type">' + a.type + ' • ' + a.ref + "</div>" +
+      '<div class="zad-text">' + a.text + "</div>" +
+      '<div class="zad-foot">اللهم انفعني بما علمتني، وعلمني ما ينفعني، وزدني علماً</div>' +
+    "</div>";
+  }
+
+  function renderMyPlan() {
+    const p = planProgress();
+    const monthsHtml = PLAN.months.map((m) => {
+      const weeksHtml = m.weeks.map((w) => {
+        const id = "p-" + w.w;
+        const done = !!state.plan[id];
+        const courses = (w.courses || []).map((cid) => {
+          const c = courseById[cid];
+          return c ? '<a class="plan-course" href="#" data-course-link="' + c.id + '">' + c.title + "</a>" : "";
+        }).join("");
+        const daily = (w.daily || []).map((d) => "<span>" + d + "</span>").join("");
+        return '<div class="plan-week' + (done ? " done" : "") + '">' +
+          '<label class="plan-check"><input type="checkbox" data-plan-week="' + id + '"' + (done ? " checked" : "") + "><span>" + w.w + "</span></label>" +
+          '<div class="plan-body">' +
+            '<div class="plan-week-title">' + w.title + "</div>" +
+            '<div class="plan-goal">🎯 ' + w.goal + "</div>" +
+            (courses ? '<div class="plan-courses">' + courses + "</div>" : "") +
+            (daily ? '<div class="plan-daily"><b>مهام يومية:</b> ' + daily + "</div>" : "") +
+            '<div class="plan-habit">🌱 العادة: ' + w.habit + "</div>" +
+            '<div class="plan-task">📌 مهمة الأسبوع: ' + w.task + "</div>" +
+            '<div class="plan-outcome">✅ المخرج: ' + w.outcome + "</div>" +
+          "</div></div>";
+      }).join("");
+      const md = m.weeks.filter((w) => state.plan["p-" + w.w]).length;
+      return '<div class="plan-month">' +
+        '<div class="plan-month-head"><div class="plan-month-num">' + m.num + "</div>" +
+        '<div><div class="plan-month-title">' + m.title + " — " + m.theme + "</div>" +
+        '<div class="plan-month-goal">' + m.goal + "</div></div>" +
+        '<div class="plan-month-prog">' + md + "/" + m.weeks.length + "</div></div>" +
+        '<div class="plan-weeks">' + weeksHtml + "</div></div>";
+    }).join("");
+
+    $("#view-myplan").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">خطتي</div><div class="section-title">خطة 14 شهر من الصفر للاحتراف والشغل</div>' +
+        '<div class="section-sub">' + PLAN.desc + "</div>" +
+        '<div class="plan-note">' + PLAN.note + "</div></div>" +
+        '<div class="plan-overview">' +
+          '<div class="plan-overview-card"><div class="plan-big">' + p.done + "<small>/" + p.total + '</small></div><div class="plan-label">أسبوع مكتمل</div></div>' +
+          '<div class="plan-overview-card"><div class="plan-big">' + p.pct + '%</div><div class="plan-label">نسبة الإنجاز</div></div>' +
+          '<div class="plan-overview-card"><div class="plan-big">' + (p.total - p.done) + '</div><div class="plan-label">أسبوع متبقّي</div></div>' +
+        "</div>" +
+        '<div class="plan-bar"><span style="width:' + p.pct + '%"></span></div>' +
+        renderZad() +
+        monthsHtml +
+      "</section></div>";
+
+    $$("#view-myplan [data-plan-week]").forEach((inp) => inp.addEventListener("change", () => {
+      const id = inp.dataset.planWeek;
+      if (inp.checked) state.plan[id] = true; else delete state.plan[id];
+      save(); renderMyPlan(); updateFloat(); updateFoot();
+      if (inp.checked) cheer("أسبوع مكتمل! كمّل السلسلة 🔥");
+    }));
+    $$("#view-myplan [data-course-link]").forEach((a) => a.addEventListener("click", (e) => {
+      e.preventDefault(); go("detail", a.dataset.courseLink);
+    }));
+  }
+
+  /* ============ فوتر ============ */
+  function renderFooter() {
+    $("#footer").innerHTML =
+      '<div class="wrap">' +
+        '<div class="footer-grid">' +
+          '<div><div class="footer-brand"><div class="brand-mark">1</div><div><div class="brand-name">رقم واحد</div><div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div></div></div>' +
+          '<div style="color:var(--muted);font-size:13.5px;max-width:300px">مسارات مرتّبة من الصفر إلى الاحتراف، بمصادر مجانية عالمية، وشهادات إتمام معتمدة.</div></div>' +
+          "<div><h4>المنصة</h4>" +
+            '<a href="#" data-go="tracks">المسارات</a><a href="#" data-go="courses">الكورسات</a><a href="#" data-go="dashboard">تقدّمي</a><a href="#" data-go="certs">الشهادات</a></div>' +
+          "<div><h4>مصادر</h4>" +
+            '<a href="#" data-go="tools">الأدوات</a><a href="#" data-go="faqs">الأسئلة الشائعة</a><a href="https://www.edraak.org/" target="_blank">إدراك</a><a href="https://rwaq.org/" target="_blank">رواق</a></div>' +
+          "<div><h4>تواصل</h4>" +
+            '<a href="mailto:nabhanlvideoeditor@gmail.com">nabhanlvideoeditor@gmail.com</a><a href="https://wa.me/201212439985" target="_blank">واتساب</a></div>' +
+        "</div>" +
+        '<div class="footer-bottom"><span>رقم واحد — مسار مجاني كامل لتعلم الذكاء الاصطناعي.</span><span id="footStat"></span></div>' +
+      "</div>";
+    $$("#footer [data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); go(a.dataset.go); }));
+  }
+
+  /* ============ عوام ============ */
+  function updateFloat() { const f = $("#floatBar"); if (f) f.style.width = percent() + "%"; }
+  function updateFoot() { const f = $("#footStat"); if (f) f.textContent = "أتممت " + doneLessons() + " درس • " + doneHours() + " ساعة"; }
+
+  function refresh() {
+    renderHome(); renderMyPlan(); renderTracks(); renderCourses(); renderCerts(); renderTools(); renderFaqs(); renderDashboard();
+    renderCourseGrid();
+    updateFloat(); updateFoot();
+  }
+
+  /* ============ بحث ============ */
+  function onSearch(e) { query = e.target.value || ""; if (view !== "courses") go("courses"); applyCourseFilter(); }
+
+  /* ============ تصدير/استيراد ============ */
+  function exportProgress() {
+    const data = { app: "rakm-wahid", version: 1, exportedAt: new Date().toISOString(), done: state.done };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "rakm-wahid-progress.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast("تم تصدير تقدّمك");
+  }
+  function importProgress(file) {
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (!d || typeof d !== "object") throw 0;
+        state.done = d.done || {}; save(); refresh();
+        toast("تم استيراد تقدّمك بنجاح");
+      } catch (e) { toast("ملف غير صالح"); }
+    };
+    r.readAsText(file);
+  }
+
+  /* ============ تهيئة ============ */
+  function init() {
+    updateStreak();
+    document.documentElement.setAttribute("data-theme", state.theme);
+    $("#brand").addEventListener("click", () => go("home"));
+    $$(".topnav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.view)));
+    $("#btnMenu").addEventListener("click", () => $("#topnav").classList.toggle("open"));
+    $("#btnExport").addEventListener("click", exportProgress);
+    $("#btnImport").addEventListener("click", () => $("#importFile").click());
+    $("#importFile").addEventListener("change", (e) => { if (e.target.files[0]) importProgress(e.target.files[0]); e.target.value = ""; });
+    $("#search").addEventListener("input", onSearch);
+
+    renderFooter();
+    refresh();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
