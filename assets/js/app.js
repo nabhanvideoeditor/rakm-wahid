@@ -1280,9 +1280,25 @@
     if (!res.ok) {
       msg.className = "auth-msg err";
       msg.textContent = res.msg;
+      // لو الإيميل مش مسجّل: اعرض زرار يعمل حساب بنفس الإيميل فورًا
+      const sw = $("#authSwitch");
+      if (authMode === "login" && res.msg && res.msg.indexOf("مفيش حساب") !== -1) {
+        sw.style.display = "block";
+        sw.onclick = () => {
+          sw.style.display = "none";
+          setAuthMode("register");
+          const m2 = $("#authMsg");
+          m2.className = "auth-msg";
+          m2.textContent = "هعملك حساب جديد ب «" + data.email + "» — اكتب اسمك و باسورد جديد";
+          $("#authName").focus();
+        };
+      } else {
+        sw.style.display = "none";
+      }
       if (typeof SOUND !== "undefined") SOUND.error();
       return;
     }
+    $("#authSwitch").style.display = "none";
     msg.className = "auth-msg ok";
     msg.textContent = res.msg;
     reloadState();
