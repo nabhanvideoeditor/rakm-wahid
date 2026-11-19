@@ -1208,7 +1208,7 @@
           '<div class="acc-card acc-profile">' +
             '<div class="acc-avatar-lg">' + esc(AUTH.initials(u.name)) + "</div>" +
             "<div><div class=\"acc-name\">" + esc(u.name) + '</div><div class="acc-mail">' + esc(u.email) + "</div>" +
-            '<div class="acc-since">أعضاء weston</div></div>' +
+            '<div class="acc-since">عضو weston</div></div>' +
           "</div>" +
           '<div class="acc-card acc-stats">' +
             '<div class="acc-stat"><b>' + doneLessons + '</b><span>درس مكتمل</span></div>' +
@@ -1223,7 +1223,7 @@
           '<button class="btn btn-ghost" id="accExport">تصدير التقدم</button>' +
           '<button class="btn btn-danger" id="accLogout">تسجيل الخروج</button>' +
         "</div>" +
-        '<p class="auth-note">بياناتك بتتحفظ على جهازك فقط — مفيش سيرفر ولا مشاركة مع أي طرف.</p>' +
+        '<p class="auth-note">حسابك وتقدّمك في السحابة — بيشتغلوا على كل أجهزتك. مفيش مشاركة مع أي طرف.</p>' +
       "</section></div>";
     const d = $("#accGoDash"); if (d) d.addEventListener("click", () => go("dashboard"));
     const ex = $("#accExport"); if (ex) ex.addEventListener("click", exportProgress);
