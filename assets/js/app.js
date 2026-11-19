@@ -505,16 +505,43 @@
   }
 
   /* ============ أدوات ============ */
-  function renderTools() {
+  function renderTools(cat, q) {
+    const c = cat || "all", query = (q || "").trim().toLowerCase();
+    const cats = TOOL_CATS;
+    const list = TOOLS.filter((t) =>
+      (c === "all" || t.c === c) &&
+      (!query || (t.n + " " + t.d).toLowerCase().includes(query))
+    );
+    const groups = c === "all"
+      ? cats.map((g) => ({ ...g, items: list.filter((t) => t.c === g.id) })).filter((g) => g.items.length)
+      : [{ ...cats.find((g) => g.id === c), items: list }];
+
     $("#view-tools").innerHTML =
       '<div class="wrap"><section class="section">' +
-        '<div class="section-head"><div class="eyebrow">الأدوات</div><div class="section-title">أدوات مجانية هتستخدمها</div>' +
-        '<div class="section-sub">كل أداة مجانية وتستخدمها في مسار التعلم والشغل.</div></div>' +
-        '<div class="tools-grid">' + ACADEMY.tools.map((t) =>
-          '<div class="tool"><div class="tool-top"><div class="tool-name">' + t.name + '</div><span class="tool-tag">' + t.tag + "</span></div>" +
-          '<div class="tool-use">' + t.use + '</div>' +
-          '<a class="tool-link" href="' + t.link + '" target="_blank" rel="noopener">افتح الأداة ' + I.ext + "</a></div>").join("") +
-        "</div></section></div>";
+        '<div class="section-head"><div class="eyebrow">الأدوات</div>' +
+        '<div class="section-title">دليل أدوات الذكاء الاصطناعي</div>' +
+        '<div class="section-sub">' + TOOLS.length + ' أداة عالمية مجمعة في ' + cats.length + ' قسم — كل أداة بلينكها وسعرها ووصفها.</div></div>' +
+        '<div class="tools-bar">' +
+          '<input class="tools-search" id="toolsSearch" type="text" placeholder="🔍 ابحث عن أداة... (مثلاً: فيديو، صور)" value="' + esc(q || "") + '">' +
+        "</div>" +
+        '<div class="tools-filters">' +
+          '<button class="chip' + (c === "all" ? " active" : "") + '" data-toolcat="all">الكل (' + TOOLS.length + ")</button>" +
+          cats.map((g) => '<button class="chip' + (c === g.id ? " active" : "") + '" data-toolcat="' + g.id + '">' + g.icon + " " + g.name + "</button>").join("") +
+        "</div>" +
+        (list.length ? groups.map((g) =>
+          '<div class="tool-group"><div class="tool-group-head"><span class="tool-group-icon">' + g.icon + '</span><h3>' + g.name + '</h3><span class="tool-group-count">' + g.items.length + "</span></div>" +
+          '<div class="tools-grid">' + g.items.map((t) =>
+            '<div class="tool">' +
+              '<div class="tool-top"><div class="tool-name">' + t.n + '</div><span class="tool-price">' + t.p + "</span></div>" +
+              '<div class="tool-desc">' + t.d + "</div>" +
+              '<a class="tool-link" href="' + t.l + '" target="_blank" rel="noopener">افتح الأداة ' + I.ext + "</a>" +
+            "</div>").join("") + "</div></div>"
+        ).join("") : '<div class="tools-empty">مفيش أدوات مطابقة — جرّب كلمة تانية أو قسم تاني.</div>') +
+      "</section></div>";
+
+    const si = $("#toolsSearch");
+    if (si) si.addEventListener("input", () => { window._toolsQ = si.value; renderTools(c, si.value); si.focus(); const v = si.value; si.setSelectionRange(v.length, v.length); });
+    $$("#view-tools [data-toolcat]").forEach((b) => b.addEventListener("click", () => renderTools(b.dataset.toolcat, $("#toolsSearch") ? $("#toolsSearch").value : "")));
   }
 
   /* ============ أسئلة شائعة ============ */
