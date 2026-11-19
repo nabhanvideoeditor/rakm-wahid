@@ -9,7 +9,7 @@ const AUTH = {
   sessionKey: "weston_session",
   tokenKey: "weston_token",
   anonKey: "weston-progress-v1",
-  API: "/api",
+  API: "https://rakm-wahid.pages.dev/api",
 
   cloud: false,
   token: null,
