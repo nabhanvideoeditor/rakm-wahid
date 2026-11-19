@@ -723,20 +723,22 @@
           '<label class="plan-check"><input type="checkbox" data-plan-week="' + id + '"' + (done ? " checked" : "") + "><span>" + w.w + "</span></label>" +
           '<div class="plan-body">' +
             '<div class="plan-week-title">' + w.title + "</div>" +
-            '<div class="plan-goal">target ' + w.goal + "</div>" +
+            '<div class="plan-goal"><span class="plan-tag">target</span> ' + w.goal + "</div>" +
             (courses ? '<div class="plan-courses">' + courses + "</div>" : "") +
             (daily ? '<div class="plan-daily"><b>مهام يومية:</b> ' + daily + "</div>" : "") +
-            '<div class="plan-habit">sprout العادة: ' + w.habit + "</div>" +
+            '<div class="plan-habit"><span class="plan-tag">العادة</span> ' + w.habit + "</div>" +
             '<div class="plan-task">' + icon("target", 15) + ' مهمة الأسبوع: ' + w.task + "</div>" +
-            '<div class="plan-outcome">✅ المخرج: ' + w.outcome + "</div>" +
+            '<div class="plan-outcome">' + icon("check", 15) + ' المخرج: ' + w.outcome + "</div>" +
           "</div></div>";
       }).join("");
       const md = m.weeks.filter((w) => state.plan["p-" + w.w]).length;
-      return '<div class="plan-month">' +
-        '<div class="plan-month-head"><div class="plan-month-num">' + m.num + "</div>" +
+      return '<div class="plan-month' + (m.num === 1 ? " open" : "") + '" data-month="' + m.num + '">' +
+        '<div class="plan-month-head" role="button" tabindex="0" aria-expanded="' + (m.num === 1) + '">' +
+        '<div class="plan-month-num">' + m.num + "</div>" +
         '<div><div class="plan-month-title">' + m.title + " — " + m.theme + "</div>" +
-        '<div class="plan-month-goal">' + m.goal + "</div></div>" +
-        '<div class="plan-month-prog">' + md + "/" + m.weeks.length + "</div></div>" +
+        '<div class="plan-month-goal">' + m.goal + '</div></div>' +
+        '<div class="plan-month-prog">' + md + "/" + m.weeks.length + "</div>" +
+        '<span class="plan-chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>' +
         '<div class="plan-weeks">' + weeksHtml + "</div></div>";
     }).join("");
 
@@ -759,8 +761,17 @@
       const id = inp.dataset.planWeek;
       if (inp.checked) state.plan[id] = true; else delete state.plan[id];
       save(); renderMyPlan(); updateFloat(); updateFoot();
-      if (inp.checked) cheer("أسبوع مكتمل! كمّل السلسلة 🔥");
+      if (inp.checked) cheer("أسبوع مكتمل! كمّل السلسلة");
     }));
+    $$("#view-myplan .plan-month-head").forEach((h) => {
+      const toggle = () => {
+        const m = h.closest(".plan-month");
+        const open = m.classList.toggle("open");
+        h.setAttribute("aria-expanded", open);
+      };
+      h.addEventListener("click", toggle);
+      h.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+    });
     $$("#view-myplan [data-course-link]").forEach((a) => a.addEventListener("click", (e) => {
       e.preventDefault(); go("detail", a.dataset.courseLink);
     }));

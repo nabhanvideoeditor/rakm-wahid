@@ -55,7 +55,6 @@ const TOOLS = [
   { c: "audio", n: "Suno", d: "تأليف أغاني كاملة بأصوات من نص", l: "https://suno.com", p: "مجاني / 8$" },
   { c: "audio", n: "Udio", d: "منافس سونو — أغاني وموسيقى", l: "https://www.udio.com", p: "مجاني / مدفوع" },
   { c: "audio", n: "Murf", d: "تعليق صوتي احترافي سريع", l: "https://murf.ai", p: "مجاني / مدفوع" },
-  { c: "audio", n: "PlayHT", d: "تحويل نص لصوت بعدة لغات", l: "https://play.ht", p: "تجريبي / مدفوع" },
   { c: "audio", n: "Voicemod", d: "تغيير الصوت لحظياً في المكالمات", l: "https://www.voicemod.net", p: "مجاني / مدفوع" },
 
   /* terminal برمجة */

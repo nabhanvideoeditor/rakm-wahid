@@ -471,10 +471,19 @@ main { min-height: 100vh; }
 .plan-bar span { display: block; height: 100%; background: var(--grad); transition: width .5s; }
 
 .plan-month { margin-bottom: 22px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); overflow: hidden; }
-.plan-month-head { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.plan-month-head { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--surface-2); border-bottom: 1px solid var(--border); cursor: pointer; transition: background .18s; }
+.plan-month-head:hover { background: var(--surface-3); }
+.plan-month.open .plan-month-head { border-bottom-color: transparent; }
+.plan-chev { margin-inline-start: 10px; color: var(--muted); transition: transform .25s; display: inline-flex; }
+.plan-month.open .plan-chev { transform: rotate(180deg); }
+.plan-weeks { display: none; padding: 4px 14px 14px; }
+.plan-month.open .plan-weeks { display: block; animation: fade .3s ease; }
 .plan-month-num { width: 44px; height: 44px; border-radius: 13px; flex: none; display: grid; place-items: center; background: var(--grad); color: #fff; font-weight: 500; font-size: 17px; }
 .plan-month-title { font-weight: 500; font-size: 17px; }
-.plan-month-goal { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.plan-goal { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.plan-tag { font-family: var(--mono); font-size: 10.5px; color: var(--accent-2); background: var(--accent-soft); border: 1px solid rgba(34,197,94,.28); border-radius: 5px; padding: 1px 6px; margin-inline-end: 6px; letter-spacing: .02em; }
+.plan-task, .plan-outcome { display: flex; align-items: flex-start; gap: 7px; color: var(--text-2); font-size: 13.5px; }
+.plan-task .ic, .plan-outcome .ic { color: var(--accent-2); flex: none; margin-top: 2px; }
 .plan-month-prog { margin-inline-start: auto; font-size: 14px; color: var(--accent-2); font-weight: 500; white-space: nowrap; }
 .plan-weeks { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 
