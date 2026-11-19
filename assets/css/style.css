@@ -1085,6 +1085,31 @@ body.locked .topbar, body.locked main, body.locked #chatFab, body.locked #footer
 .btn-danger { background: rgba(248,113,113,.12); border-color: rgba(248,113,113,.35); color: var(--red); }
 .btn-danger:hover { background: rgba(248,113,113,.2); }
 
+/* ---------- لوحة المدير ---------- */
+.admin-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; }
+.admin-setkey h4 { font-size: 15px; margin-bottom: 12px; }
+.admin-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.admin-row input {
+  flex: 1; min-width: 190px; background: var(--bg-2); border: 1px solid var(--border-2); color: var(--text);
+  border-radius: 11px; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;
+}
+.admin-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.admin-msg { font-size: 13.5px; margin: 10px 0; min-height: 18px; }
+.admin-msg.ok { color: var(--ok); }
+.admin-msg.err { color: var(--red); }
+.admin-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.admin-stats .as { flex: 1; min-width: 110px; text-align: center; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 8px; }
+.admin-stats .as b { display: block; font-size: 20px; color: var(--accent-2); }
+.admin-stats .as span { font-size: 11.5px; color: var(--muted); }
+.admin-table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.admin-table th { text-align: start; color: var(--muted); font-size: 12px; font-weight: 600; padding: 9px 10px; border-bottom: 1px solid var(--border-2); }
+.admin-table td { padding: 10px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.admin-table td.num { color: var(--accent-2); font-weight: 600; }
+.admin-table tbody tr:hover { background: var(--surface-2); }
+.admin-del { font-family: inherit; font-size: 12px; padding: 5px 11px; border-radius: 8px; cursor: pointer; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.3); color: var(--red); }
+.admin-del:hover { background: rgba(248,113,113,.22); }
+
 /* ---------- تجاوب ---------- */
 .menu-btn { display: none; }
 @media (max-width: 1080px) {

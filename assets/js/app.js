@@ -85,7 +85,7 @@
   let view = "home";
   function go(v, arg) {
     if (typeof SOUND !== "undefined") SOUND.nav();
-    if (typeof AUTH !== "undefined" && !AUTH.current() && v !== "account") { applyGate(); return; }
+    if (typeof AUTH !== "undefined" && !AUTH.current() && v !== "account" && v !== "admin") { applyGate(); return; }
     view = v;
     $$(".topnav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
     $$(".view").forEach((x) => x.classList.remove("active"));
@@ -104,6 +104,7 @@
     else if (v === "faqs") renderFaqs();
     else if (v === "dashboard") renderDashboard();
     else if (v === "account") renderAccount();
+    else if (v === "admin") renderAdmin();
     window.scrollTo({ top: 0, behavior: "smooth" });
     $("#topnav").classList.remove("open");
   }
@@ -1076,6 +1077,8 @@
             '<a href="#" data-go="tools">الأدوات</a><a href="#" data-go="faqs">الأسئلة الشائعة</a><a href="https://www.edraak.org/" target="_blank">إدراك</a><a href="https://rwaq.org/" target="_blank">رواق</a></div>' +
           "<div><h4>تواصل</h4>" +
             '<a href="https://wa.me/201212439985" target="_blank">واتساب</a></div>' +
+          "<div><h4>المدير</h4>" +
+            '<a href="#" data-go="admin">لوحة المدير</a></div>' +
         "</div>" +
         '<div class="footer-bottom"><span>weston — مسار مجاني كامل لتعلم الذكاء الاصطناعي.</span><span id="footStat"></span></div>' +
       "</div>";
@@ -1228,6 +1231,94 @@
     const d = $("#accGoDash"); if (d) d.addEventListener("click", () => go("dashboard"));
     const ex = $("#accExport"); if (ex) ex.addEventListener("click", exportProgress);
     const lo = $("#accLogout"); if (lo) lo.addEventListener("click", logout);
+  }
+
+  /* ============ لوحة المدير ============ */
+  function adminApi(path, opts) {
+    return fetch((typeof AUTH !== "undefined" ? AUTH.API : "https://rakm-wahid.pages.dev/api") + path, opts).then((r) => r.json()).catch(() => ({ ok: false, msg: "مشكلة اتصال" }));
+  }
+
+  function renderAdmin() {
+    const el = $("#view-admin");
+    if (!el) return;
+    el.innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">المدير</div><div class="section-title">لوحة المدير</div>' +
+        '<div class="section-sub">كل اللي سجلوا في المنصة — الاسم والإيميل وعدد الدروس وتاريخ التسجيل.</div></div>' +
+        '<div class="admin-box">' +
+          '<div class="admin-row">' +
+            '<input id="adminKey" type="password" placeholder="كلمة سر المدير" autocomplete="off">' +
+            '<button class="btn btn-primary" id="adminLoad">اعرض المستخدمين</button>' +
+            '<button class="btn btn-ghost" id="adminStatsBtn">إحصائيات</button>' +
+          "</div>" +
+          '<div class="admin-msg" id="adminMsg"></div>' +
+          '<div id="adminStats"></div>' +
+          '<div class="admin-table-wrap"><table class="admin-table" id="adminTable"></table></div>' +
+        "</div>" +
+        '<div class="admin-box admin-setkey">' +
+          '<h4>تغيير مفتاح المدير</h4>' +
+          '<div class="admin-row">' +
+            '<input id="adminOld" type="password" placeholder="المفتاح الحالي">' +
+            '<input id="adminNew" type="password" placeholder="مفتاح جديد (6 حروف+)" autocomplete="off">' +
+            '<button class="btn btn-ghost" id="adminSetKey">حفظ</button>' +
+          "</div>" +
+        "</div>" +
+      "</section></div>";
+
+    const load = $("#adminLoad"), msg = $("#adminMsg");
+    async function loadUsers() {
+      const key = $("#adminKey").value.trim();
+      if (!key) { msg.className = "admin-msg err"; msg.textContent = "اكتب كلمة سر المدير"; return; }
+      msg.className = "admin-msg"; msg.textContent = "بتتحمل…";
+      const d = await adminApi("/admin?key=" + encodeURIComponent(key));
+      if (!d || !d.ok) {
+        msg.className = "admin-msg err";
+        msg.textContent = (d && d.msg) || "مشكلة في الاتصال";
+        $("#adminTable").innerHTML = "";
+        $("#adminStats").innerHTML = "";
+        return;
+      }
+      msg.className = "admin-msg ok";
+      msg.textContent = d.count + " مستخدم مسجل";
+      const rows = d.users.map((u) => {
+        const dt = u.createdAt ? new Date(u.createdAt).toLocaleDateString("ar-EG") : "—";
+        return '<tr><td>' + esc(u.name) + "</td><td>" + esc(u.email) + '</td><td class="num">' + u.lessons + '</td><td>' + dt + '</td>' +
+          '<td><button class="admin-del" data-email="' + esc(u.email) + '">حذف</button></td></tr>';
+      }).join("");
+      $("#adminTable").innerHTML =
+        "<thead><tr><th>الاسم</th><th>الإيميل</th><th>دروس</th><th>التسجيل</th><th></th></tr></thead><tbody>" +
+        (rows || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">مفيش مستخدمين لسه</td></tr>') +
+        "</tbody>";
+      $$("#adminTable [data-email]").forEach((b) => b.addEventListener("click", async () => {
+        if (!confirm("متأكد عايز تحذف " + b.dataset.email + "؟")) return;
+        const r = await adminApi("/admin", { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ key: $("#adminKey").value.trim(), action: "remove", email: b.dataset.email }) });
+        if (r && r.ok) { loadUsers(); }
+        else { msg.className = "admin-msg err"; msg.textContent = (r && r.msg) || "فشل الحذف"; }
+      }));
+    }
+    if (load) load.addEventListener("click", loadUsers);
+    const ak = $("#adminKey"); if (ak) ak.addEventListener("keydown", (e) => { if (e.key === "Enter") loadUsers(); });
+
+    const sb = $("#adminStatsBtn");
+    if (sb) sb.addEventListener("click", async () => {
+      const key = $("#adminKey").value.trim();
+      const d = await adminApi("/admin", { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ key, action: "stats" }) });
+      if (!d || !d.ok) { msg.className = "admin-msg err"; msg.textContent = (d && d.msg) || "مشكلة"; return; }
+      msg.className = "admin-msg ok"; msg.textContent = "إحصائيات";
+      $("#adminStats").innerHTML =
+        '<div class="admin-stats"><div class="as"><b>' + d.users + '</b><span>مستخدم</span></div>' +
+        '<div class="as"><b>' + d.activeSessions + '</b><span>جلسة نشطة</span></div>' +
+        '<div class="as"><b>' + d.totalLessons + '</b><span>درس مكتمل</span></div></div>';
+    });
+
+    const sk = $("#adminSetKey");
+    if (sk) sk.addEventListener("click", async () => {
+      const oldKey = $("#adminOld").value.trim(), newKey = $("#adminNew").value.trim();
+      const d = await adminApi("/admin", { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ action: "setkey", oldKey, newKey }) });
+      msg.className = "admin-msg " + (d && d.ok ? "ok" : "err");
+      msg.textContent = (d && d.msg) || "مشكلة";
+      if (d && d.ok) { $("#adminOld").value = ""; $("#adminNew").value = ""; }
+    });
   }
 
   /* ============ بحث ============ */
