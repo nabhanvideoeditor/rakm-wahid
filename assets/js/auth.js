@@ -1,12 +1,19 @@
 /* =========================================================
-   weston — الحسابات (تسجيل / دخول / خروج)
-   تخزين محلي على الجهاز — الباسورد متشفر SHA-256
+   weston — الحسابات
+   وضعين:
+   • سحابي (Firebase Auth) — الحساب يشتغل على كل الأجهزة
+   • محلي (localStorage) — احتياطي لو مفيش إعداد سحابي
    ========================================================= */
 
 const AUTH = {
   usersKey: "weston_users",
   sessionKey: "weston_session",
   anonKey: "weston-progress-v1",
+
+  fb: null,
+  fbReady: false,
+  user: null,
+  _pending: false,
 
   /* نطاقات إيميلات مؤقتة/وهمية — ممنوعة */
   DISPOSABLE: [
@@ -24,6 +31,74 @@ const AUTH = {
     "mail-temporaire.com", "minutemail.com", "instantemailaddress.com", "emltmp.com",
   ],
 
+  isConfigured() {
+    try {
+      return typeof FIREBASE_ENABLED !== "undefined" && FIREBASE_ENABLED && typeof FIREBASE_CONFIG !== "undefined";
+    } catch (e) { return false; }
+  },
+
+  /* تجهيز الاتصال بالسحابة (أو الوضع المحلي) */
+  async init() {
+    if (this.isConfigured() && window.firebase) {
+      try {
+        if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+        this.fb = firebase.auth();
+        this.fbReady = true;
+        // ننتظر أول حالة دخول عشان نعرف هل فيه جلسة محفوظة
+        await new Promise((res) => {
+          let done = false;
+          let unsub = null;
+          const finish = (u) => {
+            if (done) return;
+            done = true;
+            this._setFbUser(u);
+            if (unsub) { try { unsub(); } catch (e) {} }
+            res();
+          };
+          unsub = this.fb.onAuthStateChanged((u) => finish(u));
+          setTimeout(() => finish(null), 6000);
+        });
+        return true;
+      } catch (e) {
+        this.fbReady = false;
+      }
+    }
+    // الوضع المحلي
+    try {
+      const em = localStorage.getItem(this.sessionKey);
+      if (em) {
+        const u = this.getUsers()[em];
+        this.user = u ? { email: em, name: u.name } : null;
+      }
+    } catch (e) {}
+    return false;
+  },
+
+  _setFbUser(u) {
+    this.user = u ? { email: u.email, name: u.displayName || (u.email || "").split("@")[0] } : null;
+  },
+
+  current() { return this.user; },
+
+  getUsers() {
+    try { return JSON.parse(localStorage.getItem(this.usersKey)) || {}; } catch (e) { return {}; }
+  },
+  saveUsers(u) { try { localStorage.setItem(this.usersKey, JSON.stringify(u)); } catch (e) {} },
+  setSession(em) { try { localStorage.setItem(this.sessionKey, em); } catch (e) {} },
+
+  async hash(pw) {
+    try {
+      const enc = new TextEncoder().encode(String(pw || ""));
+      const buf = await crypto.subtle.digest("SHA-256", enc);
+      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    } catch (e) {
+      let h = 0;
+      const s = String(pw || "");
+      for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; }
+      return "fb_" + Math.abs(h).toString(36);
+    }
+  },
+
   /* تحقق حقيقي: هل النطاق بيستقبل إيميلات؟ (DNS MX عبر Google DNS) */
   async verifyEmail(email) {
     const em = String(email || "").trim().toLowerCase();
@@ -38,78 +113,90 @@ const AUTH = {
       if (d && Array.isArray(d.Answer) && d.Answer.length) return { ok: true };
       return { ok: false, msg: "النطاق ده مش بيستقبل إيميلات — تحقق من الإيميل" };
     } catch (e) {
-      // لو الشبكة مش متاحة، نسمح بس بعد فحص الصيغة
       return { ok: true };
     }
   },
 
-  getUsers() {
-    try { return JSON.parse(localStorage.getItem(this.usersKey)) || {}; } catch (e) { return {}; }
-  },
-  saveUsers(u) { try { localStorage.setItem(this.usersKey, JSON.stringify(u)); } catch (e) {} },
-
-  async hash(pw) {
-    try {
-      const enc = new TextEncoder().encode(String(pw || ""));
-      const buf = await crypto.subtle.digest("SHA-256", enc);
-      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-    } catch (e) {
-      // بديل بسيط لو Web Crypto مش متاح
-      let h = 0;
-      const s = String(pw || "");
-      for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; }
-      return "fb_" + Math.abs(h).toString(36);
-    }
+  fbMsg(code) {
+    const map = {
+      "auth/email-already-in-use": "الإيميل مستخدم بالفعل — سجّل دخول",
+      "auth/invalid-email": "الإيميل مش صحيح",
+      "auth/weak-password": "الباسورد ضعيف — 6 حروف على الأقل",
+      "auth/user-not-found": "مفيش حساب بالإيميل ده — اعمل حساب جديد",
+      "auth/wrong-password": "الباسورد غلط",
+      "auth/invalid-credential": "الإيميل أو الباسورد غلط",
+      "auth/too-many-requests": "حاولت كتير — استنى شوية وجرّب تاني",
+      "auth/network-request-failed": "مشكلة شبكة — تحقق من الاتصال",
+      "auth/operation-not-allowed": "طريقة الدخول دي متعطلة — تواصل مع الدعم",
+    };
+    return map[code] || "حصل خطأ: " + code;
   },
 
   async register({ name, email, password }) {
-    const users = this.getUsers();
+    if (this._pending) return { ok: false, msg: "استنى لحظة…" };
     const em = (email || "").trim().toLowerCase();
     if (!name || !name.trim()) return { ok: false, msg: "اكتب اسمك" };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return { ok: false, msg: "الإيميل مش صحيح" };
     if (!password || password.length < 6) return { ok: false, msg: "الباسورد 6 حروف على الأقل" };
-    if (!users[em]) {
+    this._pending = true;
+    try {
+      if (this.fbReady) {
+        try {
+          const cred = await this.fb.createUserWithEmailAndPassword(em, password);
+          try { await cred.user.updateProfile({ displayName: name.trim() }); } catch (e) {}
+          this._setFbUser(cred.user);
+          return { ok: true, msg: "تم إنشاء حسابك — أهلاً بيك " + name.trim() };
+        } catch (e) {
+          return { ok: false, msg: this.fbMsg(e && e.code) };
+        }
+      }
+      // الوضع المحلي
+      const users = this.getUsers();
+      if (users[em]) return { ok: false, msg: "الحساب ده موجود — سجّل دخول" };
       const v = await this.verifyEmail(em);
       if (!v.ok) return { ok: false, msg: v.msg };
-      users[em] = {
-        name: name.trim(), email: em,
-        hash: await this.hash(password),
-        createdAt: new Date().toISOString(),
-      };
+      users[em] = { name: name.trim(), email: em, hash: await this.hash(password), createdAt: new Date().toISOString() };
       this.saveUsers(users);
       this.setSession(em);
+      this.user = { email: em, name: name.trim() };
       return { ok: true, msg: "تم إنشاء حسابك — أهلاً بيك " + name.trim() };
+    } finally {
+      this._pending = false;
     }
-    return { ok: false, msg: "الحساب ده موجود — سجّل دخول" };
   },
 
   async login({ email, password }) {
-    const users = this.getUsers();
+    if (this._pending) return { ok: false, msg: "استنى لحظة…" };
     const em = (email || "").trim().toLowerCase();
-    const u = users[em];
-    if (!u) return { ok: false, msg: "مفيش حساب بالإيميل ده — اعمل حساب جديد" };
-    const hash = await this.hash(password);
-    if (hash !== u.hash) return { ok: false, msg: "الباسورد غلط" };
-    this.setSession(em);
-    return { ok: true, msg: "أهلاً بيك " + u.name };
+    this._pending = true;
+    try {
+      if (this.fbReady) {
+        try {
+          const cred = await this.fb.signInWithEmailAndPassword(em, password);
+          this._setFbUser(cred.user);
+          return { ok: true, msg: "أهلاً بيك " + (this.user ? this.user.name : "") };
+        } catch (e) {
+          return { ok: false, msg: this.fbMsg(e && e.code) };
+        }
+      }
+      const users = this.getUsers();
+      const u = users[em];
+      if (!u) return { ok: false, msg: "مفيش حساب بالإيميل ده — اعمل حساب جديد" };
+      if ((await this.hash(password)) !== u.hash) return { ok: false, msg: "الباسورد غلط" };
+      this.setSession(em);
+      this.user = { email: em, name: u.name };
+      return { ok: true, msg: "أهلاً بيك " + u.name };
+    } finally {
+      this._pending = false;
+    }
   },
 
-  logout() {
+  async logout() {
+    if (this.fbReady) { try { await this.fb.signOut(); } catch (e) {} }
     try { localStorage.removeItem(this.sessionKey); } catch (e) {}
+    this.user = null;
   },
 
-  setSession(em) {
-    try { localStorage.setItem(this.sessionKey, em); } catch (e) {}
-  },
-
-  current() {
-    const em = (() => { try { return localStorage.getItem(this.sessionKey); } catch (e) { return null; } })();
-    if (!em) return null;
-    const u = this.getUsers()[em];
-    return u ? { email: em, name: u.name } : null;
-  },
-
-  /* مفتاح التقدم: لكل حساب تقدمه الخاص */
   progressKey() {
     const u = this.current();
     return u ? "weston_progress_" + u.email : this.anonKey;

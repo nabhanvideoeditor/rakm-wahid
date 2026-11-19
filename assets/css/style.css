@@ -1069,6 +1069,9 @@ body.locked .topbar, body.locked main, body.locked #chatFab, body.locked #footer
 .acc-name { font-size: 17px; font-weight: 600; }
 .acc-mail { font-size: 13px; color: var(--muted); }
 .acc-since { font-size: 11.5px; color: var(--accent-2); margin-top: 4px; }
+.acc-mode { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-top: 10px; }
+.acc-mode.cloud { background: rgba(69,224,200,.13); color: var(--accent-2); border: 1px solid rgba(69,224,200,.3); }
+.acc-mode.local { background: var(--gold-soft); color: var(--gold); border: 1px solid rgba(251,191,36,.3); }
 .acc-stats { display: flex; gap: 12px; }
 .acc-stat { flex: 1; text-align: center; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 8px; }
 .acc-stat b { display: block; font-size: 20px; color: var(--accent-2); }

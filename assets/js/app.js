@@ -1139,8 +1139,8 @@
     applyGate();
     setTimeout(() => { closeAuth(); go("account"); }, 700);
   }
-  function logout() {
-    AUTH.logout();
+  async function logout() {
+    if (typeof AUTH !== "undefined" && AUTH.logout) { try { await AUTH.logout(); } catch (e) {} }
     reloadState();
     updateAccountBtn();
     toast("تم تسجيل الخروج");
@@ -1189,7 +1189,10 @@
     el.innerHTML =
       '<div class="wrap"><section class="section">' +
         '<div class="section-head"><div class="eyebrow">حسابي</div><div class="section-title">ملفي الشخصي</div>' +
-        '<div class="section-sub">تقدّمك مربوط بحسابك — بيتحفظ تلقائياً على جهازك.</div></div>' +
+        '<div class="section-sub">تقدّمك مربوط بحسابك — بيتحفظ تلقائياً.</div>' +
+        '<span class="acc-mode ' + ((typeof AUTH !== "undefined" && AUTH.fbReady) ? "cloud" : "local") + '">' +
+          ((typeof AUTH !== "undefined" && AUTH.fbReady) ? "☁️ حساب سحابي — بيشتغل على كل الأجهزة" : "📱 حساب محلي على هذا الجهاز") +
+        "</span></div>" +
         '<div class="acc-grid">' +
           '<div class="acc-card acc-profile">' +
             '<div class="acc-avatar-lg">' + esc(AUTH.initials(u.name)) + "</div>" +
@@ -1286,7 +1289,10 @@
   }
 
   /* ============ تهيئة ============ */
-  function init() {
+  async function init() {
+    // تجهيز الحسابات أولاً (سحابي أو محلي) قبل أي رسم
+    if (typeof AUTH !== "undefined" && AUTH.init) { try { await AUTH.init(); } catch (e) {} }
+    reloadState();
     updateStreak();
     initChat();
     document.documentElement.setAttribute("data-theme", state.theme);
@@ -1342,5 +1348,5 @@
     refresh();
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("DOMContentLoaded", () => { init(); });
 })();
