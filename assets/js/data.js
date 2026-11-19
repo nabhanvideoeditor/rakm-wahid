@@ -13,12 +13,12 @@ const ACADEMY = {
   },
 
   features: [
-    { icon: "♾️", title: "مجاني بالكامل", desc: "كل الكورسات والمسارات والشهادات مجانية — من غير أي رسوم خفية." },
-    { icon: "🧭", title: "مسارات مرتّبة", desc: "الكورسات مترتّبة في مسارات: تخصص تدخل بيها جوه الـ AI، وتطبيق تحطّه في شغلك." },
-    { icon: "🏅", title: "شهادات إتمام", desc: "شهادات مجانية من جهات عالمية معتمدة تضيفها لـ LinkedIn." },
-    { icon: "📚", title: "من الصفر للاحتراف", desc: "منهج كامل و69 كورس ومصدر، من أول «إيه الـ AI» لحد بناء أنظمة كاملة." },
-    { icon: "⏱️", title: "583+ ساعة تعلم", desc: "محتوى عملي موزّع على 14 شهر، بمعدل 10–15 ساعة في الأسبوع." },
-    { icon: "📈", title: "متابعة تقدّمك", desc: "علّم على كل درس تكمّله، وتقدّمك بيتحفظ تلقائياً على جهازك." },
+    { icon: "infinity", title: "مجاني بالكامل", desc: "كل الكورسات والمسارات والشهادات مجانية — من غير أي رسوم خفية." },
+    { icon: "compass", title: "مسارات مرتّبة", desc: "الكورسات مترتّبة في مسارات: تخصص تدخل بيها جوه الـ AI، وتطبيق تحطّه في شغلك." },
+    { icon: "award", title: "شهادات إتمام", desc: "شهادات مجانية من جهات عالمية معتمدة تضيفها لـ LinkedIn." },
+    { icon: "book", title: "من الصفر للاحتراف", desc: "منهج كامل و69 كورس ومصدر، من أول «إيه الـ AI» لحد بناء أنظمة كاملة." },
+    { icon: "clock", title: "583+ ساعة تعلم", desc: "محتوى عملي موزّع على 14 شهر، بمعدل 10–15 ساعة في الأسبوع." },
+    { icon: "chart", title: "متابعة تقدّمك", desc: "علّم على كل درس تكمّله، وتقدّمك بيتحفظ تلقائياً على جهازك." },
   ],
 
   trackKinds: {
@@ -35,19 +35,19 @@ const ACADEMY = {
   },
 
   tracks: [
-    { id: "t-math", kind: "specialize", title: "الرياضيات للذكاء الاصطناعي", icon: "📐", tagline: "اللي بتحسبه النماذج", desc: "الجبر الخطي والتفاضل والاحتمالات — الأساس الرياضي اللي بيفرّق بين مستخدم ومحترف.", courseIds: ["c-math-la", "c-math-calc", "c-math-prob", "c-math-book", "c-numpy"], level: "مبتدئ", weeks: "4 أسابيع" },
-    { id: "t-foundations", kind: "specialize", title: "أساسيات الذكاء الاصطناعي", icon: "🌱", tagline: "نقطة البداية لأي حد", desc: "تفهم إيه الـ AI وإزاي بيفكر، من غير أي خلفية تقنية.", courseIds: ["c-elements", "c-ai4e", "c-edraak", "c-edraak-intro", "c-mlcc"], level: "مبتدئ", weeks: "6 أسابيع" },
-    { id: "t-python", kind: "specialize", title: "Python وعلم البيانات", icon: "🐍", tagline: "أدوات الـ AI الأساسية", desc: "تتعلم بايثون من الصفر وتتعامل مع البيانات اللي هتبني عليها نماذجك.", courseIds: ["c-kaggle-intro", "c-kaggle-python", "c-kaggle-pandas", "c-kaggle-viz", "c-kaggle-git", "c-kaggle-sql", "c-cs50py", "c-colab", "c-ds"], level: "مبتدئ", weeks: "7 أسابيع" },
-    { id: "t-ml", kind: "specialize", title: "التعلّم الآلي Machine Learning", icon: "🤖", tagline: "تبني موديل يتعلم من البيانات", desc: "الخوارزميات الكلاسيكية وتقييم النماذج وبناء أنظمة تنبؤ حقيقية.", courseIds: ["c-ml-spec", "c-statquest", "c-kaggle-iml", "c-kaggle-fe", "c-cs229", "c-100ml"], level: "متوسط", weeks: "9 أسابيع" },
-    { id: "t-dl", kind: "specialize", title: "التعلّم العميق Deep Learning", icon: "🧠", tagline: "الشبكات العصبية من الصفر", desc: "من البيرسبترون لحد الشبكات الالتفافية والتحويل، وبتبني وتدرّب نماذجك.", courseIds: ["c-fastai", "c-karpathy", "c-3b1b-nn", "c-cs50ai", "c-cs231n", "c-dl-spec", "c-fcc-ml", "c-kaggle-dl", "c-kaggle-cv"], level: "متوسط", weeks: "9 أسابيع" },
-    { id: "t-genai", kind: "specialize", title: "الـ AI التوليدي والوكلاء", icon: "✨", tagline: "النماذج اللغوية والوكلاء الأذكياء", desc: "هندسة الأوامر، RAG، النماذج اللغوية الكبيرة، وبناء وكلاء ينفّذوا مهام.", courseIds: ["c-hf-llm", "c-cs224n", "c-cohere", "c-nlp-spec", "c-rag", "c-langchain", "c-finetune", "c-hf-agents", "c-langgraph", "c-crewai", "c-fsdl"], level: "متوسط", weeks: "10 أسابيع" },
-    { id: "t-mlops", kind: "specialize", title: "MLOps ونشر النماذج", icon: "🚀", tagline: "من النوتبوك للإنتاج", desc: "تغلّف نموذجك وتنشره كـ API وتراقبه، زي الفرق المحترفة بالظبط.", courseIds: ["c-mlops-ml", "c-mlops-zoom", "c-mle-production"], level: "متقدم", weeks: "4 أسابيع" },
-    { id: "t-advanced", kind: "specialize", title: "تخصصات متقدمة", icon: "🎯", tagline: "رؤية حاسوب، تعلّم معزز", desc: "تتعمق في تخصص واحد: رؤية الحاسوب أو التعلم المعزز.", courseIds: ["c-hf-cv", "c-hf-rl", "c-cs188"], level: "متقدم", weeks: "مستمر" },
-    { id: "a-prompt", kind: "apply", title: "هندسة الأوامر Prompt Engineering", icon: "✍️", tagline: "تتكلم مع الـ AI صح", desc: "تكتب أوامر احترافية تطلعلك النتيجة اللي في دماغك بالظبط.", courseIds: ["c-pe-dev", "c-pe-chatgpt", "c-learn-prompt", "c-kaggle-genai"], level: "مبتدئ", weeks: "أسبوعان" },
-    { id: "a-claude", kind: "apply", title: "كلود كود والبرمجة بالـ AI", icon: "💻", tagline: "الـ AI بيشتغل جوه مشروعك", desc: "تستخدم Claude Code وأدوات البرمجة الذكية تبني أسرع وتصحّح كودك.", courseIds: ["c-claude-code"], level: "متقدم", weeks: "أسبوعان" },
-    { id: "a-auto", kind: "apply", title: "الأوتوميشن وسير العمل", icon: "⚙️", tagline: "أنظمة بتشتغل لوحدها", desc: "تبني سير عمل وأوتوميشن يشيل عنك الشغل المتكرر باستخدام n8n و Agents.", courseIds: ["c-n8n"], level: "متوسط", weeks: "أسبوعان" },
-    { id: "a-biz", kind: "apply", title: "الـ AI للأعمال والتسويق", icon: "📊", tagline: "حملات أسرع وقرارات أدق", desc: "تولّد إعلانات وتحمل حملات وتحلّل نتائجها بالـ AI في وقت أقل.", courseIds: ["c-ms-genai", "c-google-genai"], level: "مبتدئ", weeks: "أسبوعان" },
-    { id: "a-design", kind: "apply", title: "الـ AI للتصميم والمحتوى", icon: "🎨", tagline: "إبداع أسرع بجودة أعلى", desc: "صور وثامبنيلز ومحتوى وسكربتات بمساعدة الـ AI — لكل المجالات الإبداعية.", courseIds: ["c-comfy", "c-midjourney", "c-elevenlabs"], level: "مبتدئ", weeks: "أسبوعان" },
+    { id: "t-math", kind: "specialize", title: "الرياضيات للذكاء الاصطناعي", icon: "sigma", tagline: "اللي بتحسبه النماذج", desc: "الجبر الخطي والتفاضل والاحتمالات — الأساس الرياضي اللي بيفرّق بين مستخدم ومحترف.", courseIds: ["c-math-la", "c-math-calc", "c-math-prob", "c-math-book", "c-numpy"], level: "مبتدئ", weeks: "4 أسابيع" },
+    { id: "t-foundations", kind: "specialize", title: "أساسيات الذكاء الاصطناعي", icon: "sprout", tagline: "نقطة البداية لأي حد", desc: "تفهم إيه الـ AI وإزاي بيفكر، من غير أي خلفية تقنية.", courseIds: ["c-elements", "c-ai4e", "c-edraak", "c-edraak-intro", "c-mlcc"], level: "مبتدئ", weeks: "6 أسابيع" },
+    { id: "t-python", kind: "specialize", title: "Python وعلم البيانات", icon: "python", tagline: "أدوات الـ AI الأساسية", desc: "تتعلم بايثون من الصفر وتتعامل مع البيانات اللي هتبني عليها نماذجك.", courseIds: ["c-kaggle-intro", "c-kaggle-python", "c-kaggle-pandas", "c-kaggle-viz", "c-kaggle-git", "c-kaggle-sql", "c-cs50py", "c-colab", "c-ds"], level: "مبتدئ", weeks: "7 أسابيع" },
+    { id: "t-ml", kind: "specialize", title: "التعلّم الآلي Machine Learning", icon: "bot", tagline: "تبني موديل يتعلم من البيانات", desc: "الخوارزميات الكلاسيكية وتقييم النماذج وبناء أنظمة تنبؤ حقيقية.", courseIds: ["c-ml-spec", "c-statquest", "c-kaggle-iml", "c-kaggle-fe", "c-cs229", "c-100ml"], level: "متوسط", weeks: "9 أسابيع" },
+    { id: "t-dl", kind: "specialize", title: "التعلّم العميق Deep Learning", icon: "brain", tagline: "الشبكات العصبية من الصفر", desc: "من البيرسبترون لحد الشبكات الالتفافية والتحويل، وبتبني وتدرّب نماذجك.", courseIds: ["c-fastai", "c-karpathy", "c-3b1b-nn", "c-cs50ai", "c-cs231n", "c-dl-spec", "c-fcc-ml", "c-kaggle-dl", "c-kaggle-cv"], level: "متوسط", weeks: "9 أسابيع" },
+    { id: "t-genai", kind: "specialize", title: "الـ AI التوليدي والوكلاء", icon: "sparkles", tagline: "النماذج اللغوية والوكلاء الأذكياء", desc: "هندسة الأوامر، RAG، النماذج اللغوية الكبيرة، وبناء وكلاء ينفّذوا مهام.", courseIds: ["c-hf-llm", "c-cs224n", "c-cohere", "c-nlp-spec", "c-rag", "c-langchain", "c-finetune", "c-hf-agents", "c-langgraph", "c-crewai", "c-fsdl"], level: "متوسط", weeks: "10 أسابيع" },
+    { id: "t-mlops", kind: "specialize", title: "MLOps ونشر النماذج", icon: "rocket", tagline: "من النوتبوك للإنتاج", desc: "تغلّف نموذجك وتنشره كـ API وتراقبه، زي الفرق المحترفة بالظبط.", courseIds: ["c-mlops-ml", "c-mlops-zoom", "c-mle-production"], level: "متقدم", weeks: "4 أسابيع" },
+    { id: "t-advanced", kind: "specialize", title: "تخصصات متقدمة", icon: "target", tagline: "رؤية حاسوب، تعلّم معزز", desc: "تتعمق في تخصص واحد: رؤية الحاسوب أو التعلم المعزز.", courseIds: ["c-hf-cv", "c-hf-rl", "c-cs188"], level: "متقدم", weeks: "مستمر" },
+    { id: "a-prompt", kind: "apply", title: "هندسة الأوامر Prompt Engineering", icon: "pen", tagline: "تتكلم مع الـ AI صح", desc: "تكتب أوامر احترافية تطلعلك النتيجة اللي في دماغك بالظبط.", courseIds: ["c-pe-dev", "c-pe-chatgpt", "c-learn-prompt", "c-kaggle-genai"], level: "مبتدئ", weeks: "أسبوعان" },
+    { id: "a-claude", kind: "apply", title: "كلود كود والبرمجة بالـ AI", icon: "terminal", tagline: "الـ AI بيشتغل جوه مشروعك", desc: "تستخدم Claude Code وأدوات البرمجة الذكية تبني أسرع وتصحّح كودك.", courseIds: ["c-claude-code"], level: "متقدم", weeks: "أسبوعان" },
+    { id: "a-auto", kind: "apply", title: "الأوتوميشن وسير العمل", icon: "gear", tagline: "أنظمة بتشتغل لوحدها", desc: "تبني سير عمل وأوتوميشن يشيل عنك الشغل المتكرر باستخدام n8n و Agents.", courseIds: ["c-n8n"], level: "متوسط", weeks: "أسبوعان" },
+    { id: "a-biz", kind: "apply", title: "الـ AI للأعمال والتسويق", icon: "bars", tagline: "حملات أسرع وقرارات أدق", desc: "تولّد إعلانات وتحمل حملات وتحلّل نتائجها بالـ AI في وقت أقل.", courseIds: ["c-ms-genai", "c-google-genai"], level: "مبتدئ", weeks: "أسبوعان" },
+    { id: "a-design", kind: "apply", title: "الـ AI للتصميم والمحتوى", icon: "palette", tagline: "إبداع أسرع بجودة أعلى", desc: "صور وثامبنيلز ومحتوى وسكربتات بمساعدة الـ AI — لكل المجالات الإبداعية.", courseIds: ["c-comfy", "c-midjourney", "c-elevenlabs"], level: "مبتدئ", weeks: "أسبوعان" },
   ],
 
   courses: [

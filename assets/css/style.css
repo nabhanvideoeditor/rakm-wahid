@@ -49,6 +49,7 @@
   --font: "Alexandria", "Segoe UI", "IBM Plex Sans Arabic", sans-serif;
   --font-head: "Alexandria", "Segoe UI", sans-serif;
   --font-brand: "Space Grotesk", "Alexandria", sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", Consolas, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,11 +71,11 @@ body {
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(900px 520px at 85% -5%, rgba(37, 99, 235, .20), transparent 62%),
-    radial-gradient(760px 520px at 5% 8%, rgba(69, 224, 200, .11), transparent 62%),
-    linear-gradient(rgba(37, 99, 235, .05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, .05) 1px, transparent 1px);
-  background-size: auto, auto, 46px 46px, 46px 46px;
+    radial-gradient(1100px 640px at 88% -8%, rgba(37, 99, 235, .15), transparent 58%),
+    radial-gradient(820px 620px at 2% 14%, rgba(69, 224, 200, .06), transparent 60%),
+    linear-gradient(rgba(148, 178, 255, .038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 178, 255, .038) 1px, transparent 1px);
+  background-size: auto, auto, 54px 54px, 54px 54px;
 }
 ::selection { background: var(--accent); color: #fff; }
 a { color: var(--accent-2); text-decoration: none; }
@@ -166,6 +167,13 @@ button { font-family: inherit; }
 main { padding-bottom: 96px; }
 .wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
 main { min-height: 100vh; }
+
+/* أرقام تقنية متساوية العرض */
+.hstat-val, .mot-big, .acc-stat b, .pd-stats b, .acc-progress-top b, .rm-num, .streak-day, .tool-group-count, .as b {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
 .view { display: none; animation: fade .4s ease; }
 .view.active { display: block; }
 @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
@@ -490,15 +498,15 @@ main { min-height: 100vh; }
 /* ---------- هوية AI ---------- */
 .neural { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .neural .node {
-  position: absolute; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 12px var(--accent);
-  opacity: .55; animation: float 6s ease-in-out infinite;
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--steel); opacity: .28;
+  animation: float 14s ease-in-out infinite;
 }
-.neural .node:nth-child(2n) { background: var(--steel); box-shadow: 0 0 12px var(--steel); }
-.neural .node:nth-child(3n) { animation-duration: 8s; animation-delay: -2s; }
+.neural .node:nth-child(2n) { background: var(--accent); opacity: .3; }
+.neural .node:nth-child(3n) { animation-duration: 18s; animation-delay: -4s; }
 @keyframes float {
-  0%, 100% { transform: translate(0, 0); opacity: .25; }
-  50% { transform: translate(14px, -18px); opacity: .7; }
+  0%, 100% { transform: translate(0, 0); opacity: .12; }
+  50% { transform: translate(10px, -14px); opacity: .3; }
 }
 .ai-pill {
   display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; border-radius: 999px;
@@ -515,6 +523,12 @@ main { min-height: 100vh; }
 .card::after, .feat::after {
   content: ""; position: absolute; top: 0; inset-inline-start: 0; width: 46px; height: 2px;
   background: linear-gradient(90deg, var(--accent), transparent); opacity: .7;
+}
+
+/* حدة أدق: زوايا أصغر وحدود رفيعة */
+.card, .feat, .track, .course-card, .path-card, .tool, .mot-card, .acc-card, .rm-card, .pd-list li, .admin-box, .modal-box {
+  border-radius: 10px;
+  border: 1px solid var(--border-2);
 }
 
 /* ---------- تحفيز ومذاكرة ---------- */

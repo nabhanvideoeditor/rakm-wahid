@@ -5,7 +5,7 @@
 
 const PATHS = [
   {
-    id: "ml-engineer", icon: "🤖", title: "مهندس تعلّم آلي",
+    id: "ml-engineer", icon: "bot", title: "مهندس تعلّم آلي",
     tagline: "ابنِ وانشر نماذج تنبؤ تتعلم من البيانات",
     goal: "تشتغل في فرق المنتجات وتبني نماذج تصنيف وتنبؤ وانتشار وتوصيات.",
     time: "9–12 شهر", salary: "70–150 ألف $", level: "متوسط",
@@ -22,7 +22,7 @@ const PATHS = [
     certs: ["Machine Learning Specialization", "MLOps Zoomcamp", "TensorFlow Developer"],
   },
   {
-    id: "cv-engineer", icon: "👁️", title: "مهندس رؤية حاسوب",
+    id: "cv-engineer", icon: "eye", title: "مهندس رؤية حاسوب",
     tagline: "خلي الآلة تشوف: صور، فيديو، كشف أشياء",
     goal: "تبني أنظمة تعرف الوجوه والأشياء وتتابع الحركة — في المصانع والسيارات والأمن.",
     time: "10–14 شهر", salary: "90–180 ألف $", level: "متقدم",
@@ -39,7 +39,7 @@ const PATHS = [
     certs: ["Deep Learning Specialization", "CS231n", "Hugging Face CV"],
   },
   {
-    id: "nlp-genai", icon: "💬", title: "مهندس NLP وذكاء توليدي",
+    id: "nlp-genai", icon: "message", title: "مهندس NLP وذكاء توليدي",
     tagline: "ابنِ تطبيقات تتكلم وتكتب وتجاوب",
     goal: "تبني شات بوتات وأنظمة تلخيص وترجمة وبحث دلالي — كل شركة محتاجة ده دلوقتي.",
     time: "9–12 شهر", salary: "90–180 ألف $", level: "متوسط",
@@ -56,7 +56,7 @@ const PATHS = [
     certs: ["NLP Specialization", "LLM Course (Hugging Face)", "DeepLearning.AI"],
   },
   {
-    id: "agent-engineer", icon: "🦾", title: "مهندس وكلاء AI",
+    id: "agent-engineer", icon: "zap", title: "مهندس وكلاء AI",
     tagline: "ابنِ وكلاء بذكاء ينفّذوا مهام بالكامل",
     goal: "تبني أنظمة بتاخد قرار وتنفّذ خطوات — من خدمة العملاء للأتمتة الكاملة.",
     time: "8–11 شهر", salary: "100–200 ألف $", level: "متقدم",
@@ -73,7 +73,7 @@ const PATHS = [
     certs: ["Agents Course (Hugging Face)", "LangChain Academy"],
   },
   {
-    id: "data-scientist", icon: "📊", title: "عالم بيانات",
+    id: "data-scientist", icon: "bars", title: "عالم بيانات",
     tagline: "حوّل الأرقام لقرارات وتوصيات",
     goal: "تحلّل بيانات الشركات وتطلّع رؤى تقود القرار — من غير ما تبني نماذج معقدة.",
     time: "6–9 شهر", salary: "60–130 ألف $", level: "مبتدئ",
@@ -89,7 +89,7 @@ const PATHS = [
     certs: ["Google Data Analytics", "Data Analysis with Python (freeCodeCamp)"],
   },
   {
-    id: "mlops", icon: "🚀", title: "مهندس MLOps",
+    id: "mlops", icon: "rocket", title: "مهندس MLOps",
     tagline: "انشر وراقب وحسّن نماذج في الإنتاج",
     goal: "تهندس البنية التحتية للـ AI — النشر والمراقبة والتوسيع. أعلى طلب في السوق.",
     time: "8–12 شهر", salary: "110–200 ألف $", level: "متقدم",
@@ -105,7 +105,7 @@ const PATHS = [
     certs: ["MLOps Zoomcamp", "Made With ML MLOps", "AWS ML Specialty"],
   },
   {
-    id: "ai-developer", icon: "💻", title: "مطوّر تطبيقات AI",
+    id: "ai-developer", icon: "terminal", title: "مطوّر تطبيقات AI",
     tagline: "ابنِ منتجات وتساعد المبرمجين بالـ AI",
     goal: "تبرمج تطبيقات كاملة بتستخدم نماذج AI، وتبني أدوات للمطورين.",
     time: "7–10 شهر", salary: "80–170 ألف $", level: "متوسط",
@@ -122,7 +122,7 @@ const PATHS = [
     certs: ["Full Stack Deep Learning", "Claude Code (Anthropic)"],
   },
   {
-    id: "content-creator", icon: "🎨", title: "صانع محتوى وتصميم AI",
+    id: "content-creator", icon: "palette", title: "صانع محتوى وتصميم AI",
     tagline: "صور وفيديو وصوت وسكربتات بالـ AI",
     goal: "تولّد محتوى احترافي للي بيزنوا ويبيعوا — أسرع مجال للدخل الحر.",
     time: "3–6 شهر", salary: "30–90 ألف $", level: "مبتدئ",
@@ -138,7 +138,7 @@ const PATHS = [
     certs: ["Prompt Engineering", "Midjourney Mastery"],
   },
   {
-    id: "ai-consultant", icon: "💼", title: "مستشار AI للأعمال",
+    id: "ai-consultant", icon: "briefcase", title: "مستشار AI للأعمال",
     tagline: "ساعد الشركات تبني استراتيجية AI",
     goal: "تحلّل عمليات الشركة وتقترح حلول AI وتدير التنفيذ — بدون ما تكتب كود كتير.",
     time: "6–10 شهر", salary: "90–180 ألف $", level: "متوسط",

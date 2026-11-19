@@ -61,6 +61,74 @@
   }
 
   /* ---------- أيقونات ---------- */
+  /* ---------- مكتبة أيقونات خطية (بديل الإيموجي) ---------- */
+  const ICONS = {
+    infinity: '<circle cx="12" cy="12" r="9"/><path d="M8.5 12c0-1.4 1.1-2.5 2.4-2.5 2.1 0 2.4 5 4.5 5 1.3 0 2.4-1.1 2.4-2.5S16.7 9.5 15.4 9.5c-2 0-2.4 5-4.5 5-1.3 0-2.4-1.1-2.4-2.5Z"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/>',
+    award: '<circle cx="12" cy="9" r="5"/><path d="m14.5 13.2 1.8 7-4.3-2.4-4.3 2.4 1.8-7"/>',
+    book: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
+    chart: '<path d="M4 4v16h16"/><path d="m6.5 16.5 4-4 3 2.5 4.5-5.5"/>',
+    bars: '<path d="M4 20h16"/><path d="M7 20v-6M12 20V8M17 20v-9"/>',
+    sigma: '<path d="M17 5H7l6 7-6 7h10"/>',
+    sprout: '<path d="M12 20v-7"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5Z"/><path d="M12 13c0-3-2.5-5-6-5 0 3 2.5 5 6 5Z"/>',
+    python: '<path d="M12 3c-2.5 0-4 1.1-4 3v2h8v1H6.5C5 9 4 10.5 4 12.5S5 16 6.5 16H9v-3c0-1.7 1.3-3 3-3h5c1.4 0 2.5-1.1 2.5-2.5V6c0-1.9-1.5-3-4-3h-2.5Z"/><circle cx="10" cy="6" r=".8"/><path d="M12 21c2.5 0 4-1.1 4-3v-2h-8v-1h9.5c1.5 0 2.5-1.5 2.5-3.5S19 8.5 17.5 8.5H15v3c0 1.7-1.3 3-3 3H7c-1.4 0-2.5 1.1-2.5 2.5v2c0 1.9 1.5 3 4 3h3.5Z"/><circle cx="14" cy="18" r=".8"/>',
+    bot: '<rect x="5" y="8" width="14" height="11" rx="2.5"/><path d="M12 8V5"/><circle cx="12" cy="4" r="1"/><circle cx="9.5" cy="13" r=".9"/><circle cx="14.5" cy="13" r=".9"/><path d="M9.5 16.5h5"/>',
+    brain: '<path d="M9.5 4a2.5 2.5 0 0 0-2.5 2.5v.6A2.5 2.5 0 0 0 5.5 12 2.5 2.5 0 0 0 7 16.5v1A2.5 2.5 0 0 0 9.5 20h1V4h-1Z"/><path d="M14.5 4a2.5 2.5 0 0 1 2.5 2.5v.6A2.5 2.5 0 0 1 18.5 12 2.5 2.5 0 0 1 17 16.5v1a2.5 2.5 0 0 1-2.5 2.5h-1V4h1Z"/>',
+    sparkles: '<path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4Z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/>',
+    rocket: '<path d="M12 3c3.5 2.5 5 6 5 9l-2.5 2.5h-5L7 12c0-3 1.5-6.5 5-9Z"/><circle cx="12" cy="10" r="1.6"/><path d="M9.5 14.5C7 16 5.5 18.5 5 21c2.5-.5 5-2 6.5-4.5"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+    pen: '<path d="M15.5 4.5 19.5 8.5 8.5 19.5H4.5v-4L15.5 4.5Z"/><path d="m13.5 6.5 4 4"/>',
+    terminal: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3"/><path d="M13 15h4"/>',
+    gear: '<circle cx="12" cy="12" r="3"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/>',
+    briefcase: '<rect x="3" y="7.5" width="18" height="12" rx="2.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/><path d="M3 12.5h18"/>',
+    palette: '<path d="M12 3a9 9 0 1 0 0 18c1.6 0 2.2-1 1.6-2.3-.7-1.4.2-2.7 1.8-2.7H17a3 3 0 0 0 3-3c0-5-3.6-10-8-10Z"/><circle cx="7.5" cy="10.5" r=".9"/><circle cx="12" cy="7.5" r=".9"/><circle cx="16.5" cy="10.5" r=".9"/>',
+    eye: '<path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/>',
+    message: '<path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12Z"/>',
+    zap: '<path d="M13 3 5 13.5h5L11 21l8-10.5h-5L13 3Z"/>',
+    code: '<path d="m8 7-5 5 5 5M16 7l5 5-5 5"/>',
+    layers: '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    shield: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z"/>',
+    grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    play: '<circle cx="12" cy="12" r="9"/><path d="m10 8.5 6 3.5-6 3.5v-7Z"/>',
+    star: '<path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/>',
+    flame: '<path d="M12 3c3 3.5 5.5 6 5.5 9.5a5.5 5.5 0 0 1-11 0C6.5 9 9 6.5 12 3Z"/>',
+    bolt: '<path d="M13 3 5 13.5h5L11 21l8-10.5h-5L13 3Z"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.5a3.5 3.5 0 0 1 0 5.6"/><path d="M17 20a6.5 6.5 0 0 0-2-4.7"/>',
+    lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    cpu: '<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="10" y="10" width="4" height="4"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>',
+    link: '<path d="M10 14a4 4 0 0 0 6 .4l3-3a4 4 0 0 0-5.6-5.6L12 7.2"/><path d="M14 10a4 4 0 0 0-6-.4l-3 3a4 4 0 0 0 5.6 5.6L12 16.8"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
+    dot: '<circle cx="12" cy="12" r="3"/>',
+    map: '<path d="m9 4 6 2 6-2v14l-6 2-6-2-6 2V6l6-2Z"/><path d="M9 4v14M15 6v14"/>',
+    flag: '<path d="M6 21V4"/><path d="M6 4c3-1.5 5 1.5 8 0s4-1 4-1v9s-1-.5-4 1-5-1.5-8 0"/>',
+    bookmark: '<path d="M6 3h12v18l-6-4-6 4V3Z"/>',
+    download: '<path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/>',
+    upload: '<path d="M12 21V9"/><path d="m7 13 5-5 5 5"/><path d="M4 4h16"/>',
+    refresh: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/>',
+    trash: '<path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/>',
+    key: '<circle cx="8" cy="8" r="4"/><path d="m11 11 9 9-3 3-2-2-2 2-2-2 2-2-2-2 2-2Z"/>',
+    image: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/>',
+    video: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>',
+    mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v4"/>',
+    edit: '<path d="M4 20h16"/><path d="M14.5 4.5 19.5 9.5 9 20H4v-5L14.5 4.5Z"/>',
+    cap: '<path d="M12 4 2.5 9 12 14l9.5-5L12 4Z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M21.5 9v5"/>',
+    wrench: '<path d="M14.5 6.5a4 4 0 0 0-5.6 4.9L4 16.3V20h3.7l4.9-4.9a4 4 0 0 0 4.9-5.6l-2.8 2.8-2.4-.7-.7-2.4 2.3-2.7Z"/>',
+    scale: '<path d="M12 3v18"/><path d="M5 7h14"/><path d="M7 7l-3 6h6L7 7ZM17 7l-3 6h6l-3-6Z"/><path d="M9 21h6"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/>',
+    pie: '<path d="M12 3a9 9 0 1 0 9 9h-9V3Z"/><path d="M15 2.5A9 9 0 0 1 21.5 9H15V2.5Z"/>',
+    inbox: '<path d="M3 13h5l1.5 2.5h5L16 13h5"/><path d="M3 13l2.5-8h13L21 13v6H3v-6Z"/>',
+  };
+
+  function icon(name, size) {
+    const s = size || 20;
+    const body = ICONS[name] || ICONS.dot;
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + body + "</svg>";
+  }
+
   const I = {
     check: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
     ext: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>',
@@ -167,7 +235,7 @@
         '<div class="tip">🟢 فاتح = يوم ذاكرت فيه &nbsp;•&nbsp; ⚫ داكن = لسه. استمر — حتى 20 دقيقة بتفرق.</div>' +
       "</div>" +
       '<div class="mot-card">' +
-        '<div class="mot-label">💬 اقتباس النهاردة</div>' +
+        '<div class="mot-label">message اقتباس النهاردة</div>' +
         '<div class="mot-quote">' + q.t + "</div>" +
         '<div class="mot-author">— ' + q.a + "</div>" +
         '<div class="tip">⚡ <b>نصيحة:</b> ' + PLAN.note + "</div>" +
@@ -221,7 +289,7 @@
         '<section class="section">' +
           '<div class="section-head"><div class="eyebrow">ليه weston؟</div><div class="section-title">كل اللي محتاجه في مكان واحد</div></div>' +
           '<div class="feat-grid feat-grid-4">' + ACADEMY.features.slice(0, 4).map((f) =>
-            '<div class="feat"><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + "</div></div>").join("") +
+            '<div class="feat"><div class="feat-icon">' + icon(f.icon, 22) + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + "</div></div>").join("") +
           "</div>" +
         "</section>" +
 
@@ -245,7 +313,7 @@
   function trackCard(tr, full) {
     const p = trackProgress(tr);
     return '<div class="track">' +
-      '<div class="track-head"><div class="track-icon">' + tr.icon + "</div>" +
+      '<div class="track-head"><div class="track-icon">' + icon(tr.icon, 26) + "</div>" +
       '<div style="flex:1"><div class="track-title">' + tr.title + '</div><div class="track-tagline">' + tr.tagline + "</div></div></div>" +
       (full ? '<div class="track-desc">' + tr.desc + "</div>" : "") +
       '<div class="track-foot">' +
@@ -265,7 +333,7 @@
     const done = courseComplete(c.id);
     const p = courseProgress(c.id);
     return '<div class="course-card" data-open-course="' + c.id + '">' +
-      '<div class="course-top"><div class="course-title">' + c.title + (hasVideo(c.id) ? ' <span class="vid-badge" title="محتوى مدمج جوه المنصة">🎬</span>' : "") + '</div><span class="course-type">' + (c.type || "كورس") + "</span></div>" +
+      '<div class="course-top"><div class="course-title">' + c.title + (hasVideo(c.id) ? ' <span class="vid-badge" title="محتوى مدمج جوه المنصة">video</span>' : "") + '</div><span class="course-type">' + (c.type || "كورس") + "</span></div>" +
       '<div class="course-note">' + (c.note || c.provider) + "</div>" +
       '<div class="course-meta"><span>' + c.provider + "</span><span>•</span><span>" + c.hours + ' س</span><span>•</span>' + trackPill(c) + "</div>" +
       '<div class="course-foot"><span class="course-progress' + (done ? " done" : "") + '">' + (done ? "✓ مكتمل" : p + "%") + "</span>" +
@@ -398,7 +466,7 @@
       : "";
     const videosHtml = vids.length
       ? '<div class="videos">' +
-          '<div class="lessons-head"><div class="lessons-title">🎬 شغّل المحتوى هنا</div><div class="lessons-count">اضغط على أي فيديو للتشغيل — أو افتحه على يوتيوب</div></div>' +
+          '<div class="lessons-head"><div class="lessons-title">video شغّل المحتوى هنا</div><div class="lessons-count">اضغط على أي فيديو للتشغيل — أو افتحه على يوتيوب</div></div>' +
           '<div class="video-grid">' +
             vids.map((v) => {
               const yt = v.type === "playlist"
@@ -540,14 +608,14 @@
         '<div class="section-title">دليل أدوات الذكاء الاصطناعي</div>' +
         '<div class="section-sub">' + TOOLS.length + ' أداة عالمية مجمعة في ' + cats.length + ' قسم — كل أداة بلينكها وسعرها ووصفها.</div></div>' +
         '<div class="tools-bar">' +
-          '<input class="tools-search" id="toolsSearch" type="text" placeholder="🔍 ابحث عن أداة... (مثلاً: فيديو، صور)" value="' + esc(q || "") + '">' +
+          '<input class="tools-search" id="toolsSearch" type="text" placeholder="search ابحث عن أداة... (مثلاً: فيديو، صور)" value="' + esc(q || "") + '">' +
         "</div>" +
         '<div class="tools-filters">' +
           '<button class="chip' + (c === "all" ? " active" : "") + '" data-toolcat="all">الكل (' + TOOLS.length + ")</button>" +
-          cats.map((g) => '<button class="chip' + (c === g.id ? " active" : "") + '" data-toolcat="' + g.id + '">' + g.icon + " " + g.name + "</button>").join("") +
+          cats.map((g) => '<button class="chip' + (c === g.id ? " active" : "") + '" data-toolcat="' + g.id + '">' + icon(g.icon, 16) + " " + g.name + "</button>").join("") +
         "</div>" +
         (list.length ? groups.map((g) =>
-          '<div class="tool-group"><div class="tool-group-head"><span class="tool-group-icon">' + g.icon + '</span><h3>' + g.name + '</h3><span class="tool-group-count">' + g.items.length + "</span></div>" +
+          '<div class="tool-group"><div class="tool-group-head"><span class="tool-group-icon">' + icon(g.icon, 20) + '</span><h3>' + g.name + '</h3><span class="tool-group-count">' + g.items.length + "</span></div>" +
           '<div class="tools-grid">' + g.items.map((t) =>
             '<div class="tool">' +
               '<div class="tool-top"><div class="tool-name">' + t.n + '</div><span class="tool-price">' + t.p + "</span></div>" +
@@ -607,7 +675,7 @@
           '<div class="dash-card"><div class="dash-title">تقدم المسارات</div>' +
             ACADEMY.tracks.map((t) => {
               const pr = trackProgress(t);
-              return '<div class="track-row"><div class="track-row-top"><div class="track-row-title">' + t.icon + " " + t.title + '</div>' +
+              return '<div class="track-row"><div class="track-row-top"><div class="track-row-title">' + icon(t.icon, 18) + " " + t.title + '</div>' +
                 '<div class="track-row-pct">' + pr.pct + "%</div></div>" +
                 '<div class="track-bar" style="margin-top:10px"><span style="width:' + pr.pct + '%"></span></div>' +
                 '<div class="track-prog" style="margin-top:5px">' + pr.done + " / " + pr.total + " درس</div></div>";
@@ -661,10 +729,10 @@
           '<label class="plan-check"><input type="checkbox" data-plan-week="' + id + '"' + (done ? " checked" : "") + "><span>" + w.w + "</span></label>" +
           '<div class="plan-body">' +
             '<div class="plan-week-title">' + w.title + "</div>" +
-            '<div class="plan-goal">🎯 ' + w.goal + "</div>" +
+            '<div class="plan-goal">target ' + w.goal + "</div>" +
             (courses ? '<div class="plan-courses">' + courses + "</div>" : "") +
             (daily ? '<div class="plan-daily"><b>مهام يومية:</b> ' + daily + "</div>" : "") +
-            '<div class="plan-habit">🌱 العادة: ' + w.habit + "</div>" +
+            '<div class="plan-habit">sprout العادة: ' + w.habit + "</div>" +
             '<div class="plan-task">📌 مهمة الأسبوع: ' + w.task + "</div>" +
             '<div class="plan-outcome">✅ المخرج: ' + w.outcome + "</div>" +
           "</div></div>";
@@ -706,44 +774,44 @@
 
   /* ---------- خريطة الطريق ---------- */
   const ROADMAP = [
-    { n: 1, icon: "🌱", title: "البداية", sub: "الرياضيات + وعي بالـ AI", time: "4 أسابيع", track: "t-math",
+    { n: 1, icon: "sprout", title: "البداية", sub: "الرياضيات + وعي بالـ AI", time: "4 أسابيع", track: "t-math",
       learn: "جبر خطي، تفاضل، احتمالات، NumPy، ومقدمة عن المجال",
       out: "بتفهم إزاي النماذج بتتعلم، وعندك أساس رياضي قوي" },
-    { n: 2, icon: "🐍", title: "بايثون والبيانات", sub: "من أول سطر لحد تحليل بيانات", time: "7 أسابيع", track: "t-python",
+    { n: 2, icon: "python", title: "بايثون والبيانات", sub: "من أول سطر لحد تحليل بيانات", time: "7 أسابيع", track: "t-python",
       learn: "بايثون، Pandas، SQL، رسوم بيانية، Git",
       out: "بتحلل بيانات حقيقية وتطلّع تقرير كامل" },
-    { n: 3, icon: "🤖", title: "التعلم الآلي", sub: "تبني أول موديل", time: "9 أسابيع", track: "t-ml",
+    { n: 3, icon: "bot", title: "التعلم الآلي", sub: "تبني أول موديل", time: "9 أسابيع", track: "t-ml",
       learn: "انحدار، تصنيف، غابات عشوائية، هندسة خصائص",
       out: "أول موديل تنبؤ + أول مشاركة في Kaggle" },
-    { n: 4, icon: "🧠", title: "التعلم العميق", sub: "الشبكات العصبية", time: "9 أسابيع", track: "t-dl",
+    { n: 4, icon: "brain", title: "التعلم العميق", sub: "الشبكات العصبية", time: "9 أسابيع", track: "t-dl",
       learn: "شبكة عصبية من الصفر، CNN، تدريب وتحسين",
       out: "شبكات عصبية بتتدرب وتحقق دقة عالية" },
-    { n: 5, icon: "👁️", title: "رؤية الحاسوب", sub: "الشبكة بتشوف", time: "4 أسابيع", track: "t-advanced",
+    { n: 5, icon: "eye", title: "رؤية الحاسوب", sub: "الشبكة بتشوف", time: "4 أسابيع", track: "t-advanced",
       learn: "الشبكات الالتفافية، كشف الأشياء، نقل التعلم",
       out: "تطبيق بيصنف صور ويكشف أشياء" },
-    { n: 6, icon: "💬", title: "NLP والذكاء التوليدي", sub: "نماذج اللغة الكبيرة", time: "6 أسابيع", track: "t-genai",
+    { n: 6, icon: "message", title: "NLP والذكاء التوليدي", sub: "نماذج اللغة الكبيرة", time: "6 أسابيع", track: "t-genai",
       learn: "LLM، تضمينات، RAG، هندسة الأوامر، الضبط الدقيق",
       out: "تطبيق بيجاوب من ملفاتك (RAG)" },
-    { n: 7, icon: "🤖", title: "الوكلاء الأذكياء", sub: "الـ AI بينفّذ مهام", time: "4 أسابيع", track: "t-genai",
+    { n: 7, icon: "bot", title: "الوكلاء الأذكياء", sub: "الـ AI بينفّذ مهام", time: "4 أسابيع", track: "t-genai",
       learn: "بناء وكلاء، أدوات، LangGraph، Claude Code",
       out: "وكيل بيخدم مهمة حقيقية في شغلك" },
-    { n: 8, icon: "🎯", title: "تخصص متقدم", sub: "مستوى بحثي", time: "8 أسابيع", track: "t-advanced",
+    { n: 8, icon: "target", title: "تخصص متقدم", sub: "مستوى بحثي", time: "8 أسابيع", track: "t-advanced",
       learn: "رؤية متقدمة أو تعلّم معزز + أوراق بحثية",
       out: "مشروع تخصص قوي يقنع أي صاحب شغل" },
-    { n: 9, icon: "🚀", title: "MLOps والنشر", sub: "من النوتبوك للعالم", time: "4 أسابيع", track: "t-mlops",
+    { n: 9, icon: "rocket", title: "MLOps والنشر", sub: "من النوتبوك للعالم", time: "4 أسابيع", track: "t-mlops",
       learn: "نشر نماذج، تتبع تجارب، مراقبة، API",
       out: "نموذج منشور في الإنتاج ومتراقب" },
-    { n: 10, icon: "💼", title: "الشغل والاحتراف", sub: "دخول سوق العمل", time: "6 أسابيع", track: "a-biz",
+    { n: 10, icon: "briefcase", title: "الشغل والاحتراف", sub: "دخول سوق العمل", time: "6 أسابيع", track: "a-biz",
       learn: "شهادات، سيرة، LinkedIn، عمل حر، مقابلات، تفاوض",
       out: "وظيفة أو دخل من الـ AI" },
   ];
 
   const APPLY_TRACKS = [
-    { icon: "✍️", title: "هندسة الأوامر", desc: "أوامر احترافية تطلعلك اللي عايزه", track: "a-prompt" },
-    { icon: "💻", title: "البرمجة بالـ AI", desc: "Claude Code وأدوات البرمجة الذكية", track: "a-claude" },
-    { icon: "⚙️", title: "الأوتوميشن", desc: "سير عمل بتشتغل لوحدها", track: "a-auto" },
-    { icon: "📊", title: "AI للأعمال", desc: "تسويق وقرارات أسرع", track: "a-biz" },
-    { icon: "🎨", title: "AI للتصميم", desc: "صور وصوت ومحتوى", track: "a-design" },
+    { icon: "pen", title: "هندسة الأوامر", desc: "أوامر احترافية تطلعلك اللي عايزه", track: "a-prompt" },
+    { icon: "terminal", title: "البرمجة بالـ AI", desc: "Claude Code وأدوات البرمجة الذكية", track: "a-claude" },
+    { icon: "gear", title: "الأوتوميشن", desc: "سير عمل بتشتغل لوحدها", track: "a-auto" },
+    { icon: "bars", title: "AI للأعمال", desc: "تسويق وقرارات أسرع", track: "a-biz" },
+    { icon: "palette", title: "AI للتصميم", desc: "صور وصوت ومحتوى", track: "a-design" },
   ];
 
   function renderRoadmap() {
@@ -752,9 +820,9 @@
       return '<div class="rm-step">' +
         '<div class="rm-rail"><div class="rm-num">' + s.n + "</div></div>" +
         '<div class="rm-card' + (i === 0 ? " start" : "") + '">' +
-          (i === 0 ? '<div class="rm-badge-start">🚀 ابدأ هنا</div>' : "") +
+          (i === 0 ? '<div class="rm-badge-start">' + icon("rocket", 15) + " ابدأ هنا</div>" : "") +
           '<div class="rm-head">' +
-            '<div class="rm-icon">' + s.icon + "</div>" +
+            '<div class="rm-icon">' + icon(s.icon, 20) + "</div>" +
             '<div class="rm-titles"><div class="rm-title">' + s.title + '</div><div class="rm-sub">' + s.sub + "</div></div>" +
             '<div class="rm-time">' + s.time + "</div>" +
           "</div>" +
@@ -768,7 +836,7 @@
 
     const apply = APPLY_TRACKS.map((a) =>
       '<button class="rm-apply" data-roadmap-track="' + a.track + '">' +
-        '<span class="rm-apply-icon">' + a.icon + "</span>" +
+        '<span class="rm-apply-icon">' + icon(a.icon, 20) + "</span>" +
         '<span class="rm-apply-body"><b>' + a.title + "</b><small>" + a.desc + "</small></span>" +
         '<span class="rm-apply-go">' + I.chev + "</span>" +
       "</button>"
@@ -802,14 +870,14 @@
     const cards = list.map((p) => {
       const n = pathCourses(p).length;
       return '<button class="path-card" data-path="' + p.id + '">' +
-        '<div class="path-top"><div class="path-icon">' + p.icon + "</div>" +
+        '<div class="path-top"><div class="path-icon">' + icon(p.icon, 26) + "</div>" +
         '<div class="path-titles"><div class="path-title">' + p.title + '</div><div class="path-tagline">' + p.tagline + "</div></div>" +
         '<div class="path-level">' + p.level + "</div></div>" +
         '<div class="path-goal">' + p.goal + "</div>" +
         '<div class="path-meta">' +
-          '<span>⏱ ' + p.time + "</span>" +
-          '<span>💼 ' + p.jobs[0] + "</span>" +
-          '<span>🎓 ' + n + " كورس</span>" +
+          '<span>clock ' + p.time + "</span>" +
+          '<span>briefcase ' + p.jobs[0] + "</span>" +
+          '<span>cap ' + n + " كورس</span>" +
         "</div>" +
         '<div class="path-salary">' + p.salary + "</div>" +
       "</button>";
@@ -842,7 +910,7 @@
         return c ? '<a class="plan-course" href="#" data-course-link="' + c.id + '">' + c.title + "</a>" : "";
       }).join("");
       return '<div class="rm-step"><div class="rm-rail"><div class="rm-num">' + (i + 1) + "</div></div>" +
-        '<div class="rm-card"><div class="rm-head"><div class="rm-icon">🧭</div>' +
+        '<div class="rm-card"><div class="rm-head"><div class="rm-icon">compass</div>' +
         '<div class="rm-titles"><div class="rm-title">' + s.t + '</div></div>' +
         '<div class="rm-time">' + s.w + "</div></div>" +
         (links ? '<div class="path-courses">' + links + "</div>" : "") +
@@ -854,7 +922,7 @@
       '<div class="wrap"><section class="section">' +
         '<div class="crumb"><a href="#" data-go="paths">مسارك</a><span>/</span><span>' + p.title + "</span></div>" +
         '<div class="pd-hero">' +
-          '<div class="pd-icon">' + p.icon + "</div>" +
+          '<div class="pd-icon">' + icon(p.icon, 32) + "</div>" +
           '<div class="pd-titles"><div class="pd-title">' + p.title + '</div><div class="pd-tagline">' + p.tagline + "</div>" +
           '<div class="pd-goal">' + p.goal + "</div></div>" +
           '<div class="pd-stats">' +
@@ -945,7 +1013,7 @@
           const rec = botRecommend(quizAns);
           const p = PATHS.find((x) => x.id === rec.id);
           quizIdx = 0;
-          chatAdd(botMessage("✅ بناءً على إجاباتك، أقترحلك:\n\n**" + (p ? p.icon + " " + p.title : rec.id) + "**\n" + rec.why + "\n\nالمدة: " + (p ? p.time : "") + " • الراتب: " + (p ? p.salary : "") + "\n\nدوس «افتح المسار» تشوف خطته كاملة."));
+          chatAdd(botMessage("✅ بناءً على إجاباتك، أقترحلك:\n\n**" + (p ? icon(p.icon, 18) + " " + p.title : rec.id) + "**\n" + rec.why + "\n\nالمدة: " + (p ? p.time : "") + " • الراتب: " + (p ? p.salary : "") + "\n\nدوس «افتح المسار» تشوف خطته كاملة."));
           chatQuick(["افتح المسار", "منين أبدأ؟", "إيه المسار المناسب لي؟"]);
           window._recPath = rec.id;
           return;
@@ -957,7 +1025,7 @@
     }
     if (/(اختبار|وجّهني|وجهنا|رشح|رشّح|اقترح|اقترحلي|مسار مناسب|اختار تفرع|عايز أختار|عايز اختار|تفرع|اختار مسار|اختيار مسار|رشّحلي|هديني|هديني)/.test(q)) {
       quizIdx = 1; quizAns = [];
-      chatAdd(botMessage("تمام! هسألك 3 أسئلة وأرشّحلك أنسب مسار 🎯\n\n" + QUIZ[0].q));
+      chatAdd(botMessage("تمام! هسألك 3 أسئلة وأرشّحلك أنسب مسار target\n\n" + QUIZ[0].q));
       chatQuick(QUIZ[0].opts);
       return;
     }
@@ -978,8 +1046,8 @@
         .trim();
       const res = botSearch(cleaned.length > 1 ? cleaned : text.trim());
       if (res.length) {
-        chatAdd(botMessage("لقيت لك " + res.length + " كورس 🎓\n" + res.map((c) => "• **" + c.title + "**").join("\n") + "\n\nدوس «الكورسات» للتفاصيل."));
-        chatQuick(["منين أبدأ؟", "🔍 ابحث على ويكي"]);
+        chatAdd(botMessage("لقيت لك " + res.length + " كورس cap\n" + res.map((c) => "• **" + c.title + "**").join("\n") + "\n\nدوس «الكورسات» للتفاصيل."));
+        chatQuick(["منين أبدأ؟", "search ابحث على ويكي"]);
         return;
       }
     }
@@ -1002,8 +1070,8 @@
           chatAdd(botMessage(r.r));
           const a = await aiAnswer(text.trim().replace(/^.*(الذكاء الاصطناعي|ai)\s*(عن|:)?\s*/, "").trim() || text.trim());
           if (a) {
-            chatAdd(botMessage("🤖 " + a));
-            chatQuick(["🔍 ابحث على ويكي", "منين أبدأ؟"]);
+            chatAdd(botMessage("bot " + a));
+            chatQuick(["search ابحث على ويكي", "منين أبدأ؟"]);
           } else {
             chatAdd(botMessage(FALLBACK));
             chatQuick(QUICK);
@@ -1019,7 +1087,7 @@
       }
     }
     // بحث ويكي / AI
-    chatQuick(["🔍 ابحث على ويكي", "اسأل الذكاء الاصطناعي"]);
+    chatQuick(["search ابحث على ويكي", "اسأل الذكاء الاصطناعي"]);
     const w = await wikiSearch(text.trim());
     if (w) {
       chatAdd(botMessage("🌐 **" + w.title + "**\n\n" + w.text + "\n\n_من ويكيبيديا — دوس «اسأل الذكاء الاصطناعي» لتفصيل أكتر_"));
@@ -1028,7 +1096,7 @@
     }
     const a = await aiAnswer(text.trim());
     if (a) {
-      chatAdd(botMessage("🤖 " + a));
+      chatAdd(botMessage("bot " + a));
       chatQuick(QUICK);
       return;
     }
@@ -1060,7 +1128,7 @@
       if (t === "شوف خريطة الطريق") { go("roadmap"); closeChat(); }
       else if (t === "افتح مساراتك") { go("paths"); closeChat(); }
       else if (t === "افتح المسار" && window._recPath) { const id = window._recPath; window._recPath = null; go("path", id); closeChat(); }
-      else if (t === "🔍 ابحث على ويكي") sendChat("ابحث لي على ويكي عن " + (window._lastQ || ""));
+      else if (t === "search ابحث على ويكي") sendChat("ابحث لي على ويكي عن " + (window._lastQ || ""));
       else if (t === "اسأل الذكاء الاصطناعي") sendChat("اسأل الذكاء الاصطناعي: " + (window._lastQ || ""));
     });
   }
@@ -1344,15 +1412,15 @@
     const res = [];
     ACADEMY.courses.forEach((c) => {
       if ((c.title + " " + (c.titleEn || "") + " " + c.desc).toLowerCase().includes(ql))
-        res.push({ icon: "🎓", name: c.title, sub: c.trackTitle || "", kind: "كورس", go: "courses" });
+        res.push({ icon: "cap", name: c.title, sub: c.trackTitle || "", kind: "كورس", go: "courses" });
     });
     ACADEMY.tracks.forEach((t) => {
       if ((t.title + " " + t.tagline).toLowerCase().includes(ql))
-        res.push({ icon: t.icon, name: t.title, sub: t.tagline, kind: "مسار", go: "tracks" });
+        res.push({ icon: icon(t.icon, 18), name: t.title, sub: t.tagline, kind: "مسار", go: "tracks" });
     });
     if (typeof PATHS !== "undefined") PATHS.forEach((p) => {
       if ((p.title + " " + (p.tagline || "")).toLowerCase().includes(ql))
-        res.push({ icon: p.icon || "🧭", name: p.title, sub: p.tagline || "", kind: "مسار مهني", go: "paths" });
+        res.push({ icon: icon(p.icon || "compass", 18), name: p.title, sub: p.tagline || "", kind: "مسار مهني", go: "paths" });
     });
     if (typeof TOOLS !== "undefined") TOOLS.forEach((t) => {
       if ((t.n + " " + t.d).toLowerCase().includes(ql))

@@ -4,22 +4,22 @@
    ========================================================= */
 
 const TOOL_CATS = [
-  { id: "chat", icon: "💬", name: "محادثة ونصوص" },
-  { id: "image", icon: "🖼️", name: "صور" },
-  { id: "video", icon: "🎬", name: "فيديو" },
-  { id: "audio", icon: "🎙️", name: "صوت وموسيقى" },
-  { id: "code", icon: "💻", name: "برمجة" },
-  { id: "search", icon: "🔍", name: "بحث ومعرفة" },
-  { id: "auto", icon: "⚙️", name: "أتمتة" },
-  { id: "productivity", icon: "📊", name: "إنتاجية وأعمال" },
-  { id: "design", icon: "🎨", name: "تصميم" },
-  { id: "write", icon: "📝", name: "كتابة وتسويق" },
-  { id: "edu", icon: "🎓", name: "تعليم" },
-  { id: "dev", icon: "🔧", name: "أدوات مطوّرين" },
+  { id: "chat", icon: "message", name: "محادثة ونصوص" },
+  { id: "image", icon: "image", name: "صور" },
+  { id: "video", icon: "video", name: "فيديو" },
+  { id: "audio", icon: "mic", name: "صوت وموسيقى" },
+  { id: "code", icon: "terminal", name: "برمجة" },
+  { id: "search", icon: "search", name: "بحث ومعرفة" },
+  { id: "auto", icon: "gear", name: "أتمتة" },
+  { id: "productivity", icon: "bars", name: "إنتاجية وأعمال" },
+  { id: "design", icon: "palette", name: "تصميم" },
+  { id: "write", icon: "edit", name: "كتابة وتسويق" },
+  { id: "edu", icon: "cap", name: "تعليم" },
+  { id: "dev", icon: "wrench", name: "أدوات مطوّرين" },
 ];
 
 const TOOLS = [
-  /* 💬 محادثة ونصوص */
+  /* message محادثة ونصوص */
   { c: "chat", n: "ChatGPT", d: "أشهر مساعد AI — كتابة، تحليل، صور، بحث عميق", l: "https://chatgpt.com", p: "مجاني / Plus 20$" },
   { c: "chat", n: "Claude", d: "كتابة دقيقة وتحليل مستندات طويلة وكود", l: "https://claude.ai", p: "مجاني / Pro 20$" },
   { c: "chat", n: "Google Gemini", d: "تكامل مع جوجل ونافذة سياق ضخمة", l: "https://gemini.google.com", p: "مجاني / Pro 20$" },
@@ -29,7 +29,7 @@ const TOOLS = [
   { c: "chat", n: "Meta AI", d: "مدمج في واتساب وانستجرام", l: "https://www.meta.ai", p: "مجاني" },
   { c: "chat", n: "Grok", d: "ذكاء اصطناعي من إكس — بيانات لحظية", l: "https://grok.com", p: "مجاني / Super" },
 
-  /* 🖼️ صور */
+  /* image صور */
   { c: "image", n: "Midjourney", d: "أعلى جودة صور فنية من نص", l: "https://www.midjourney.com", p: "مدفوع من 10$" },
   { c: "image", n: "DALL·E", d: "توليد صور داخل ChatGPT", l: "https://chatgpt.com", p: "ضمن ChatGPT" },
   { c: "image", n: "Adobe Firefly", d: "صور آمنة تجارياً داخل أدوبي", l: "https://www.adobe.com/firefly", p: "مجاني / مدفوع" },
@@ -40,7 +40,7 @@ const TOOLS = [
   { c: "image", n: "Stable Diffusion", d: "توليد صور مفتوح المصدر (محلي/سحابي)", l: "https://stability.ai", p: "مجاني / API" },
   { c: "image", n: "ComfyUI", d: "تحكم احترافي في الصور بسير عمل", l: "https://github.com/comfyanonymous/ComfyUI", p: "مجاني مفتوح" },
 
-  /* 🎬 فيديو */
+  /* video فيديو */
   { c: "video", n: "Runway", d: "توليد فيديو من نص أو صورة + مونتاج AI", l: "https://runwayml.com", p: "رصيد مجاني / 15$" },
   { c: "video", n: "Pika", d: "فيديوهات قصيرة من نص — سريع ومجاني", l: "https://pika.art", p: "مجاني / مدفوع" },
   { c: "video", n: "Kling AI", d: "فيديو عالي الجودة من نص — منافس قوي", l: "https://klingai.com", p: "مجاني / حوالي 10$" },
@@ -50,7 +50,7 @@ const TOOLS = [
   { c: "video", n: "OpusClip", d: "يقص الفيديو الطويل لقصص ريلز", l: "https://www.opus.pro", p: "مجاني / 15$" },
   { c: "video", n: "CapCut", d: "مونتاج احترافي بأدوات AI مجانية", l: "https://www.capcut.com", p: "مجاني" },
 
-  /* 🎙️ صوت */
+  /* mic صوت */
   { c: "audio", n: "ElevenLabs", d: "أصوات واقعية + استنساخ صوت + دبلجة 70 لغة", l: "https://elevenlabs.io", p: "مجاني / 6$" },
   { c: "audio", n: "Suno", d: "تأليف أغاني كاملة بأصوات من نص", l: "https://suno.com", p: "مجاني / 8$" },
   { c: "audio", n: "Udio", d: "منافس سونو — أغاني وموسيقى", l: "https://www.udio.com", p: "مجاني / مدفوع" },
@@ -58,7 +58,7 @@ const TOOLS = [
   { c: "audio", n: "PlayHT", d: "تحويل نص لصوت بعدة لغات", l: "https://play.ht", p: "تجريبي / مدفوع" },
   { c: "audio", n: "Voicemod", d: "تغيير الصوت لحظياً في المكالمات", l: "https://www.voicemod.net", p: "مجاني / مدفوع" },
 
-  /* 💻 برمجة */
+  /* terminal برمجة */
   { c: "code", n: "GitHub Copilot", d: "اقتراحات كود داخل VS Code وJetBrains", l: "https://github.com/features/copilot", p: "مجاني / 10$" },
   { c: "code", n: "Cursor", d: "محرر كود بالـ AI Agents", l: "https://www.cursor.com", p: "مجاني / 20$" },
   { c: "code", n: "Claude Code", d: "وكيل برمجي في الطرفية — ينفّذ مهام", l: "https://docs.anthropic.com/en/docs/claude-code", p: "ضمن Claude Pro" },
@@ -69,7 +69,7 @@ const TOOLS = [
   { c: "code", n: "v0", d: "توليد واجهات React من وصف", l: "https://v0.dev", p: "مجاني / 30$" },
   { c: "code", n: "Windsurf", d: "بيئة برمجة بالـ AI (من صانع Codeium)", l: "https://windsurf.com", p: "مجاني / مدفوع" },
 
-  /* 🔍 بحث */
+  /* search بحث */
   { c: "search", n: "Perplexity", d: "بحث بإجابات موثقة بالمصادر", l: "https://www.perplexity.ai", p: "مجاني / 20$" },
   { c: "search", n: "Consensus", d: "بحث في الأبحاث العلمية", l: "https://consensus.app", p: "مجاني / مدفوع" },
   { c: "search", n: "Elicit", d: "باحث علمي شخصي يلخّص الأوراق", l: "https://elicit.com", p: "مجاني / مدفوع" },
@@ -77,14 +77,14 @@ const TOOLS = [
   { c: "search", n: "Google AI Overviews", d: "ملخصات AI في بحث جوجل", l: "https://www.google.com", p: "مجاني" },
   { c: "search", n: "NotebookLM", d: "تدوينات وملخصات من مصادرك (جوجل)", l: "https://notebooklm.google.com", p: "مجاني" },
 
-  /* ⚙️ أتمتة */
+  /* gear أتمتة */
   { c: "auto", n: "n8n", d: "أتمتة سير عمل مفتوحة المصدر", l: "https://n8n.io", p: "مجاني محلي / مدفوع سحابي" },
   { c: "auto", n: "Zapier", d: "اربط تطبيقاتك واترك AI يشتغل", l: "https://zapier.com", p: "مجاني / 20$" },
   { c: "auto", n: "Make", d: "أتمتة مرئية بسيناريوهات معقدة", l: "https://www.make.com", p: "مجاني / 12$" },
   { c: "auto", n: "Lindy", d: "وكلاء AI للمهام المتكررة", l: "https://www.lindy.ai", p: "تجريبي / 30$" },
   { c: "auto", n: "Gumloop", d: "سير عمل بالـ AI بدون كود", l: "https://gumloop.com", p: "تجريبي / 37$" },
 
-  /* 📊 إنتاجية */
+  /* bars إنتاجية */
   { c: "productivity", n: "Notion AI", d: "تنظيم ملاحظات ومستندات بالـ AI", l: "https://www.notion.so", p: "مجاني / 20$" },
   { c: "productivity", n: "Gamma", d: "عروض تقديمية ومواقع بالذكاء الاصطناعي", l: "https://gamma.app", p: "مجاني / 9$" },
   { c: "productivity", n: "Beautiful.ai", d: "سلايدات احترافية تلقائياً", l: "https://www.beautiful.ai", p: "تجريبي / 12$" },
@@ -93,28 +93,28 @@ const TOOLS = [
   { c: "productivity", n: "Fathom", d: "تسجيل اجتماعات وملخصات مجاناً", l: "https://fathom.video", p: "مجاني / 16$" },
   { c: "productivity", n: "Granola", d: "ملاحظات اجتماعات بدون بوت", l: "https://granola.ai", p: "مجاني / 14$" },
 
-  /* 🎨 تصميم */
+  /* palette تصميم */
   { c: "design", n: "Figma AI", d: "تصميم واجهات بأدوات ذكية", l: "https://www.figma.com", p: "مجاني / مدفوع" },
   { c: "design", n: "Canva", d: "تصميم سوشيال ميديا والعروض", l: "https://www.canva.com", p: "مجاني / Pro" },
   { c: "design", n: "Adobe Express", d: "تصاميم سريعة بالذكاء الاصطناعي", l: "https://www.adobe.com/express", p: "مجاني / مدفوع" },
   { c: "design", n: "Looka", d: "شعارات وهوية بالذكاء الاصطناعي", l: "https://looka.com", p: "مدفوع" },
   { c: "design", n: "Remove.bg", d: "شيل خلفية الصور بثانية", l: "https://www.remove.bg", p: "مجاني / مدفوع" },
 
-  /* 📝 كتابة */
+  /* edit كتابة */
   { c: "write", n: "Jasper", d: "كتابة محتوى تسويقي متسق مع البراند", l: "https://www.jasper.ai", p: "من 59$" },
   { c: "write", n: "Grammarly", d: "تصحيح نحوي وتحسين أسلوب الكتابة", l: "https://www.grammarly.com", p: "مجاني / 12$" },
   { c: "write", n: "Writesonic", d: "مقالات وإعلانات بالذكاء الاصطناعي", l: "https://writesonic.com", p: "مجاني / مدفوع" },
   { c: "write", n: "Copy.ai", d: "نصوص تسويقية سريعة", l: "https://www.copy.ai", p: "مجاني / مدفوع" },
   { c: "write", n: "Surfer", d: "محتوى SEO متوافق مع محركات البحث", l: "https://surferseo.com", p: "من 49$" },
 
-  /* 🎓 تعليم */
+  /* cap تعليم */
   { c: "edu", n: "Khan Academy", d: "تعليم مجاني بمناهج كاملة", l: "https://www.khanacademy.org", p: "مجاني" },
   { c: "edu", n: "Duolingo", d: "تعلم لغات بالذكاء الاصطناعي", l: "https://www.duolingo.com", p: "مجاني / مدفوع" },
   { c: "edu", n: "Quizlet", d: "بطاقات ذاكرة واختبارات ذكية", l: "https://quizlet.com", p: "مجاني / مدفوع" },
   { c: "edu", n: "Coursera", d: "كورسات جامعات عالمية (منحة مالية)", l: "https://www.coursera.org", p: "مجاني سماع / مدفوع شهادة" },
   { c: "edu", n: "edX", d: "كورسات MIT وHarvard", l: "https://www.edx.org", p: "مجاني سماع / مدفوع" },
 
-  /* 🔧 مطوّرين */
+  /* wrench مطوّرين */
   { c: "dev", n: "Hugging Face", d: "نماذج ومجموعات بيانات ومساحات", l: "https://huggingface.co", p: "مجاني / مدفوع" },
   { c: "dev", n: "Replicate", d: "شغّل نماذج AI من السحابة", l: "https://replicate.com", p: "مجاني / API" },
   { c: "dev", n: "Ollama", d: "شغّل نماذج محلياً على جهازك", l: "https://ollama.com", p: "مجاني" },
