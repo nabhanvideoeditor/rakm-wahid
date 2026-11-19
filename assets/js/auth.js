@@ -50,13 +50,36 @@ const AUTH = {
 
     if (this.cloud) {
       if (this.token) {
-        const d = await this.call("/me?token=" + encodeURIComponent(this.token));
+        let d = await this.call("/me?token=" + encodeURIComponent(this.token));
+        // لو الشبكة فشلت، جرّب تاني
+        if (d && d.msg === "__offline__") {
+          await new Promise((res) => setTimeout(res, 700));
+          d = await this.call("/me?token=" + encodeURIComponent(this.token));
+        }
         if (d && d.ok) {
           this.user = { email: d.email, name: d.name };
+          this._cacheUser(this.user);
           return;
         }
-        this.token = null;
-        try { localStorage.removeItem(this.tokenKey); } catch (e) {}
+        // الخادم أكد إن الجلسة منتهية → امسح
+        if (d && d.msg && d.msg.indexOf("جلسة") !== -1) {
+          this.token = null;
+          try { localStorage.removeItem(this.tokenKey); } catch (e) {}
+          this.user = null;
+          return;
+        }
+        // أي فشل تاني (شبكة/بطء): اعتبر المستخدم مسجّل عشان ميفتحش من الأول
+        const cached = this._readUserCache();
+        if (cached && cached.email) {
+          this.user = cached;
+          // حدّث من السحابة في الخلفية
+          this.call("/me?token=" + encodeURIComponent(this.token)).then((x) => {
+            if (x && x.ok) { this.user = { email: x.email, name: x.name }; this._cacheUser(this.user); }
+          }).catch(() => {});
+          return;
+        }
+        this.user = null;
+        return;
       }
       this.user = null;
       return;
@@ -70,6 +93,13 @@ const AUTH = {
         this.user = u ? { email: em, name: u.name } : null;
       }
     } catch (e) {}
+  },
+
+  _cacheUser(u) {
+    try { if (u) localStorage.setItem("weston_user_cache", JSON.stringify({ name: u.name, email: u.email })); } catch (e) {}
+  },
+  _readUserCache() {
+    try { return JSON.parse(localStorage.getItem("weston_user_cache") || "null"); } catch (e) { return null; }
   },
 
   current() { return this.user; },
@@ -118,6 +148,7 @@ const AUTH = {
           this.token = r.token;
           this.user = { email: r.email, name: r.name || name.trim() };
           try { localStorage.setItem(this.tokenKey, this.token); } catch (e) {}
+          this._cacheUser(this.user);
           return { ok: true, msg: r.msg };
         }
         if (r && r.msg && r.msg !== "__offline__") return { ok: false, msg: r.msg };
@@ -155,6 +186,7 @@ const AUTH = {
           this.token = r.token;
           this.user = { email: r.email, name: r.name };
           try { localStorage.setItem(this.tokenKey, this.token); } catch (e) {}
+          this._cacheUser(this.user);
           return { ok: true, msg: r.msg };
         }
         if (r && r.msg && r.msg !== "__offline__") return { ok: false, msg: r.msg };
@@ -182,6 +214,7 @@ const AUTH = {
     try {
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.sessionKey);
+      localStorage.removeItem("weston_user_cache");
     } catch (e) {}
   },
 
