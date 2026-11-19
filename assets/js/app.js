@@ -1,11 +1,11 @@
 /* =========================================================
-   رقم واحد — منطق المنصة
+   weston — منطق المنصة
    ========================================================= */
 
 (function () {
   "use strict";
 
-  const KEY = "rakm-wahid-progress-v1";
+  const KEY = "weston-progress-v1";
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
@@ -196,7 +196,7 @@
         renderMotivation() +
 
         '<section class="section">' +
-          '<div class="section-head"><div class="eyebrow">ليه رقم واحد؟</div><div class="section-title">كل اللي محتاجه في مكان واحد</div></div>' +
+          '<div class="section-head"><div class="eyebrow">ليه weston؟</div><div class="section-title">كل اللي محتاجه في مكان واحد</div></div>' +
           '<div class="feat-grid">' + ACADEMY.features.map((f) =>
             '<div class="feat"><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + "</div></div>").join("") +
           "</div>" +
@@ -878,7 +878,7 @@
     $("#chatPanel").classList.add("open");
     $("#chatFab").classList.add("hide");
     if (!chatMsgs.length) {
-      chatAdd(botMessage("أهلاً بيك في **رقم واحد** 👋\n\nأنا مساعدك الشخصي — هساعدك تختار مسارك وتلاقي الكورسات المناسبة.\n\nاختار من الاقتراحات تحت أو اكتب سؤالك."));
+      chatAdd(botMessage("أهلاً بيك في **weston** 👋\n\nأنا مساعدك الشخصي — هساعدك تختار مسارك وتلاقي الكورسات المناسبة.\n\nاختار من الاقتراحات تحت أو اكتب سؤالك."));
       chatQuick(QUICK);
     }
   }
@@ -887,7 +887,7 @@
     $("#chatFab").classList.remove("hide");
   }
 
-  function botReply(text) {
+  async function botReply(text) {
     const q = text.trim().toLowerCase();
     // اختبار التوجيه
     if (quizIdx > 0 && quizIdx <= QUIZ.length) {
@@ -923,19 +923,47 @@
       setTimeout(() => go("path", id), 500);
       return;
     }
-    // بحث عن كورس
-    const m = q.match(/(كورس|دور|ابحث|dossier)\s*(.*)/);
-    if (m && m[2] && m[2].length > 2) {
-      const res = botSearch(m[2]);
+    // بحث في المنصة
+    const m = q.match(/(كورس|كورسات|دور|ابحث|دوسيس)/);
+    if (m) {
+      const cleaned = text.trim()
+        .replace(/(دور|ابحث|اعملي|عايز|اريد|كورس|كورسات|دوسيس|عن|لي|على|من|فى|في)/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      const res = botSearch(cleaned.length > 1 ? cleaned : text.trim());
       if (res.length) {
-        chatAdd(botMessage("لقيت لك " + res.length + " كورس مناسب 🎓\n" + res.map((c) => "• **" + c.title + "**").join("\n") + "\n\nدوس «الكورسات» تشوف التفاصيل."));
-        chatQuick(["منين أبدأ؟", "قوللي عن الشهادات"]);
+        chatAdd(botMessage("لقيت لك " + res.length + " كورس 🎓\n" + res.map((c) => "• **" + c.title + "**").join("\n") + "\n\nدوس «الكورسات» للتفاصيل."));
+        chatQuick(["منين أبدأ؟", "🔍 ابحث على ويكي"]);
         return;
       }
     }
     // قواعد
     for (const r of BOT_RULES) {
       if (r.k.some((k) => q.includes(k.toLowerCase()))) {
+        if (r.web) {
+          chatAdd(botMessage(r.r));
+          const w = await wikiSearch(text.trim().replace(/^.*(ويكي|wiki)\s*(عن|على)?\s*/, "").trim() || text.trim());
+          if (w) {
+            chatAdd(botMessage("🌐 **" + w.title + "**\n\n" + w.text));
+            chatQuick(["اسأل الذكاء الاصطناعي: " + w.title, "منين أبدأ؟"]);
+          } else {
+            chatAdd(botMessage("معلش، مقدرتش ألاقي نتيجة في ويكيبيديا. جرب «اسأل الذكاء الاصطناعي»."));
+            chatQuick(QUICK);
+          }
+          return;
+        }
+        if (r.ai) {
+          chatAdd(botMessage(r.r));
+          const a = await aiAnswer(text.trim().replace(/^.*(الذكاء الاصطناعي|ai)\s*(عن|:)?\s*/, "").trim() || text.trim());
+          if (a) {
+            chatAdd(botMessage("🤖 " + a));
+            chatQuick(["🔍 ابحث على ويكي", "منين أبدأ؟"]);
+          } else {
+            chatAdd(botMessage(FALLBACK));
+            chatQuick(QUICK);
+          }
+          return;
+        }
         chatAdd(botMessage(r.r));
         if (r.action) {
           chatQuick([r.action === "roadmap" ? "شوف خريطة الطريق" : r.action === "paths" ? "افتح مساراتك" : "منين أبدأ؟"]);
@@ -944,17 +972,31 @@
         return;
       }
     }
-    // Fallback
+    // بحث ويكي / AI
+    chatQuick(["🔍 ابحث على ويكي", "اسأل الذكاء الاصطناعي"]);
+    const w = await wikiSearch(text.trim());
+    if (w) {
+      chatAdd(botMessage("🌐 **" + w.title + "**\n\n" + w.text + "\n\n_من ويكيبيديا — دوس «اسأل الذكاء الاصطناعي» لتفصيل أكتر_"));
+      chatQuick(QUICK);
+      return;
+    }
+    const a = await aiAnswer(text.trim());
+    if (a) {
+      chatAdd(botMessage("🤖 " + a));
+      chatQuick(QUICK);
+      return;
+    }
     chatAdd(botMessage(FALLBACK));
     chatQuick(QUICK);
   }
 
   function sendChat(text) {
     if (!text || !text.trim()) return;
+    window._lastQ = text.trim();
     chatAdd(userMessage(text.trim()));
     chatQuick([]);
     $("#chatText").value = "";
-    setTimeout(() => botReply(text.trim()), 450);
+    setTimeout(() => botReply(text.trim()), 400);
   }
 
   function initChat() {
@@ -971,6 +1013,8 @@
       if (t === "شوف خريطة الطريق") { go("roadmap"); closeChat(); }
       else if (t === "افتح مساراتك") { go("paths"); closeChat(); }
       else if (t === "افتح المسار" && window._recPath) { const id = window._recPath; window._recPath = null; go("path", id); closeChat(); }
+      else if (t === "🔍 ابحث على ويكي") sendChat("ابحث لي على ويكي عن " + (window._lastQ || ""));
+      else if (t === "اسأل الذكاء الاصطناعي") sendChat("اسأل الذكاء الاصطناعي: " + (window._lastQ || ""));
     });
   }
 
@@ -979,7 +1023,7 @@
     $("#footer").innerHTML =
       '<div class="wrap">' +
         '<div class="footer-grid">' +
-          '<div><div class="footer-brand"><div class="brand-mark">1</div><div><div class="brand-name">رقم واحد</div><div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div></div></div>' +
+          '<div><div class="footer-brand"><div class="brand-mark">W</div><div><div class="brand-name">weston</div><div class="brand-sub">منصة الذكاء الاصطناعي بالعربي</div></div></div>' +
           '<div style="color:var(--muted);font-size:13.5px;max-width:300px">مسارات مرتّبة من الصفر إلى الاحتراف، بمصادر مجانية عالمية، وشهادات إتمام معتمدة.</div></div>' +
           "<div><h4>المنصة</h4>" +
             '<a href="#" data-go="tracks">المسارات</a><a href="#" data-go="courses">الكورسات</a><a href="#" data-go="dashboard">تقدّمي</a><a href="#" data-go="certs">الشهادات</a></div>' +
@@ -988,7 +1032,7 @@
           "<div><h4>تواصل</h4>" +
             '<a href="mailto:nabhanlvideoeditor@gmail.com">nabhanlvideoeditor@gmail.com</a><a href="https://wa.me/201212439985" target="_blank">واتساب</a></div>' +
         "</div>" +
-        '<div class="footer-bottom"><span>رقم واحد — مسار مجاني كامل لتعلم الذكاء الاصطناعي.</span><span id="footStat"></span></div>' +
+        '<div class="footer-bottom"><span>weston — مسار مجاني كامل لتعلم الذكاء الاصطناعي.</span><span id="footStat"></span></div>' +
       "</div>";
     $$("#footer [data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); go(a.dataset.go); }));
   }
@@ -1008,11 +1052,11 @@
 
   /* ============ تصدير/استيراد ============ */
   function exportProgress() {
-    const data = { app: "rakm-wahid", version: 1, exportedAt: new Date().toISOString(), done: state.done };
+    const data = { app: "weston", version: 1, exportedAt: new Date().toISOString(), done: state.done };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "rakm-wahid-progress.json";
+    a.href = url; a.download = "weston-progress.json";
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
     toast("تم تصدير تقدّمك");
