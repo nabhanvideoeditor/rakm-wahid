@@ -49,7 +49,7 @@
   --font: "Alexandria", "Segoe UI", "IBM Plex Sans Arabic", sans-serif;
   --font-head: "Alexandria", "Segoe UI", sans-serif;
   --font-brand: "Space Grotesk", "Alexandria", sans-serif;
-  --mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+  --mono: "Alexandria", "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -180,9 +180,8 @@ main { min-height: 100vh; }
 
 /* أرقام تقنية متساوية العرض */
 .hstat-val, .mot-big, .acc-stat b, .pd-stats b, .acc-progress-top b, .rm-num, .streak-day, .tool-group-count, .as b {
-  font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -.02em;
+  letter-spacing: -.01em;
 }
 .view { display: none; animation: fade .4s ease; }
 .view.active { display: block; }
