@@ -17,9 +17,9 @@
   function load() {
     try {
       const d = JSON.parse(localStorage.getItem(progressKey()));
-      if (d && typeof d === "object") return { done: d.done || {}, plan: d.plan || {}, theme: d.theme || "dark" };
+      if (d && typeof d === "object") return { done: d.done || {}, plan: d.plan || {}, theme: d.theme || "dark", pathId: d.pathId || "" };
     } catch (e) {}
-    return { done: {}, plan: {}, theme: "dark" };
+    return { done: {}, plan: {}, theme: "dark", pathId: "" };
   }
   let state = load();
   function save() {
@@ -689,11 +689,23 @@
   }
 
   /* ============ خطتي ============ */
-  function planProgress() {
+  function planProgress(plan) {
+    const P = plan || currentPlan();
     let done = 0;
-    PLAN.months.forEach((m) => m.weeks.forEach((w) => { if (state.plan["p-" + w.w]) done++; }));
-    const total = PLAN.months.reduce((a, m) => a + m.weeks.length, 0);
+    P.months.forEach((m) => m.weeks.forEach((w) => { if (state.plan["p-" + w.w]) done++; }));
+    const total = P.months.reduce((a, m) => a + m.weeks.length, 0);
     return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
+  }
+
+  /* الخطة الحالية: العامة أو خطة المسار المختار */
+  function currentPlan() {
+    const pid = (typeof state.pathId === "string") ? state.pathId : "";
+    if (pid && typeof PATH_PLANS !== "undefined" && PATH_PLANS[pid]) return PATH_PLANS[pid];
+    return PLAN;
+  }
+  function chosenPath() {
+    const pid = (typeof state.pathId === "string") ? state.pathId : "";
+    return (typeof PATHS !== "undefined") ? (PATHS.find((p) => p.id === pid) || null) : null;
   }
 
   function renderZad() {
@@ -709,8 +721,10 @@
   }
 
   function renderMyPlan() {
-    const p = planProgress();
-    const monthsHtml = PLAN.months.map((m) => {
+    const plan = currentPlan();
+    const p = planProgress(plan);
+    const path = chosenPath();
+    const monthsHtml = plan.months.map((m) => {
       const weeksHtml = m.weeks.map((w) => {
         const id = "p-" + w.w;
         const done = !!state.plan[id];
@@ -742,11 +756,25 @@
         '<div class="plan-weeks">' + weeksHtml + "</div></div>";
     }).join("");
 
+    const planSwitch = (typeof PATH_PLANS !== "undefined" && PATHS)
+      ? '<div class="plan-switch">' +
+          '<button class="chip' + (!path ? " active" : "") + '" data-plan-mode="general">الخطة العامة</button>' +
+          '<button class="chip' + (path ? " active" : "") + '" data-plan-mode="path">خطة مسارك</button>' +
+        "</div>"
+      : "";
+    const planHead = path
+      ? '<div class="plan-head-path">' + icon("target", 17) + " مسارك: <b>" + path.title + "</b>" +
+        '<small>' + path.tagline + "</small>" +
+        '<button class="btn btn-ghost btn-sm" data-go="paths">غيّر مسارك</button></div>'
+      : "";
+
     $("#view-myplan").innerHTML =
       '<div class="wrap"><section class="section">' +
-        '<div class="section-head"><div class="eyebrow">خطتي</div><div class="section-title">خطة 14 شهر من الصفر للاحتراف والشغل</div>' +
-        '<div class="section-sub">' + PLAN.desc + "</div>" +
-        '<div class="plan-note">' + PLAN.note + "</div></div>" +
+        '<div class="section-head"><div class="eyebrow">خطتي</div><div class="section-title">' + (plan.subtitle || plan.title || "خطتي") + "</div>" +
+        '<div class="section-sub">' + (plan.desc || PLAN.desc) + "</div>" +
+        (plan.note ? '<div class="plan-note">' + plan.note + "</div>" : "") +
+        planSwitch + "</div>" +
+        planHead +
         '<div class="plan-overview">' +
           '<div class="plan-overview-card"><div class="plan-big">' + p.done + "<small>/" + p.total + '</small></div><div class="plan-label">أسبوع مكتمل</div></div>' +
           '<div class="plan-overview-card"><div class="plan-big">' + p.pct + '%</div><div class="plan-label">نسبة الإنجاز</div></div>' +
@@ -757,6 +785,12 @@
         monthsHtml +
       "</section></div>";
 
+    $$("#view-myplan [data-plan-mode]").forEach((b) => b.addEventListener("click", () => {
+      const mode = b.dataset.planMode;
+      if (mode === "general") { delete state.pathId; }
+      else if (!state.pathId) { toast("اختار مسارك الأول من «مسارك المهني»"); go("paths"); return; }
+      save(); renderMyPlan(); updateFloat(); updateFoot();
+    }));
     $$("#view-myplan [data-plan-week]").forEach((inp) => inp.addEventListener("change", () => {
       const id = inp.dataset.planWeek;
       if (inp.checked) state.plan[id] = true; else delete state.plan[id];
@@ -947,7 +981,8 @@
           '<div class="pd-block"><h3>شهادات معتمدة</h3><ul class="pd-list">' + p.certs.map((c) => "<li>" + c + "</li>").join("") + "</ul></div>" +
         "</div>" +
         '<div class="pd-actions">' +
-          '<button class="btn btn-primary" data-go="myplan">ابدأ خطتك الأسبوعية ' + I.arrow + "</button>" +
+          '<button class="btn btn-primary" id="adoptPath">اعتمد مسارك واعمل خطتك</button>' +
+          '<button class="btn btn-ghost" data-go="myplan">خطتي الأسبوعية ' + I.arrow + "</button>" +
           '<button class="btn btn-ghost" data-go="courses">كل الكورسات</button>' +
         "</div>" +
       "</section></div>";
@@ -955,6 +990,13 @@
     $$("#view-path [data-course-link]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); go("detail", a.dataset.courseLink); }));
     const cb = $('#view-path [data-go="paths"]');
     if (cb) cb.addEventListener("click", (e) => { e.preventDefault(); go("paths"); });
+    const adopt = $("#adoptPath");
+    if (adopt) adopt.addEventListener("click", () => {
+      state.pathId = p.id; save();
+      cheer("اعتمدنا مسارك — خطتك اتظبطت عليه");
+      renderMyPlan(); updateFloat(); updateFoot();
+      go("myplan");
+    });
   }
 
   /* ---------- الشات بوت ---------- */

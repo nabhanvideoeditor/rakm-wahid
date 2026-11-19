@@ -483,6 +483,12 @@ main { min-height: 100vh; }
 .plan-goal { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
 .plan-month-goal { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
 .plan-tag { font-family: var(--mono); font-size: 10.5px; color: var(--accent-2); background: var(--accent-soft); border: 1px solid rgba(34,197,94,.28); border-radius: 5px; padding: 1px 6px; margin-inline-end: 6px; letter-spacing: .02em; }
+.plan-switch { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.plan-switch .chip { border-radius: 999px; }
+.plan-head-path { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 13px 18px; margin: 4px 0 20px; border-radius: var(--radius); background: var(--accent-soft); border: 1px solid rgba(34,197,94,.30); color: var(--text); }
+.plan-head-path b { color: var(--accent-2); font-weight: 600; }
+.plan-head-path small { color: var(--text-2); flex: 1 1 200px; }
+.plan-head-path .ic { color: var(--accent-2); display: inline-flex; }
 .plan-task, .plan-outcome { display: flex; align-items: flex-start; gap: 7px; color: var(--text-2); font-size: 13.5px; }
 .plan-task .ic, .plan-outcome .ic { color: var(--accent-2); flex: none; margin-top: 2px; }
 .plan-month-prog { margin-inline-start: auto; font-size: 14px; color: var(--accent-2); font-weight: 500; white-space: nowrap; }
