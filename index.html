@@ -43,6 +43,15 @@
     </div>
 
     <div class="top-actions">
+      <button class="icon-btn search-btn" id="btnSearch" title="بحث" aria-label="بحث">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" id="btnSound" title="المؤثرات الصوتية" aria-label="الصوت">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="snd-on" d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>
+      </button>
+      <button class="icon-btn" id="btnAccount" title="حسابي" aria-label="حسابي">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      </button>
       <button class="icon-btn" id="btnExport" title="تصدير تقدّمك" aria-label="تصدير">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
       </button>
@@ -54,6 +63,49 @@
       </button>
     </div>
   </header>
+
+  <!-- ======= درج البحث (موبايل) ======= -->
+  <div class="search-drawer" id="searchDrawer">
+    <div class="search-drawer-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" type="search" placeholder="ابحث عن كورس، مسار، أداة…" autocomplete="off">
+      <button class="icon-btn" id="searchClose" aria-label="إغلاق البحث">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- ======= نافذة الحساب ======= -->
+  <div class="modal" id="authModal" aria-hidden="true">
+    <div class="modal-box">
+      <button class="modal-close" id="authClose" aria-label="إغلاق">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-brand"><div class="brand-mark"><svg viewBox="0 0 96 56" class="weston-logo" aria-hidden="true"><defs><linearGradient id="wl-grad-m" x1="0" y1="0" x2="96" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2563eb"/><stop offset=".55" stop-color="#3b9cf5"/><stop offset="1" stop-color="#45e0c8"/></linearGradient></defs><g stroke="url(#wl-grad-m)" stroke-width="1.1" opacity=".5"><path d="M8 8 L48 20 L88 8"/><path d="M30 48 L48 20 L66 48"/><path d="M8 8 L66 48"/><path d="M88 8 L30 48"/></g><path d="M8 8 L30 48 L48 20 L66 48 L88 8" stroke="url(#wl-grad-m)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" class="wl-main"/><circle cx="8" cy="8" r="4" fill="#2f6ff0" class="wl-n"/><circle cx="30" cy="48" r="4.6" fill="#2f8df0" class="wl-n"/><circle cx="48" cy="20" r="4.2" fill="#3aa8e0" class="wl-n"/><circle cx="66" cy="48" r="4.6" fill="#3cc8d8" class="wl-n"/><circle cx="88" cy="8" r="4" fill="#45e0c8" class="wl-n"/></svg></div><div class="modal-brand-name">WESTON</div></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-authtab="login">تسجيل الدخول</button>
+        <button class="auth-tab" data-authtab="register">حساب جديد</button>
+      </div>
+      <form id="authForm" class="auth-form" novalidate>
+        <div class="auth-field reg-only" id="authNameField" style="display:none">
+          <label for="authName">الاسم</label>
+          <input id="authName" type="text" placeholder="اسمك بالكامل" autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="authEmail">الإيميل</label>
+          <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="authPass">الباسورد</label>
+          <input id="authPass" type="password" placeholder="6 حروف على الأقل" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary auth-submit" type="submit" id="authSubmit">دخول</button>
+        <div class="auth-msg" id="authMsg"></div>
+        <p class="auth-note">حسابك بيتحفظ على جهازك فقط — تقدّمك مربوط بحسابك.</p>
+      </form>
+    </div>
+  </div>
 
   <!-- ======= المحتوى ======= -->
   <main>
@@ -69,6 +121,7 @@
     <section class="view" id="view-tools"></section>
     <section class="view" id="view-faqs"></section>
     <section class="view" id="view-dashboard"></section>
+    <section class="view" id="view-account"></section>
     <section class="view" id="view-resources"></section>
   </main>
 
@@ -102,6 +155,8 @@
   <script src="assets/js/paths.js"></script>
   <script src="assets/js/chat.js"></script>
   <script src="assets/js/tools.js"></script>
+  <script src="assets/js/sound.js"></script>
+  <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

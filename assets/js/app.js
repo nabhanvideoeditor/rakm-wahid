@@ -10,15 +10,20 @@
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
   /* ---------- الحالة ---------- */
+  function progressKey() {
+    try { if (typeof AUTH !== "undefined" && AUTH.progressKey) return AUTH.progressKey(); } catch (e) {}
+    return KEY;
+  }
   function load() {
     try {
-      const d = JSON.parse(localStorage.getItem(KEY));
+      const d = JSON.parse(localStorage.getItem(progressKey()));
       if (d && typeof d === "object") return { done: d.done || {}, plan: d.plan || {}, theme: d.theme || "dark" };
     } catch (e) {}
     return { done: {}, plan: {}, theme: "dark" };
   }
   let state = load();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function save() { try { localStorage.setItem(progressKey(), JSON.stringify(state)); } catch (e) {} }
+  function reloadState() { state = load(); }
 
   /* ---------- مراجع ---------- */
   const courseById = {};
@@ -65,6 +70,7 @@
   /* ---------- توست ---------- */
   let toastT;
   function toast(msg) {
+    if (typeof SOUND !== "undefined") SOUND.notify();
     const el = $("#toast");
     el.innerHTML = I.check + "<span>" + msg + "</span>";
     el.classList.add("show");
@@ -75,6 +81,7 @@
   /* ---------- تنقل ---------- */
   let view = "home";
   function go(v, arg) {
+    if (typeof SOUND !== "undefined") SOUND.nav();
     view = v;
     $$(".topnav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
     $$(".view").forEach((x) => x.classList.remove("active"));
@@ -92,6 +99,7 @@
     else if (v === "tools") renderTools();
     else if (v === "faqs") renderFaqs();
     else if (v === "dashboard") renderDashboard();
+    else if (v === "account") renderAccount();
     window.scrollTo({ top: 0, behavior: "smooth" });
     $("#topnav").classList.remove("open");
   }
@@ -188,10 +196,8 @@
           '<div class="brand-hero">' + logoSVG("wl-grad-hero") +
             '<div class="brand-hero-txt"><div class="brand-hero-name">WESTON</div><div class="brand-hero-sub">ARTIFICIAL&nbsp;INTELLIGENCE</div></div>' +
           "</div>" +
-          '<div class="hero-badge"><span class="dot"></span> مسارات مجانية مرتّبة • من الصفر إلى الاحتراف</div>' +
-          '<div class="ai-pill"><span class="dot"></span> AI Learning OS</div>' +
           '<h1>تعلّم كل مجالات الـ <span class="hl">AI</span> في مكان واحد</h1>' +
-          '<p>' + ACADEMY.meta.desc + ' — مسارات تخصص تدخل بيها جوه الذكاء الاصطناعي، ومسارات تطبيق تحطّه في شغلك.</p>' +
+          '<p>' + ACADEMY.meta.desc + "</p>" +
           '<div class="hero-cta">' +
             '<button class="btn btn-primary" data-go="paths">اختر مسارك ' + I.arrow + '</button>' +
             '<button class="btn btn-ghost" data-go="roadmap">خريطة الطريق</button>' +
@@ -208,7 +214,7 @@
 
         '<section class="section">' +
           '<div class="section-head"><div class="eyebrow">ليه weston؟</div><div class="section-title">كل اللي محتاجه في مكان واحد</div></div>' +
-          '<div class="feat-grid">' + ACADEMY.features.map((f) =>
+          '<div class="feat-grid feat-grid-4">' + ACADEMY.features.slice(0, 4).map((f) =>
             '<div class="feat"><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + "</div></div>").join("") +
           "</div>" +
         "</section>" +
@@ -218,12 +224,6 @@
           '<div class="section-sub">مسارين: تخصص تدخل بيها جوه الـ AI نفسه، وتطبيق تحطّ الـ AI في شغلك الحالي.</div></div>' +
           '<div class="track-grid">' + tracks.map((tr) => trackCard(tr)).join("") + "</div>" +
           '<button class="btn btn-ghost" data-go="tracks">شوف كل المسارات ' + I.arrow + "</button>" +
-        "</section>" +
-
-        '<section class="section">' +
-          '<div class="section-head"><div class="eyebrow">نبدأ منين؟</div><div class="section-title">كورسات مقترحة تبدأ بيها</div></div>' +
-          '<div class="course-grid">' + featured.map((c) => courseCard(c)).join("") + "</div>" +
-          '<div style="margin-top:22px"><button class="btn btn-ghost" data-go="courses">كل الكورسات ' + I.arrow + "</button></div>" +
         "</section>" +
 
         '<section class="section">' +
@@ -489,6 +489,7 @@
     const c = courseById[cid];
     const idx = parseInt(lid.split("-")[1], 10);
     const done = !!state.done[lid];
+    if (done && typeof SOUND !== "undefined") SOUND.success();
     const row = $('[data-lesson="' + lid + '"]');
     if (row) {
       row.classList.toggle("done", done);
@@ -887,6 +888,7 @@
   function chatAdd(m) {
     chatMsgs.push(m);
     if (chatMsgs.length > 60) chatMsgs = chatMsgs.slice(-60);
+    if (m.from === "bot" && typeof SOUND !== "undefined") SOUND.receive();
     renderChat();
     const body = $("#chatBody");
     if (body) body.scrollTop = body.scrollHeight;
@@ -1030,6 +1032,7 @@
 
   function sendChat(text) {
     if (!text || !text.trim()) return;
+    if (typeof SOUND !== "undefined") SOUND.send();
     window._lastQ = text.trim();
     chatAdd(userMessage(text.trim()));
     chatQuick([]);
@@ -1068,7 +1071,7 @@
           "<div><h4>مصادر</h4>" +
             '<a href="#" data-go="tools">الأدوات</a><a href="#" data-go="faqs">الأسئلة الشائعة</a><a href="https://www.edraak.org/" target="_blank">إدراك</a><a href="https://rwaq.org/" target="_blank">رواق</a></div>' +
           "<div><h4>تواصل</h4>" +
-            '<a href="mailto:nabhanlvideoeditor@gmail.com">nabhanlvideoeditor@gmail.com</a><a href="https://wa.me/201212439985" target="_blank">واتساب</a></div>' +
+            '<a href="https://wa.me/201212439985" target="_blank">واتساب</a></div>' +
         "</div>" +
         '<div class="footer-bottom"><span>weston — مسار مجاني كامل لتعلم الذكاء الاصطناعي.</span><span id="footStat"></span></div>' +
       "</div>";
@@ -1085,8 +1088,163 @@
     updateFloat(); updateFoot();
   }
 
+  /* ============ الحساب ============ */
+  let authMode = "login";
+  function openAuth(mode) {
+    setAuthMode(mode || "login");
+    $("#authModal").classList.add("open");
+    setTimeout(() => { const f = $(authMode === "register" ? "#authName" : "#authEmail"); if (f) f.focus(); }, 120);
+  }
+  function closeAuth() { $("#authModal").classList.remove("open"); }
+  function setAuthMode(m) {
+    authMode = m;
+    $$("#authModal .auth-tab").forEach((t) => t.classList.toggle("active", t.dataset.authtab === m));
+    $("#authNameField").style.display = m === "register" ? "block" : "none";
+    $("#authSubmit").textContent = m === "register" ? "اعمل حساب" : "دخول";
+    $("#authMsg").textContent = "";
+    $("#authMsg").className = "auth-msg";
+    $("#authPass").autocomplete = m === "register" ? "new-password" : "current-password";
+  }
+  async function submitAuth(e) {
+    e.preventDefault();
+    const btn = $("#authSubmit"), msg = $("#authMsg");
+    const data = { name: $("#authName").value, email: $("#authEmail").value, password: $("#authPass").value };
+    btn.disabled = true;
+    btn.textContent = "استنى لحظة…";
+    const res = authMode === "register" ? await AUTH.register(data) : await AUTH.login(data);
+    btn.disabled = false;
+    btn.textContent = authMode === "register" ? "اعمل حساب" : "دخول";
+    if (!res.ok) {
+      msg.className = "auth-msg err";
+      msg.textContent = res.msg;
+      if (typeof SOUND !== "undefined") SOUND.error();
+      return;
+    }
+    msg.className = "auth-msg ok";
+    msg.textContent = res.msg;
+    reloadState();
+    updateAccountBtn();
+    refresh();
+    if (typeof SOUND !== "undefined") SOUND.success();
+    setTimeout(() => { closeAuth(); go("account"); }, 700);
+  }
+  function logout() {
+    AUTH.logout();
+    reloadState();
+    updateAccountBtn();
+    toast("تم تسجيل الخروج");
+    go("home");
+  }
+  function updateAccountBtn() {
+    const btn = $("#btnAccount");
+    if (!btn) return;
+    const u = AUTH.current();
+    if (u) {
+      btn.innerHTML = '<span class="acc-avatar">' + esc(AUTH.initials(u.name)) + "</span>";
+      btn.title = u.name;
+      btn.classList.add("is-user");
+    } else {
+      btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
+      btn.title = "حسابي";
+      btn.classList.remove("is-user");
+    }
+  }
+  function renderAccount() {
+    const el = $("#view-account");
+    if (!el) return;
+    const u = AUTH.current();
+    if (!u) {
+      el.innerHTML =
+        '<div class="wrap"><section class="section"><div class="acc-empty">' +
+          '<div class="acc-empty-icon">👤</div>' +
+          '<h3>لسه مفيش حساب</h3>' +
+          "<p>اعمل حساب عشان يبقى لتك تقدمك الخاص على كل جهاز، وتقدر ترجع ليه في أي وقت.</p>" +
+          '<div class="acc-empty-btns">' +
+            '<button class="btn btn-primary" data-open-auth="register">اعمل حساب</button>' +
+            '<button class="btn btn-ghost" data-open-auth="login">عندي حساب</button>' +
+          "</div>" +
+        "</div></section></div>";
+      $$("#view-account [data-open-auth]").forEach((b) => b.addEventListener("click", () => openAuth(b.dataset.openAuth)));
+      return;
+    }
+    const doneLessons = Object.keys(state.done).length;
+    const totalLessons = ACADEMY.courses.reduce((s, c) => s + ((c.lessons || []).length || 0), 0);
+    const doneCourses = ACADEMY.courses.filter((c) => courseComplete(c.id)).length;
+    const pct = totalLessons ? Math.round((doneLessons / totalLessons) * 100) : 0;
+    el.innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">حسابي</div><div class="section-title">ملفي الشخصي</div>' +
+        '<div class="section-sub">تقدّمك مربوط بحسابك — بيتحفظ تلقائياً على جهازك.</div></div>' +
+        '<div class="acc-grid">' +
+          '<div class="acc-card acc-profile">' +
+            '<div class="acc-avatar-lg">' + esc(AUTH.initials(u.name)) + "</div>" +
+            "<div><div class=\"acc-name\">" + esc(u.name) + '</div><div class="acc-mail">' + esc(u.email) + "</div>" +
+            '<div class="acc-since">أعضاء weston</div></div>' +
+          "</div>" +
+          '<div class="acc-card acc-stats">' +
+            '<div class="acc-stat"><b>' + doneLessons + '</b><span>درس مكتمل</span></div>' +
+            '<div class="acc-stat"><b>' + doneCourses + '</b><span>كورس خلصته</span></div>' +
+            '<div class="acc-stat"><b>' + ACADEMY.certs.length + '</b><span>شهادة متاحة</span></div>' +
+          "</div>" +
+        "</div>" +
+        '<div class="acc-card acc-progress"><div class="acc-progress-top"><span>نسبة الإنجاز</span><b>' + pct + '%</b></div>' +
+          '<div class="acc-bar"><span style="width:' + pct + '%"></span></div></div>' +
+        '<div class="acc-actions">' +
+          '<button class="btn btn-ghost" id="accGoDash">تقدّمي بالتفصيل</button>' +
+          '<button class="btn btn-ghost" id="accExport">تصدير التقدم</button>' +
+          '<button class="btn btn-danger" id="accLogout">تسجيل الخروج</button>' +
+        "</div>" +
+        '<p class="auth-note">بياناتك بتتحفظ على جهازك فقط — مفيش سيرفر ولا مشاركة مع أي طرف.</p>' +
+      "</section></div>";
+    const d = $("#accGoDash"); if (d) d.addEventListener("click", () => go("dashboard"));
+    const ex = $("#accExport"); if (ex) ex.addEventListener("click", exportProgress);
+    const lo = $("#accLogout"); if (lo) lo.addEventListener("click", logout);
+  }
+
   /* ============ بحث ============ */
   function onSearch(e) { query = e.target.value || ""; if (view !== "courses") go("courses"); applyCourseFilter(); }
+
+  /* ============ درج البحث (موبايل) ============ */
+  function openSearchDrawer() {
+    $("#searchDrawer").classList.add("open");
+    $("#searchInput").focus();
+    if ($("#searchInput").value) runDrawerSearch();
+  }
+  function closeSearchDrawer() {
+    $("#searchDrawer").classList.remove("open");
+    $("#searchInput").value = "";
+    $("#searchResults").innerHTML = "";
+  }
+  function runDrawerSearch() {
+    const q = ($("#searchInput").value || "").trim();
+    const box = $("#searchResults");
+    if (!q) { box.innerHTML = ""; return; }
+    const ql = q.toLowerCase();
+    const res = [];
+    ACADEMY.courses.forEach((c) => {
+      if ((c.title + " " + (c.titleEn || "") + " " + c.desc).toLowerCase().includes(ql))
+        res.push({ icon: "🎓", name: c.title, sub: c.trackTitle || "", kind: "كورس", go: "courses" });
+    });
+    ACADEMY.tracks.forEach((t) => {
+      if ((t.title + " " + t.tagline).toLowerCase().includes(ql))
+        res.push({ icon: t.icon, name: t.title, sub: t.tagline, kind: "مسار", go: "tracks" });
+    });
+    if (typeof PATHS !== "undefined") PATHS.forEach((p) => {
+      if ((p.title + " " + (p.tagline || "")).toLowerCase().includes(ql))
+        res.push({ icon: p.icon || "🧭", name: p.title, sub: p.tagline || "", kind: "مسار مهني", go: "paths" });
+    });
+    if (typeof TOOLS !== "undefined") TOOLS.forEach((t) => {
+      if ((t.n + " " + t.d).toLowerCase().includes(ql))
+        res.push({ icon: "🛠️", name: t.n, sub: t.d, kind: "أداة", go: "tools" });
+    });
+    box.innerHTML = res.length
+      ? res.slice(0, 12).map((r) =>
+          '<div class="search-result" data-go="' + r.go + '"><span class="sr-icon">' + r.icon + '</span><span class="sr-txt"><b>' + esc(r.name) + '</b><small>' + esc(r.sub) + '</small></span><span class="sr-kind">' + r.kind + "</span></div>"
+        ).join("")
+      : '<div class="search-empty">مفيش نتائج لـ «' + esc(q) + "»</div>";
+    $$("#searchResults [data-go]").forEach((el) => el.addEventListener("click", () => { closeSearchDrawer(); go(el.dataset.go); }));
+  }
+
 
   /* ============ تصدير/استيراد ============ */
   function exportProgress() {
@@ -1124,6 +1282,41 @@
     $("#btnImport").addEventListener("click", () => $("#importFile").click());
     $("#importFile").addEventListener("change", (e) => { if (e.target.files[0]) importProgress(e.target.files[0]); e.target.value = ""; });
     $("#search").addEventListener("input", onSearch);
+    $("#btnSearch").addEventListener("click", openSearchDrawer);
+    $("#searchClose").addEventListener("click", closeSearchDrawer);
+    $("#searchInput").addEventListener("input", runDrawerSearch);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSearchDrawer(); });
+    // زر الصوت
+    const btnSound = $("#btnSound");
+    if (btnSound) {
+      btnSound.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const on = SOUND.toggle();
+        btnSound.classList.toggle("off", !on);
+        btnSound.title = on ? "المؤثرات الصوتية: مفعّلة" : "المؤثرات الصوتية: متوقفة";
+        toast(on ? "الصوت مفعّل" : "الصوت متوقف");
+      });
+    }
+    // نقرة عامة على الأزرار
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (b && !b.id?.includes("Sound") && typeof SOUND !== "undefined") SOUND.click();
+    });
+    // الحساب
+    updateAccountBtn();
+    const accBtn = $("#btnAccount");
+    if (accBtn) accBtn.addEventListener("click", () => { const u = AUTH.current(); if (u) go("account"); else openAuth("login"); });
+    const authClose = $("#authClose");
+    if (authClose) authClose.addEventListener("click", closeAuth);
+    const modal = $("#authModal");
+    if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeAuth(); });
+    $$("#authModal .auth-tab").forEach((t) => t.addEventListener("click", () => setAuthMode(t.dataset.authtab)));
+    const authForm = $("#authForm");
+    if (authForm) authForm.addEventListener("submit", submitAuth);
+    document.addEventListener("click", (e) => {
+      const oa = e.target.closest("[data-open-auth]");
+      if (oa) openAuth(oa.dataset.openAuth);
+    });
 
     renderFooter();
     refresh();
