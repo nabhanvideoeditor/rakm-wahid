@@ -1486,9 +1486,9 @@
     $("#brand").addEventListener("click", () => go("home"));
     $$(".topnav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.view)));
     $("#btnMenu").addEventListener("click", () => $("#topnav").classList.toggle("open"));
-    $("#btnExport").addEventListener("click", exportProgress);
-    $("#btnImport").addEventListener("click", () => $("#importFile").click());
-    $("#importFile").addEventListener("change", (e) => { if (e.target.files[0]) importProgress(e.target.files[0]); e.target.value = ""; });
+    const btnExport = $("#btnExport"); if (btnExport) btnExport.addEventListener("click", exportProgress);
+    const btnImport = $("#btnImport"); if (btnImport) btnImport.addEventListener("click", () => $("#importFile").click());
+    const importFile = $("#importFile"); if (importFile) importFile.addEventListener("change", (e) => { if (e.target.files[0]) importProgress(e.target.files[0]); e.target.value = ""; });
     $("#search").addEventListener("input", onSearch);
     $("#btnSearch").addEventListener("click", openSearchDrawer);
     $("#searchClose").addEventListener("click", closeSearchDrawer);
