@@ -14,35 +14,35 @@
 }
 
 :root {
-  /* هوية WESTON — كحلي + أزرق ملكي + سماوي */
-  --bg: #0e1526;
-  --bg-2: #0a101e;
-  --surface: #131c30;
-  --surface-2: #18223a;
-  --surface-3: #1f2b47;
-  --border: #243252;
-  --border-2: #314266;
-  --text: #f4f6f8;
-  --text-2: #c3cbdd;
-  --muted: #8a96b5;
-  --accent: #2563eb;
-  --accent-2: #45e0c8;
-  --accent-soft: rgba(37, 99, 235, .18);
-  --steel: #45e0c8;
-  --steel-2: #6ff0dc;
-  --steel-soft: rgba(69, 224, 200, .16);
-  --mint: #45e0c8;
-  --mint-soft: rgba(69, 224, 200, .14);
+  /* هوية WESTON — أسود عميق + أخضر تقني */
+  --bg: #050807;
+  --bg-2: #070b09;
+  --surface: #0a100d;
+  --surface-2: #0e1712;
+  --surface-3: #142019;
+  --border: #1b2b22;
+  --border-2: #274034;
+  --text: #eef7f1;
+  --text-2: #b9cbc2;
+  --muted: #7f978b;
+  --accent: #22c55e;
+  --accent-2: #4ade80;
+  --accent-soft: rgba(34, 197, 94, .15);
+  --steel: #34d399;
+  --steel-2: #6ee7b7;
+  --steel-soft: rgba(52, 211, 153, .13);
+  --mint: #34d399;
+  --mint-soft: rgba(52, 211, 153, .12);
   --gold: #fbbf24;
   --gold-soft: rgba(251, 191, 36, .14);
   --red: #f87171;
-  --ok: #45e0c8;
-  --grad: linear-gradient(135deg, #2563eb, #45e0c8);
-  --grad-soft: linear-gradient(135deg, rgba(37,99,235,.22), rgba(69,224,200,.14));
+  --ok: #34d399;
+  --grad: linear-gradient(135deg, #22c55e, #4ade80);
+  --grad-soft: linear-gradient(135deg, rgba(34,197,94,.20), rgba(74,222,128,.10));
   --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
   --shadow: 0 10px 34px -14px rgba(0,0,0,.7);
   --shadow-lg: 0 26px 60px -22px rgba(0,0,0,.8);
-  --glow: 0 0 44px -12px rgba(69, 224, 200, .55);
+  --glow: 0 0 44px -12px rgba(34, 197, 94, .5);
   --radius: 16px;
   --radius-sm: 11px;
   --radius-lg: 24px;
@@ -71,11 +71,21 @@ body {
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(1100px 640px at 88% -8%, rgba(37, 99, 235, .15), transparent 58%),
-    radial-gradient(820px 620px at 2% 14%, rgba(69, 224, 200, .06), transparent 60%),
-    linear-gradient(rgba(148, 178, 255, .038) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 178, 255, .038) 1px, transparent 1px);
+    radial-gradient(1100px 640px at 88% -8%, rgba(34, 197, 94, .13), transparent 58%),
+    radial-gradient(820px 620px at 2% 14%, rgba(52, 211, 153, .05), transparent 60%),
+    linear-gradient(rgba(120, 220, 160, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 220, 160, .035) 1px, transparent 1px);
   background-size: auto, auto, 54px 54px, 54px 54px;
+  animation: gridShift 120s linear infinite;
+}
+@keyframes gridShift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 0 0, 0 0, 54px 54px, 54px 54px; }
+}
+/* خطوط مسح خفيفة — إحساس شاشة تقنية */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .014) 0 1px, transparent 1px 3px);
 }
 ::selection { background: var(--accent); color: #fff; }
 a { color: var(--accent-2); text-decoration: none; }
@@ -95,7 +105,7 @@ button { font-family: inherit; }
 .brand-mark {
   width: 44px; height: 44px; border-radius: 13px; flex: none;
   display: grid; place-items: center;
-  background: linear-gradient(150deg, #0e1526 0%, #182646 100%);
+  background: linear-gradient(150deg, #0a100d 0%, #101a14 100%);
   border: 1px solid var(--border-2);
   box-shadow: var(--glow);
 }
@@ -531,6 +541,29 @@ main { min-height: 100vh; }
   border: 1px solid var(--border-2);
 }
 
+/* توهج تفاعلي أخضر على الكروت */
+.track, .course-card, .path-card, .tool, .feat {
+  transition: transform .25s cubic-bezier(.3,1,.4,1), border-color .25s, box-shadow .25s;
+}
+.track:hover, .course-card:hover, .path-card:hover, .tool:hover, .feat:hover {
+  border-color: rgba(34, 197, 94, .42);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, .22), 0 18px 42px -22px rgba(34, 197, 94, .30);
+  transform: translateY(-3px);
+}
+.track:hover .track-icon, .feat:hover .feat-icon, .path-card:hover .path-icon, .tool:hover .tool-top {
+  color: var(--accent-2);
+}
+
+/* مؤشر كتابة في العناوين التقنية */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+.eyebrow::before { content: "// "; opacity: .55; }
+
 /* ---------- تحفيز ومذاكرة ---------- */
 .motivation {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-bottom: 22px;
@@ -801,7 +834,7 @@ main { min-height: 100vh; }
 }
 .chat-avatar {
   width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center;
-  background: linear-gradient(150deg, #0e1526 0%, #182646 100%);
+  background: linear-gradient(150deg, #0a100d 0%, #101a14 100%);
   border: 1px solid var(--border-2); border-radius: 13px;
 }
 .chat-avatar .weston-logo { width: 32px; height: 19px; }
@@ -879,7 +912,7 @@ main { min-height: 100vh; }
 }
 .brand-hero .weston-logo {
   width: 92px; height: 54px;
-  filter: drop-shadow(0 6px 24px rgba(37,99,235,.45));
+  filter: drop-shadow(0 6px 24px rgba(34,197,94,.45));
   animation: heroFloat 5s ease-in-out infinite;
 }
 @keyframes heroFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -896,7 +929,7 @@ main { min-height: 100vh; }
 @keyframes shimmer { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
 .brand-hero-sub {
   font-size: 10.5px; letter-spacing: 4.5px; color: var(--accent-2);
-  margin-top: 4px; font-weight: 500; text-shadow: 0 0 14px rgba(69,224,200,.5);
+  margin-top: 4px; font-weight: 500; text-shadow: 0 0 14px rgba(74,222,128,.5);
 }
 
 .weston-logo { width: 100%; height: 100%; overflow: visible; display: block; }
@@ -916,13 +949,13 @@ main { min-height: 100vh; }
 @keyframes wlDraw { to { stroke-dashoffset: 0; } }
 @keyframes wlPop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
 
-.brand-mark { position: relative; overflow: visible; filter: drop-shadow(0 0 10px rgba(69,224,200,.35)); }
+.brand-mark { position: relative; overflow: visible; filter: drop-shadow(0 0 10px rgba(74,222,128,.35)); }
 .brand-mark:hover .weston-logo .wl-main { animation: wlGlow 1.6s ease-in-out infinite; }
 @keyframes wlGlow {
-  0%, 100% { filter: drop-shadow(0 0 3px rgba(69,224,200,.6)); }
-  50% { filter: drop-shadow(0 0 9px rgba(37,99,235,.9)); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(74,222,128,.6)); }
+  50% { filter: drop-shadow(0 0 9px rgba(34,197,94,.9)); }
 }
-.chat-avatar { position: relative; overflow: visible; filter: drop-shadow(0 0 8px rgba(69,224,200,.35)); }
+.chat-avatar { position: relative; overflow: visible; filter: drop-shadow(0 0 8px rgba(74,222,128,.35)); }
 
 /* نبض خفيف للشبكة العصبية في الواجهة */
 .neural .node { animation: float 6s ease-in-out infinite, nodeGlow 3.4s ease-in-out infinite; }
@@ -1010,8 +1043,8 @@ main { min-height: 100vh; }
   position: fixed; inset: 0; z-index: 400; display: none;
   align-items: center; justify-content: center; padding: 22px;
   background:
-    radial-gradient(900px 520px at 85% -5%, rgba(37, 99, 235, .22), transparent 62%),
-    radial-gradient(760px 520px at 5% 8%, rgba(69, 224, 200, .12), transparent 62%),
+    radial-gradient(900px 520px at 85% -5%, rgba(34, 197, 94, .22), transparent 62%),
+    radial-gradient(760px 520px at 5% 8%, rgba(74, 222, 128, .12), transparent 62%),
     #0a101e;
   overflow-y: auto;
 }
@@ -1024,11 +1057,11 @@ main { min-height: 100vh; }
 }
 .gate-box .neural { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .gate-logo { display: flex; justify-content: center; margin-bottom: 14px; position: relative; }
-.gate-logo .weston-logo { width: 104px; height: 60px; filter: drop-shadow(0 8px 26px rgba(37,99,235,.5)); animation: heroFloat 5s ease-in-out infinite; }
+.gate-logo .weston-logo { width: 104px; height: 60px; filter: drop-shadow(0 8px 26px rgba(34,197,94,.5)); animation: heroFloat 5s ease-in-out infinite; }
 .gate-name { font-family: var(--font-brand); font-size: 34px; font-weight: 700; letter-spacing: .22em; line-height: 1.05;
   background: linear-gradient(100deg, #fff 0%, #d9e4f7 40%, #8fa6cc 60%, #fff 100%); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 5s linear infinite; position: relative; }
-.gate-sub { font-size: 10.5px; letter-spacing: 4.5px; color: var(--accent-2); margin-top: 4px; font-weight: 500; text-shadow: 0 0 14px rgba(69,224,200,.5); position: relative; }
+.gate-sub { font-size: 10.5px; letter-spacing: 4.5px; color: var(--accent-2); margin-top: 4px; font-weight: 500; text-shadow: 0 0 14px rgba(74,222,128,.5); position: relative; }
 .gate-title { font-size: 22px; font-weight: 600; margin-top: 16px; position: relative; }
 .gate-desc { color: var(--text-2); font-size: 14.5px; line-height: 1.9; margin-top: 10px; max-width: 400px; margin-inline: auto; position: relative; }
 .gate-stats { display: flex; justify-content: center; gap: 10px; margin: 20px 0 22px; flex-wrap: wrap; position: relative; }
@@ -1091,7 +1124,7 @@ body.locked .topbar, body.locked main, body.locked #chatFab, body.locked #footer
 .acc-mail { font-size: 13px; color: var(--muted); }
 .acc-since { font-size: 11.5px; color: var(--accent-2); margin-top: 4px; }
 .acc-mode { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-top: 10px; }
-.acc-mode.cloud { background: rgba(69,224,200,.13); color: var(--accent-2); border: 1px solid rgba(69,224,200,.3); }
+.acc-mode.cloud { background: rgba(74,222,128,.13); color: var(--accent-2); border: 1px solid rgba(74,222,128,.3); }
 .acc-mode.local { background: var(--gold-soft); color: var(--gold); border: 1px solid rgba(251,191,36,.3); }
 .acc-stats { display: flex; gap: 12px; }
 .acc-stat { flex: 1; text-align: center; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 8px; }

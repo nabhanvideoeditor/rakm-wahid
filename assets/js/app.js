@@ -54,10 +54,10 @@
 
   /* ---------- لوجو WESTON ---------- */
   function logoSVG(id) {
-    return '<svg viewBox="0 0 96 56" class="weston-logo" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="96" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2563eb"/><stop offset=".55" stop-color="#3b9cf5"/><stop offset="1" stop-color="#45e0c8"/></linearGradient></defs>' +
+    return '<svg viewBox="0 0 96 56" class="weston-logo" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="96" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#22c55e"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#4ade80"/></linearGradient></defs>' +
       '<g stroke="url(#' + id + ')" stroke-width="1.1" opacity=".5"><path d="M8 8 L48 20 L88 8"/><path d="M30 48 L48 20 L66 48"/><path d="M8 8 L66 48"/><path d="M88 8 L30 48"/></g>' +
       '<path d="M8 8 L30 48 L48 20 L66 48 L88 8" stroke="url(#' + id + ')" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" class="wl-main"/>' +
-      '<circle cx="8" cy="8" r="4" fill="#2f6ff0" class="wl-n"/><circle cx="30" cy="48" r="4.6" fill="#2f8df0" class="wl-n"/><circle cx="48" cy="20" r="4.2" fill="#3aa8e0" class="wl-n"/><circle cx="66" cy="48" r="4.6" fill="#3cc8d8" class="wl-n"/><circle cx="88" cy="8" r="4" fill="#45e0c8" class="wl-n"/></svg>';
+      '<circle cx="8" cy="8" r="4" fill="#2f9e5f" class="wl-n"/><circle cx="30" cy="48" r="4.6" fill="#3fae6c" class="wl-n"/><circle cx="48" cy="20" r="4.2" fill="#52c07c" class="wl-n"/><circle cx="66" cy="48" r="4.6" fill="#6ed695" class="wl-n"/><circle cx="88" cy="8" r="4" fill="#4ade80" class="wl-n"/></svg>';
   }
 
   /* ---------- أيقونات ---------- */
@@ -229,10 +229,10 @@
     }
     return '<div class="motivation">' +
       '<div class="mot-card glow">' +
-        '<div class="mot-label">🔥 سلسلة المذاكرة — آخر 7 أيام</div>' +
+        '<div class="mot-label">' + icon("flame", 15) + ' سلسلة المذاكرة — آخر 7 أيام</div>' +
         '<div class="mot-big">' + (streak > 0 ? streak + " يوم متتالي" : "ابدأ سلسلتك النهاردة") + '</div>' +
         '<div class="streak-row">' + dots + "</div>" +
-        '<div class="tip">🟢 فاتح = يوم ذاكرت فيه &nbsp;•&nbsp; ⚫ داكن = لسه. استمر — حتى 20 دقيقة بتفرق.</div>' +
+        '<div class="tip">🟢 فاتح = يوم ذاكرت فيه &nbsp;•&nbsp; ' + icon("dot", 9) + ' داكن = لسه. استمر — حتى 20 دقيقة بتفرق.</div>' +
       "</div>" +
       '<div class="mot-card">' +
         '<div class="mot-label">message اقتباس النهاردة</div>' +
@@ -248,7 +248,7 @@
   function cheer(msg) {
     const el = $("#cheer");
     if (!el) return;
-    el.innerHTML = '<span class="flame">🔥</span><span>' + msg + "</span>";
+    el.innerHTML = '' + '<span class="flame" style="display:inline-flex">' + icon("flame", 15) + '</span>' + '<span>' + msg + "</span>";
     el.classList.add("show");
     clearTimeout(cheerT);
     cheerT = setTimeout(() => el.classList.remove("show"), 2600);
@@ -462,7 +462,7 @@
 
     const vids = (typeof COURSE_VIDEOS !== "undefined" ? COURSE_VIDEOS[c.id] : null) || [];
     const fileWarn = location.protocol === "file:"
-      ? '<div class="file-warn">⚠️ انت فاتح المنصة كملف — الفيديوهات المدمجة محتاجة سيرفر. شغّل ملف <b>«ابدأ-المنصة.bat»</b> أو افتحها بالطريقة الموجودة في README.</div>'
+      ? '<div class="file-warn">' + icon("shield", 14) + ' انت فاتح المنصة كملف — الفيديوهات المدمجة محتاجة سيرفر. شغّل ملف <b>«ابدأ-المنصة.bat»</b> أو افتحها بالطريقة الموجودة في README.</div>'
       : "";
     const videosHtml = vids.length
       ? '<div class="videos">' +
@@ -485,7 +485,7 @@
               "</div>";
             }).join("") +
           "</div>" +
-          '<p class="video-hint">💡 لو الفيديو مفتحش جوه المشغّل، اضغط «شغّل على يوتيوب» — هيفتح مباشرة.</p>' +
+          '<p class="video-hint">' + icon("sparkles", 14) + ' لو الفيديو مفتحش جوه المشغّل، اضغط «شغّل على يوتيوب» — هيفتح مباشرة.</p>' +
         "</div>"
       : "";
 
@@ -608,7 +608,7 @@
         '<div class="section-title">دليل أدوات الذكاء الاصطناعي</div>' +
         '<div class="section-sub">' + TOOLS.length + ' أداة عالمية مجمعة في ' + cats.length + ' قسم — كل أداة بلينكها وسعرها ووصفها.</div></div>' +
         '<div class="tools-bar">' +
-          '<input class="tools-search" id="toolsSearch" type="text" placeholder="search ابحث عن أداة... (مثلاً: فيديو، صور)" value="' + esc(q || "") + '">' +
+          '<input class="tools-search" id="toolsSearch" type="text" placeholder="ابحث عن أداة… (مثلاً: فيديو، صور)" value="' + esc(q || "") + '">' +
         "</div>" +
         '<div class="tools-filters">' +
           '<button class="chip' + (c === "all" ? " active" : "") + '" data-toolcat="all">الكل (' + TOOLS.length + ")</button>" +
@@ -707,7 +707,7 @@
     if (!list.length) return "";
     const a = list[new Date().getDate() % list.length];
     return '<div class="zad">' +
-      '<div class="zad-label">📖 زاد النهاردة</div>' +
+      '<div class="zad-label">' + icon("book", 15) + ' زاد النهاردة</div>' +
       '<div class="zad-type">' + a.type + ' • ' + a.ref + "</div>" +
       '<div class="zad-text">' + a.text + "</div>" +
       '<div class="zad-foot">اللهم انفعني بما علمتني، وعلمني ما ينفعني، وزدني علماً</div>' +
@@ -733,7 +733,7 @@
             (courses ? '<div class="plan-courses">' + courses + "</div>" : "") +
             (daily ? '<div class="plan-daily"><b>مهام يومية:</b> ' + daily + "</div>" : "") +
             '<div class="plan-habit">sprout العادة: ' + w.habit + "</div>" +
-            '<div class="plan-task">📌 مهمة الأسبوع: ' + w.task + "</div>" +
+            '<div class="plan-task">' + icon("target", 15) + ' مهمة الأسبوع: ' + w.task + "</div>" +
             '<div class="plan-outcome">✅ المخرج: ' + w.outcome + "</div>" +
           "</div></div>";
       }).join("");
@@ -854,7 +854,7 @@
           '<div><b>10-15</b><span>ساعة أسبوعياً</span></div>' +
         "</div>" +
         '<div class="rm-line">' + steps + "</div>" +
-        '<div class="rm-apply-head"><h3>🛠️ مسارات تطبيقية — متوازية</h3><p>مش شرط بالترتيب؛ تدخلها وقت ما تحتاجها في أي مرحلة.</p></div>' +
+        '<div class="rm-apply-head"><h3>' + icon("wrench", 16) + ' مسارات تطبيقية — متوازية</h3><p>مش شرط بالترتيب؛ تدخلها وقت ما تحتاجها في أي مرحلة.</p></div>' +
         '<div class="rm-apply-grid">' + apply + "</div>" +
       "</section></div>";
 
@@ -893,7 +893,7 @@
             .map(([k, l]) => '<button class="chip' + (f === k ? " active" : "") + '" data-pathfilter="' + k + '">' + l + "</button>").join("") +
         "</div>" +
         '<div class="path-grid">' + cards + "</div>" +
-        '<p class="path-note">💡 مش متأكد؟ ابدأ بـ «خريطة الطريق» — بتوضح التدرج العام، وبعدين اختر تفرعك.</p>' +
+        '<p class="path-note">' + icon("sparkles", 14) + ' مش متأكد؟ ابدأ بـ «خريطة الطريق» — بتوضح التدرج العام، وبعدين اختر تفرعك.</p>' +
       "</section></div>";
 
     $$("#view-paths [data-pathfilter]").forEach((b) => b.addEventListener("click", () => renderPaths(b.dataset.pathfilter)));
@@ -1274,7 +1274,7 @@
         '<div class="section-head"><div class="eyebrow">حسابي</div><div class="section-title">ملفي الشخصي</div>' +
         '<div class="section-sub">تقدّمك مربوط بحسابك — بيتحفظ تلقائياً.</div>' +
         '<span class="acc-mode ' + ((typeof AUTH !== "undefined" && AUTH.cloud) ? "cloud" : "local") + '">' +
-          ((typeof AUTH !== "undefined" && AUTH.cloud) ? "☁️ حساب سحابي — بيشتغل على كل الأجهزة" : "📱 حساب محلي على هذا الجهاز") +
+          ((typeof AUTH !== "undefined" && AUTH.cloud) ? icon("globe", 14) + " حساب سحابي — بيشتغل على كل الأجهزة" : icon("cpu", 14) + " حساب محلي على هذا الجهاز") +
         "</span></div>" +
         '<div class="acc-grid">' +
           '<div class="acc-card acc-profile">' +
