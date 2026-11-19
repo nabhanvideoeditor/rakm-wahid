@@ -74,6 +74,8 @@
     if (el) el.classList.add("active");
     if (v === "home") renderHome();
     else if (v === "roadmap") renderRoadmap();
+    else if (v === "paths") renderPaths();
+    else if (v === "path") renderPathDetail(arg);
     else if (v === "myplan") renderMyPlan();
     else if (v === "tracks") renderTracks();
     else if (v === "courses") { renderCourses(arg); renderCourseGrid(); }
@@ -180,9 +182,9 @@
           '<h1>تعلّم كل مجالات الـ <span class="hl">AI</span> في مكان واحد</h1>' +
           '<p>' + ACADEMY.meta.desc + ' — مسارات تخصص تدخل بيها جوه الذكاء الاصطناعي، ومسارات تطبيق تحطّه في شغلك.</p>' +
           '<div class="hero-cta">' +
-            '<button class="btn btn-primary" data-go="roadmap">شوف خريطة الطريق ' + I.arrow + '</button>' +
+            '<button class="btn btn-primary" data-go="paths">اختر مسارك ' + I.arrow + '</button>' +
+            '<button class="btn btn-ghost" data-go="roadmap">خريطة الطريق</button>' +
             '<button class="btn btn-ghost" data-go="myplan">خطتي الأسبوعية</button>' +
-            '<button class="btn btn-ghost" data-go="courses">كل الكورسات</button>' +
           '</div>' +
           '<div class="hero-stats">' +
             '<div class="hstat"><div class="hstat-val">' + totalCourses() + '<small> كورس</small></div><div class="hstat-label">بمصادر مجانية عالمية</div></div>' +
@@ -744,6 +746,93 @@
       "</section></div>";
 
     $$("#view-roadmap [data-roadmap-track]").forEach((b) => b.addEventListener("click", () => go("courses", b.dataset.roadmapTrack)));
+  }
+
+  /* ---------- التفرعات المهنية ---------- */
+  function pathCourses(p) { return [...new Set(p.steps.flatMap((s) => s.c))]; }
+
+  function renderPaths(filter) {
+    const f = filter || "all";
+    const list = PATHS.filter((p) => f === "all" || p.level === f);
+    const cards = list.map((p) => {
+      const n = pathCourses(p).length;
+      return '<button class="path-card" data-path="' + p.id + '">' +
+        '<div class="path-top"><div class="path-icon">' + p.icon + "</div>" +
+        '<div class="path-titles"><div class="path-title">' + p.title + '</div><div class="path-tagline">' + p.tagline + "</div></div>" +
+        '<div class="path-level">' + p.level + "</div></div>" +
+        '<div class="path-goal">' + p.goal + "</div>" +
+        '<div class="path-meta">' +
+          '<span>⏱ ' + p.time + "</span>" +
+          '<span>💼 ' + p.jobs[0] + "</span>" +
+          '<span>🎓 ' + n + " كورس</span>" +
+        "</div>" +
+        '<div class="path-salary">' + p.salary + "</div>" +
+      "</button>";
+    }).join("");
+
+    $("#view-paths").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="section-head"><div class="eyebrow">مسارك</div>' +
+        '<div class="section-title">اختار تفرعك المهني</div>' +
+        '<div class="section-sub">مش طريق واحد للكل. كل مسار هنا هدف مهني واضح بخطواته ووظايفه وراتبه. اضغط على المسار تشوف خطته كاملة.</div></div>' +
+        '<div class="path-filters">' +
+          [["all", "الكل"], ["مبتدئ", "مبتدئ"], ["متوسط", "متوسط"], ["متقدم", "متقدم"]]
+            .map(([k, l]) => '<button class="chip' + (f === k ? " active" : "") + '" data-pathfilter="' + k + '">' + l + "</button>").join("") +
+        "</div>" +
+        '<div class="path-grid">' + cards + "</div>" +
+        '<p class="path-note">💡 مش متأكد؟ ابدأ بـ «خريطة الطريق» — بتوضح التدرج العام، وبعدين اختر تفرعك.</p>' +
+      "</section></div>";
+
+    $$("#view-paths [data-pathfilter]").forEach((b) => b.addEventListener("click", () => renderPaths(b.dataset.pathfilter)));
+    $$("#view-paths [data-path]").forEach((b) => b.addEventListener("click", () => go("path", b.dataset.path)));
+  }
+
+  function renderPathDetail(id) {
+    const p = PATHS.find((x) => x.id === id);
+    if (!p) { go("paths"); return; }
+    const courses = pathCourses(p);
+    const steps = p.steps.map((s, i) => {
+      const links = s.c.map((cid) => {
+        const c = courseById[cid];
+        return c ? '<a class="plan-course" href="#" data-course-link="' + c.id + '">' + c.title + "</a>" : "";
+      }).join("");
+      return '<div class="rm-step"><div class="rm-rail"><div class="rm-num">' + (i + 1) + "</div></div>" +
+        '<div class="rm-card"><div class="rm-head"><div class="rm-icon">🧭</div>' +
+        '<div class="rm-titles"><div class="rm-title">' + s.t + '</div></div>' +
+        '<div class="rm-time">' + s.w + "</div></div>" +
+        (links ? '<div class="path-courses">' + links + "</div>" : "") +
+        "</div></div>" +
+        (i < p.steps.length - 1 ? '<div class="rm-arrow">' + I.arrow + "</div>" : "");
+    }).join("");
+
+    $("#view-path").innerHTML =
+      '<div class="wrap"><section class="section">' +
+        '<div class="crumb"><a href="#" data-go="paths">مسارك</a><span>/</span><span>' + p.title + "</span></div>" +
+        '<div class="pd-hero">' +
+          '<div class="pd-icon">' + p.icon + "</div>" +
+          '<div class="pd-titles"><div class="pd-title">' + p.title + '</div><div class="pd-tagline">' + p.tagline + "</div>" +
+          '<div class="pd-goal">' + p.goal + "</div></div>" +
+          '<div class="pd-stats">' +
+            '<div><span>المدة</span><b>' + p.time + "</b></div>" +
+            '<div><span>المستوى</span><b>' + p.level + "</b></div>" +
+            '<div><span>الكورسات</span><b>' + courses.length + "</b></div>" +
+            '<div><span>الراتب</span><b>' + p.salary + "</b></div>" +
+          "</div>" +
+        "</div>" +
+        '<div class="pd-block"><h3>خطواتك</h3><div class="rm-line">' + steps + "</div></div>" +
+        '<div class="pd-cols">' +
+          '<div class="pd-block"><h3>الوظايف</h3><ul class="pd-list">' + p.jobs.map((j) => "<li>" + j + "</li>").join("") + "</ul></div>" +
+          '<div class="pd-block"><h3>شهادات معتمدة</h3><ul class="pd-list">' + p.certs.map((c) => "<li>" + c + "</li>").join("") + "</ul></div>" +
+        "</div>" +
+        '<div class="pd-actions">' +
+          '<button class="btn btn-primary" data-go="myplan">ابدأ خطتك الأسبوعية ' + I.arrow + "</button>" +
+          '<button class="btn btn-ghost" data-go="courses">كل الكورسات</button>' +
+        "</div>" +
+      "</section></div>";
+
+    $$("#view-path [data-course-link]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); go("detail", a.dataset.courseLink); }));
+    const cb = $('#view-path [data-go="paths"]');
+    if (cb) cb.addEventListener("click", (e) => { e.preventDefault(); go("paths"); });
   }
 
   /* ============ فوتر ============ */

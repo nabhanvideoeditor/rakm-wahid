@@ -638,6 +638,82 @@ main { min-height: 100vh; }
   .rm-step { grid-template-columns: 38px 1fr; gap: 12px; }
 }
 
+/* ---------- التفرعات المهنية ---------- */
+.path-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.path-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.path-card {
+  text-align: start; cursor: pointer; font-family: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; transition: all .25s; position: relative; overflow: hidden;
+}
+.path-card::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: 0; width: 3px; height: 100%;
+  background: var(--grad); opacity: 0; transition: all .25s;
+}
+.path-card:hover { border-color: rgba(109,124,255,.5); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.path-card:hover::before { opacity: 1; }
+.path-top { display: flex; align-items: flex-start; gap: 12px; }
+.path-icon {
+  width: 48px; height: 48px; flex-shrink: 0; display: grid; place-items: center;
+  font-size: 24px; background: var(--accent-soft); border-radius: 14px;
+  border: 1px solid rgba(109,124,255,.25);
+}
+.path-titles { flex: 1; }
+.path-title { font-size: 17px; font-weight: 600; }
+.path-tagline { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.6; }
+.path-level {
+  flex-shrink: 0; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  background: var(--steel-soft); color: var(--steel-2);
+}
+.path-goal { font-size: 13.5px; color: var(--text-2); margin-top: 14px; line-height: 1.85; }
+.path-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.path-meta span {
+  font-size: 12px; color: var(--text-2); background: var(--surface-2);
+  padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);
+}
+.path-salary {
+  display: inline-block; margin-top: 12px; font-size: 12.5px; font-weight: 600;
+  color: var(--gold); background: var(--gold-soft); padding: 4px 12px; border-radius: 999px;
+  border: 1px solid rgba(251,191,36,.25);
+}
+.path-note { color: var(--muted); font-size: 13.5px; margin-top: 20px; }
+
+/* تفاصيل المسار */
+.pd-hero {
+  display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;
+  background: linear-gradient(150deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 26px;
+}
+.pd-icon {
+  width: 64px; height: 64px; flex-shrink: 0; display: grid; place-items: center;
+  font-size: 32px; background: var(--accent-soft); border-radius: 18px;
+  border: 1px solid rgba(109,124,255,.3);
+}
+.pd-titles { flex: 1; min-width: 240px; }
+.pd-title { font-size: 26px; font-weight: 600; }
+.pd-tagline { font-size: 15px; color: var(--accent-2); margin-top: 4px; }
+.pd-goal { font-size: 14px; color: var(--text-2); margin-top: 12px; line-height: 1.9; }
+.pd-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.pd-stats > div {
+  text-align: center; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 14px; min-width: 88px;
+}
+.pd-stats span { display: block; font-size: 11px; color: var(--muted); }
+.pd-stats b { display: block; font-size: 14px; color: var(--accent-2); margin-top: 3px; }
+.pd-block { margin-bottom: 24px; }
+.pd-block h3 { font-size: 18px; font-weight: 600; margin-bottom: 14px; }
+.pd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pd-list { list-style: none; }
+.pd-list li {
+  font-size: 14px; color: var(--text-2); padding: 9px 12px; margin-bottom: 7px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  border-inline-start: 3px solid var(--accent);
+}
+.pd-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.path-courses { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+
+@media (max-width: 800px) { .pd-cols { grid-template-columns: 1fr; } .path-grid { grid-template-columns: 1fr; } }
+
 /* ---------- زاد اليوم (آيات وأدعية) ---------- */
 .zad {
   position: relative; padding: 22px 24px; border-radius: var(--radius);
