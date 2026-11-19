@@ -299,12 +299,6 @@
           '<div class="track-grid">' + tracks.map((tr) => trackCard(tr)).join("") + "</div>" +
           '<button class="btn btn-ghost" data-go="tracks">شوف كل المسارات ' + I.arrow + "</button>" +
         "</section>" +
-
-        '<section class="section">' +
-          '<div class="cta"><h2>جاهز تبدأ؟</h2>' +
-          '<p>ابدأ بمسار الأساسيات — خطوة واحدة بتفتحلك كل اللي بعدها. وتقدّمك بيتتحفظ تلقائياً.</p>' +
-          '<button class="btn btn-primary" data-go="tracks">ابدأ أول مسار ' + I.arrow + "</button></div>" +
-        "</section>" +
       "</div>";
 
     bindHome();
@@ -661,7 +655,7 @@
             '<div class="ring-wrap">' +
               '<div class="ring"><svg width="112" height="112"><circle cx="56" cy="56" r="' + R + '" fill="none" stroke="var(--surface-3)" stroke-width="9"/>' +
               '<circle cx="56" cy="56" r="' + R + '" fill="none" stroke="url(#g1)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + off + '"/>' +
-              '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c6cf6"/><stop offset="1" stop-color="#4f8cff"/></linearGradient></defs></svg>' +
+              '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#4ade80"/></linearGradient></defs></svg>' +
               '<div class="ring-val">' + p + "%</div></div>" +
               '<div class="ring-meta"><b>' + doneLessons() + "</b> درس مكتمل<br>من <b>" + totalLessons() + "</b> درس<br>في <b>" + totalCourses() + "</b> كورس</div>" +
             "</div>" +
