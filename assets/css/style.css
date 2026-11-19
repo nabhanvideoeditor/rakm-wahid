@@ -88,10 +88,13 @@ button { font-family: inherit; }
 }
 .brand { display: flex; align-items: center; gap: 11px; margin-inline-end: auto; cursor: pointer; }
 .brand-mark {
-  width: 42px; height: 42px; border-radius: 13px; flex: none;
-  display: grid; place-items: center; color: #fff; font-weight: 500; font-size: 20px;
-  background: var(--grad); box-shadow: var(--glow);
+  width: 44px; height: 44px; border-radius: 13px; flex: none;
+  display: grid; place-items: center;
+  background: linear-gradient(150deg, #0e1526 0%, #182646 100%);
+  border: 1px solid var(--border-2);
+  box-shadow: var(--glow);
 }
+.brand-mark .weston-logo { width: 32px; height: 19px; }
 .brand-name { font-weight: 500; font-size: 18px; letter-spacing: -.2px; }
 .brand-sub { font-size: 12px; color: var(--muted); }
 
@@ -742,9 +745,11 @@ main { min-height: 100vh; }
   border-bottom: 1px solid var(--border);
 }
 .chat-avatar {
-  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
-  background: var(--grad); color: #fff; font-weight: 600; font-size: 18px;
+  width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center;
+  background: linear-gradient(150deg, #0e1526 0%, #182646 100%);
+  border: 1px solid var(--border-2); border-radius: 13px;
 }
+.chat-avatar .weston-logo { width: 32px; height: 19px; }
 .chat-head-txt { flex: 1; }
 .chat-head-txt b { display: block; font-size: 15px; }
 .chat-head-txt small { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--muted); }
